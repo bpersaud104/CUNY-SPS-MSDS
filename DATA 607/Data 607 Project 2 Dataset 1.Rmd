@@ -1,0 +1,61 @@
+---
+title: "Data 607 Project 2 Dataset 1"
+author: "Bryan Persaud"
+date: "10/6/2019"
+output: html_document
+---
+
+```{r}
+library(tidyr)
+library(dplyr)
+library(stringr)
+library(ggplot2)
+```
+
+# For my first dataset, I will be using the Candy dataset, discussed in Ajay Arora's discussion post.
+
+```{r}
+# Get data from file I uploaded to github
+theURL <- "https://raw.githubusercontent.com/bpersaud104/Data607/master/candyhierarchy2017.csv"
+Candy <- read.csv(file = theURL, header = TRUE, sep = ",")
+head(Candy)
+```
+
+# Data Tidying and Transformations
+
+
+This is a huge dataset. It shows a survey of people who gave their opinion on what candies they liked. "Joy" means they liked the candy, "meh" means they didn't like or hate the candy, and "despair" means they didn't like the candy. I went through the dataset and noticed that there are some columns that list unspecific candies and some that are not even candies at all. For these columns I will be removing them since we want to analyze the data to see what candies people like. 
+
+```{r}
+Candy_revised <- Candy[, -c(8, 9, 12, 14, 15, 19, 21, 22, 23, 26, 27, 29, 30, 31, 32, 35, 38, 43, 46, 48, 49, 68, 69, 70, 74, 79, 81, 84, 86, 89, 92, 96, 99, 102, 104, 105, 106, 107, 108, 109, 110, 111, 113, 114, 115, 116, 117, 118, 119, 120)]
+head(Candy_revised)
+```
+
+Now the data is looking more readable. There are some blank spaces in the data that shows that there was no answer given. So I decided to leave those blank. Next I;m going to create subsets of the data to seperate the data based on age, gender, and location.
+
+```{r}
+#Create a subset for gender
+Candy_gender <- select(Candy_revised,Internal.ID, Q2..GENDER, Q6...100.Grand.Bar:Q6...Twix)
+head(Candy_gender)
+```
+
+```{r}
+#Create a subset for age
+Candy_age <- select(Candy_revised,Internal.ID, Q3..AGE, Q6...100.Grand.Bar:Q6...Twix)
+head(Candy_age)
+```
+
+
+```{r}
+#Create a subset for location
+Candy_location <- select(Candy_revised,Internal.ID, Q4..COUNTRY, Q5..STATE..PROVINCE..COUNTY..ETC, Q6...100.Grand.Bar:Q6...Twix)
+head(Candy_location)
+```
+
+# Data Analysis
+
+The analysis requested in the discussion post is determining the kind of candy people like based off of age, gender, demographics, geography, and type of candy, etc. I will be analyzing the data to determine what candy is liked based off of age, gender, demographics, and geography. Determining the kinds of candy people like based off of the type of candy is a little difficult to show, since the data doesn't specify the type that each candy is. You would have to make an assumption on what that candy is.
+
+# Conclusion
+
+I managed to tidy the data somewhat for this huge dataset. Unfortunately, further analysis shows that some people didn't answer seriously and put some joke responses in the survey. I attempted to tidy the joke responses out of the data by removing the joke candies that people had listed. But when I was going to do the analysis that was requested in the discusson post I realized that the analysis asked for couldn't be shown. For example, trying to find what candies are liked based on age can't be done since some people put joke responses about their age. If you were to remove these people you would be removing their responses as well, and doing this would mean that you can't perform an accurate analysis on the dataset. 

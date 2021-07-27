@@ -1,0 +1,49 @@
+---
+title: "Data 607 Assignment 7"
+author: "Bryan Persaud"
+date: "10/13/2019"
+output: html_document
+---
+
+```{r}
+library(knitr)
+library(XML)
+library(jsonlite)
+library(RCurl)
+```
+
+# Load information from HTML
+
+```{r}
+# Get data from html file I uploaded to github
+theURL_html <- getURL("https://raw.githubusercontent.com/bpersaud104/Data607/master/books.html")
+books_html <- readHTMLTable(theURL_html, header = TRUE)
+books_html
+```
+
+# Load information from XML
+
+```{r}
+# Get data from xml file I uploaded to github
+theURL_xml <- getURL("https://raw.githubusercontent.com/bpersaud104/Data607/master/books.xml")
+books_xml <- xmlParse(theURL_xml)
+root <- xmlRoot(books_xml)
+xmlName(root)
+```
+
+```{r}
+xmlSApply(root, function(x) xmlSApply(x, xmlValue))
+```
+
+# Load information from JSON
+
+```{r}
+# Get data from json file I uploaded to github
+theURL_json <- getURL("https://raw.githubusercontent.com/bpersaud104/Data607/master/books.json")
+books_json <- fromJSON(theURL_json)
+books_json
+```
+
+# Are the three dataframes identical?
+
+The three dataframes are not identical. HTML and JSON are almost identical except for the author column, HTML allows you to use (s) to show if they have more than one author or not. JSON does not allow this so the column is named authors even if there is only one author. You can probably do some tidying to make XML look like the other two. For XML you have to put list the authors seperately unlike HTML and JSON where they can be put together. I put DNE(does not exist) for the ones that only have one author to show that there is only one author.

@@ -1,0 +1,122 @@
+---
+title: "Data 607 Project 2 Dataset 2"
+author: "Bryan Persaud"
+date: "10/6/2019"
+output: html_document
+---
+
+```{r}
+library(tidyr)
+library(dplyr)
+library(stringr)
+library(openxlsx)
+library(ggplot2)
+```
+
+
+# For my second dataset I will be using the International Migrant Stock dataset, discussed in Jai Jeffryes's discussion post. 
+
+
+The data provided is a workbook with multiple tables. The discussion post asks to look at table one for analysis, so I will be using the openxlsx package so I can extract the first table.
+
+```{r}
+rows <- c(16, 38:240, 242:299) # Extract necessary rows so that each row shows an individual country along with their data. 
+columns <- c(2, 13:26) # Extract necessary columns to show countries and years for male and female stocks seperately.
+Migrant_Table_1 <- readWorkbook(xlsxFile = "~/UN_MigrantStockTotal_2019.xlsx", sheet = 2,rows = rows, cols = columns, na.strings = "..")
+head(Migrant_Table_1)
+```
+
+We can see from the table above that the each row is a different country showing the number of migrants by gender, and per year. The years range from 1990 to 2019 in intervals of five. The years appear twice due to showing the stocks for both male and female. So I will be spitting the data to show male and female in their own table. 
+
+# Data Tidying and Transformations
+
+```{r}
+# Split data for male
+Migrant_male <- tbl_df(Migrant_Table_1[, 1:8])
+Migrant_male <- cbind(Major_area = NA, Region = NA, Country = Migrant_male$X1, Gender = "male", Migrant_male[, 2:8], stringsAsFactors = FALSE)
+Major_area_data <- c(1, 57, 85, 102, 123, 175, 203) # Extract al major areas.
+Region_data <- c(2, 23, 33, 39, 58, 66, 86, 92, 103, 111, 124, 151, 160, 176, 185, 193, 204, 215, 229, 246, 256) # Extract all regions.
+Migrant_male$Major_area[Major_area_data] <- Migrant_male$Country[Major_area_data]
+Migrant_male$Region[Region_data] <- Migrant_male$Country[Region_data]
+Migrant_male <- Migrant_male %>%
+fill(1:2, .direction = c("down"))
+Migrant_male <- Migrant_male[-c(Major_area_data, Region_data), ]
+Migrant_male <- Migrant_male %>%
+gather(Year, Number, 5:length(Migrant_male))
+head(Migrant_male)
+```
+
+```{r}
+# Split data for female
+Migrant_female <- tbl_df(Migrant_Table_1[, c(1, 9:15)])
+Migrant_female <- cbind(Major_area = NA, Region = NA, Country = Migrant_female$X1, Gender = "female", Migrant_female[, 2:8], stringsAsFactors = FALSE)
+Major_area_data <- c(1, 57, 85, 102, 123, 175, 203) # Extract all major areas
+Region_data <- c(2, 23, 33, 39, 58, 66, 86, 92, 103, 111, 124, 151, 160, 176, 185, 193, 204, 215, 229, 246, 256) # Extract all regions.
+Migrant_female$Major_area[Major_area_data] <- Migrant_female$Country[Major_area_data]
+Migrant_female$Region[Region_data] <- Migrant_female$Country[Region_data]
+Migrant_female <- Migrant_female %>%
+fill(1:2, .direction = c("down"))
+Migrant_female <- Migrant_female[-c(Major_area_data, Region_data), ]
+Migrant_female <- Migrant_female %>%
+gather(Year, Number, 5:length(Migrant_female))
+head(Migrant_female)
+```
+
+# Data Analysis
+
+The analysis to be done for this datset is to compare the migrant stocks between genders over the year and by the regions around the world.
+
+
+```{r}
+# Combine both tables
+Migrant_gender <- tbl_df(rbind(Migrant_male, Migrant_female)) %>%
+arrange(Major_area, Region, Country, Year, Gender)
+head(Migrant_gender)
+```
+
+# Compare genders by Year
+
+```{r}
+# Find ratio of male and female by year
+Migrant_gender_year <- Migrant_gender %>%
+filter(!is.na(Number)) %>%
+group_by(Gender, Year) %>%
+summarise(Number = sum(Number)) %>%
+spread(Gender, Number) %>%
+mutate(Total = male + female, male = male / Total, female = female / Total) %>%
+gather(Gender, Ratio, male:female)
+Migrant_gender_year$Gender <- factor(Migrant_gender_year$Gender)
+Migrant_gender_year
+```
+
+```{r}
+# Graph depicting male and female ratio by year
+ggplot(data = Migrant_gender_year) + geom_col(aes(x = Year, y = Ratio, fill = Gender), position = "dodge") + labs(title = "Male and Female Migrants by Year", x = "Year", y = "Ratio")
+```
+
+Based on the graph, there are more male migrants than female migrants. For both male and female the number of migrants remain fairly the same each year. The highest migrant for males seems to be in the year 2019 with 52.09% of the migrants being male and the highest migrants for females seems to be in the year 1995 with 49.36% of the migrants being female.
+
+# Compare genders by Area
+
+```{r}
+# Find ratio of male and female by area
+Migrant_gender_area <- Migrant_gender %>%
+filter(!is.na(Number)) %>%
+group_by(Gender, Major_area) %>%
+summarise(Number = sum(Number)) %>%
+spread(Gender, Number) %>%
+mutate(Total = male + female, male = male / Total, female = female / Total) %>%
+gather(Gender, Ratio, male:female)
+Migrant_gender_area
+```
+
+```{r}
+# Graph depicting male and female ratio by area
+ggplot(data = Migrant_gender_area) + geom_col(aes(x = Major_area, y = Ratio, fill = Gender), position = "dodge") + labs(title = "Male and Female Migrants by Area", x = "Major Area", y = "Ratio")
+```
+
+Based on the graph, majority of the major areas have more male migrants, with the exception being Europe and Northern America, Latin America and the Carribean, and Oceania having more female migrants than male migrants. The highest migrants for males seems to be in Northern Africa and Western Asia with 62.54% of the migrants being male and the highest migrants for females seems to be in Europe and Northern Asia with 51.40% of the migrants being female.
+
+# Conclusion
+
+This dataset shows us the number of migrants based on their age, gender, and origin of living. A migrant is someone who moves from one place to another. We can tidy the data to show us the male and female migrants for each major area for the year 1990, 1995, 2000, 2005, 2010, 2015, ans 2019. We see that for each year there are more male migrants than female migrants, but the number of migrants overall almost stays the same. For each area, most of them have more male than female with the exception of a few major areas having more female migrants than male migrants. 

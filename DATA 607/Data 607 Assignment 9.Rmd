@@ -1,0 +1,48 @@
+---
+title: "Data 607 Assignment 9"
+author: "Bryan Persaud"
+date: "10/27/2019"
+output: html_document
+---
+
+# I am choosing to use the New York Time's movie reviews API
+
+```{r}
+library(httr)
+library(jsonlite)
+library(knitr)
+library(DT)
+library(tidyr)
+library(dplyr)
+library(stringr)
+```
+
+
+
+```{r}
+URL <- "https://api.nytimes.com/svc/movies/v2/reviews/all.json"
+Movie_reviews <- GET(URL, query = list("api-key" = "POyKM5jA9Ge2v14RA5YGz49jkJim3gj9"))
+Movie_content <- content(Movie_reviews, "text")
+Movie_reviews
+```
+
+# Store JSON data into a dataframe
+
+```{r}
+Movie_data <- fromJSON(Movie_content)
+Movie_df <- as.data.frame(Movie_data$results)
+Movie_df
+```
+
+The dataframe seems to contain 20 cases, each case being a different movie that was recently released. Each case has information on the movie, such as the name of the movie, the release date, the rating of the movie, and  a link containing information on the movie. Also there is information on the movie critic reviewing the movie, such as their name, a title for their review, and a short description of the review.
+
+# Some data analysis
+
+Let's see how many R-rated movies were reviewed.
+
+```{r}
+Movie_df %>%
+filter(str_detect(mpaa_rating, "R"))
+```
+
+Looks like out of the 20 movies that were reviewed, 5 of them were R rated movies.

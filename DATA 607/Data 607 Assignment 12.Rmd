@@ -1,0 +1,101 @@
+---
+title: "Data 607 Assignment 12"
+author: "Bryan Persaud"
+date: "11/17/2019"
+output: html_document
+---
+
+```{r}
+library(RMySQL)
+library(DBI)
+library(dplyr)
+library(mongolite)
+library(kableExtra)
+```
+
+# Connect to MySQL
+
+```{r}
+database <- dbConnect(MySQL(), user = 'Data 607', password = 'password1', dbname = 'flights', host = 'localhost')
+```
+
+# I chose to work with the flights database
+
+```{r}
+airlines <- dbGetQuery(database, "SELECT * FROM airlines")
+airports <- dbGetQuery(database, "SELECT * FROM airports")
+flights <- dbGetQuery(database, "SELECT * FROM flights")
+planes <- dbGetQuery(database, "SELECT * FROM planes")
+weather <- dbGetQuery(database, "SELECT * FROM weather")
+```
+
+# Connect to MongoDB
+
+```{r}
+mongo_airlines <- mongo("airlines")
+mongo_airports <- mongo("airports")
+mongo_flights <- mongo("flights")
+mongo_planes <- mongo("planes")
+mongo_weather <- mongo("weather")
+```
+
+
+```{r}
+# Make sure each one is empty
+mongo_airlines$drop()
+mongo_airports$drop()
+mongo_flights$drop()
+mongo_planes$drop()
+mongo_weather$drop()
+```
+
+# Migrate Flights database from MySQL to MongoDB
+
+```{r}
+mongo_airlines$insert(airlines)
+mongo_airports$insert(airports)
+mongo_flights$insert(flights)
+mongo_planes$insert(planes)
+mongo_weather$insert(weather)
+```
+
+```{r}
+# Check to see if insertion was successful
+mongo_airlines$count() == nrow(airlines)
+mongo_airports$count() == nrow(airports)
+mongo_flights$count() == nrow(flights)
+mongo_planes$count() == nrow(planes)
+mongo_weather$count() == nrow(weather)
+```
+
+# Verify MongoDB
+
+```{r}
+mongo_airlines_data <- mongo_airlines$find('{}')
+mongo_airlines_data %>%
+  kable()
+```
+
+```{r}
+mongo_airports_data <- mongo_airports$find('{}')
+mongo_airports_data %>%
+  kable()
+```
+
+```{r}
+mongo_planes_data <- mongo_planes$find('{}')
+mongo_planes_data %>%
+  kable()
+```
+
+```{r}
+mongo_weather_data <- mongo_weather$find('{}')
+mongo_weather_data %>%
+  kable()
+```
+
+As you can see. I successfully migrated all of the tables from the flights database from MySQL to MongoDB. I verified that I was able to migrate the flights table from MySQL to MongoDB. I did not show the output due to how large the table was.
+
+# Advantages and Disadvantages
+
+The advantages and disadvantages of storing the data in MySQL vs. MongoDB is the advantages of MySQL are it is commonly used. It is also easy to work with and compatible with other relational databases. The disadvantage of MySQL is the structure is not flexible so it would be tough to change data elements. The advantages of MongoDB are it is more flexible in how you design your database. It is faster compared to MySQL when dealing with large databases. The disadvantages of MongoDB is it is not as big as MySQL and has less resources for support and learning compared to MySQL. Also the data is less structured compared to how MySQL databases are structured.   

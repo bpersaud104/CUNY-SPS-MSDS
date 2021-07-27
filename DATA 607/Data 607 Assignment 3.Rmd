@@ -1,0 +1,150 @@
+---
+output:
+  html_document: default
+  pdf_document: default
+---
+# Bryan Persaud
+---
+title: "Data 607 Week 3 Assignment"
+author: "Bryan Persaud"
+date: "9/15/2019"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+# 3.
+```{r}
+library(stringr)
+```
+
+```{r}
+raw.data <-"555-1239Moe Szyslak(636) 555-0113Burns, C. Montgomery555-6542Rev. Timothy Lovejoy555 8904Ned Flanders636-555-3226Simpson, Homer5553642Dr. Julius Hibbert"
+```
+  # 1.
+```{r}
+name <- unlist(str_extract_all(raw.data, "[[:alpha:]., ]{2,}"))
+name
+```
+# Need to fix "Simpson, Homer" and "Burns, C. Montgomery to conform to standard first_name last_name
+```{r}
+# Seperate the ones that are good into a new vector
+good_names <- c(name[1], name[3], name[4], name[6])
+good_names
+```
+```{r}
+# Get Burns and Homer fixed by putting them in their own vector
+Burns_name <- c(name[2])
+Homer_name <- c(name[5])
+Fix_Burns <- unlist(str_split(Burns_name, ",")) 
+Fix_Burns
+Fix_Homer <- unlist(str_split(Homer_name, ","))
+Fix_Homer
+```
+```{r}
+# Get rid of white spaces using str_trim
+Fix_Burns <- str_trim(Fix_Burns)
+Fix_Burns
+Fix_Homer <- str_trim(Fix_Homer)
+Fix_Homer
+```
+```{r}
+# Switch to first_name last_name
+Fix_Burns <- str_c(Fix_Burns[2], Fix_Burns[1], sep = " ")
+Fix_Burns
+Fix_Homer <- str_c(Fix_Homer[2], Fix_Homer[1], sep = " ")
+Fix_Homer
+```
+```{r}
+# Combine the ones that were already good to the ones that needed to be fixed into a new vector
+The_Simpsons <- c(good_names, Fix_Burns, Fix_Homer)
+The_Simpsons
+```
+
+  # 2.
+```{r}
+The_Simpsons
+```
+
+```{r}
+Check_for_Title <- str_detect(The_Simpsons, "[[:alpha:]]{2,}\\.")
+Check_for_Title
+```
+# Two Simpsons characters from this vector have titles, Rev. Timothy Lovejoy and Dr. Julius Hibbert
+
+  # 3.
+```{r}
+The_Simpsons
+```
+
+```{r}
+Check_for_Secondary_Name <- str_detect(The_Simpsons, "[A-Z]\\.{1}")
+Check_for_Secondary_Name
+```
+# There is only one Simpsons character with a second name, C. Montgomery Burns. The C. stands for Charles 
+
+# 4.
+
+  # 1. 
+```{r}
+# [0-9]+\\$ shows a numerical value from numbers 0 to 9 that are followed by a $.
+
+# Example to show the ones that match the regular expression.
+Example1_vector <- c('123456789$', '123456789', 'Hello World', '1$', '789$')
+Example1 <- str_extract(Example1_vector, "[0-9]+\\$")
+Example1
+```
+
+  # 2.
+```{r}
+# \\b[a-z]{1,4}\\b shows letters from a to z that are lowercased and range from length 1 to 4.
+
+# Example to show the ones that match the regular expression. 
+Example2_vector <- c('DATA', 'data', '0000', 'Example two', 'Simpsons')
+Example2 <- str_extract(Example2_vector, "\\b[a-z]{1,4}\\b")
+Example2
+```
+
+  # 3.
+```{r}
+# .*?\\.txt$ shows any string of characters that end in .txt.
+
+# Example to show the ones that match the regular expression.
+Example3_vector <- c('example14.txt', 'intro to r.txt', 'intro to r.pdf', '123456789.txt', 'vector')
+Example3 <- str_extract(Example3_vector, ".*?\\.txt$")
+Example3
+```
+
+  # 4.
+```{r}
+# \\d{2}/\\d{2}/\\d{4} shows two numerical values followed by a / followed by two more numerical values followed by another / followed by four more numerical values. It basically shows a date format of ##/##/####.
+
+# Example to show the ones that match the regular expression.
+Example4_vector <- c('12/21/2012', 'ab/cd/efgh', '9/15/2019', '09/15/2019', '07/04/1776')
+Example4 <- str_extract(Example4_vector, "\\d{2}/\\d{2}/\\d{4}")
+Example4
+```
+
+  # 5.
+```{r}
+# <(.+?)?.+?</\\1> shows any string of characters inside of <> followed by more string of characters followed by another string of characters inside of <> but with a / inside of <>.
+
+# Example to show the ones that match the regular expression.
+Example5_vector <- c('<hw3> Character manipulation </hw3>', '<1234> MySQL<1234>', '<another> Example <another>', '<title> How to code using R </title>')
+Example5 <- str_extract(Example5_vector, "<(.+?)?.+?</\\1>")
+Example5
+```
+
+# 9.
+```{r}
+Secret_Message <- c("clcopCow1zmstc0d87wnkig7OvdicpNuggvhryn92Gjuwczi8hqrfpRxs5Aj5dwpn0Tanwo
+Uwisdij7Lj8kpf03AT5Idr3coc0bt7yczjatOaootj55t3Nj3ne6c4Sfek.r1w1YwwojigO
+d6vrfUrbz2.2bkAnbhzgv4R9i05zEcrop.wAgnb.SqoU65fPa1otfb7wEm24k6t3sR9zqe5
+fy89n6Nd5t9kc4fE905gmc4Rgxo5nhDk!gr")
+Secret_Message
+```
+# Some character are uppercased. I'm going to pull out those characters to see if it will reveal the secret message.
+```{r}
+str_extract_all(Secret_Message, "[[:upper:]]")
+```
+# Hidden message is revealed!

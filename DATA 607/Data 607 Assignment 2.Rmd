@@ -1,0 +1,33 @@
+---
+title: "Data 607 Week 2 Assignment"
+author: "Bryan Persaud"
+date: "9/8/2019"
+output: html_document
+---
+
+```{r}
+library(RMySQL)
+```
+
+# Connecting R to MySQL
+```{r}
+database <- dbConnect(MySQL(), user = 'Data 607', password = 'password1', dbname = 'movie_ratings', host = 'localhost')
+```
+
+# Loading movies table from MySQL to R dataframe
+```{r}
+movies <- dbGetQuery(database, "select * From movies")
+movies
+```
+
+# Loading ratings table from MySQL to R dataframe
+```{r}
+ratings <- dbGetQuery(database, "Select * From Ratings")
+ratings
+```
+
+# Joining the two tables 
+```{r}
+movies_ratings <- dbGetQuery(database, "Select * From Movies Join Ratings Using(movie_id)")
+movies_ratings
+```

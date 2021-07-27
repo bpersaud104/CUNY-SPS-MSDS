@@ -1,0 +1,101 @@
+---
+title: "Data 607 Project 1"
+author: "Bryan Persaud"
+date: "9/22/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(stringr)
+```
+
+
+
+```{r}
+# Get tournament data from tournament.txt that I uploaded to github. 
+theURL <- "https://raw.githubusercontent.com/bpersaud104/Data607/master/tournamentinfo.txt"
+Chess <- read.table(file = theURL, header = FALSE, sep = ",")
+# Remove the header from data.
+Chess <- Chess[-c(1:4),]
+head(Chess)
+```
+
+```{r}
+class(Chess)
+```
+
+This needs to change to character.
+
+```{r}
+Chess_char <- as.character(Chess)
+class(Chess_char)
+```
+
+
+```{r}
+# Seperate data by players
+Players <- Chess_char[seq(from = 1, to = length(Chess_char), by = 3)]
+Players
+```
+
+```{r}
+# Seperate data by player's ratings
+Ratings <- Chess_char[seq(from = 2, to = length(Chess_char), by = 3)]
+Ratings
+```
+
+# Extract Player’s Name, Player’s State, Total Number of Points, Player’s Pre-Rating, and  Pre Chess Rating of Opponents from seperated data.
+
+```{r}
+Player_Name <- str_trim(str_extract(Players, "(\\w+\\s){2,3}"))
+Player_State <- str_extract(Ratings, "\\w\\w")
+Total_Points <- as.numeric(str_extract(Players, "\\d.\\d"))
+Players_Pre_Rating <- as.integer(str_extract(str_extract(Ratings, "\\D\\d{3,4}\\D"), "\\d+"))
+Pre_Rating_Opponent <- str_extract_all(str_extract_all(Players, "\\d+\\|"), "\\d+")
+Player_ID <- as.integer(str_extract(Players, "\\d+"))
+```
+str_extract caused NAs to be generated. I used str_extract twice to get rid of all the NAs. I used str_extract_all twice to remove "|" between each number. Kept getting an "argument is not an atomic vector; coercing", ignored message since code was still working.
+
+# Create a new data frame to calculate average pre chess ratings of opponents.
+
+```{r}; 
+Played_Rounds <- sapply(Pre_Rating_Opponent, length)
+Num_Rounds <- seq_len(max(Played_Rounds)) # Rounds 1 to 7
+Results <- t(sapply(Pre_Rating_Opponent, "[", i = Num_Rounds))
+Chess_data <- as.data.frame(Results)
+Chess_data
+```
+
+I need to replace each entry in the data frame with the player's rating.
+
+```{r}
+Entry <- data.frame(Player_ID, Players_Pre_Rating)
+Chess_Tournament <- Chess_data
+Chess_Tournament[] <- Entry$Players_Pre_Rating[match(unlist(Chess_Tournament), Entry$Player_ID)]
+Chess_Tournament
+```
+
+
+```{r}
+Chess_Tournament$Avg <- round(apply(Chess_Tournament, 1, mean, na.rm = TRUE))
+Chess_Tournament
+```
+
+# Combine everything into a single data frame
+
+```{r}
+Chess_Final <- data.frame(Player_Name, Player_State, Total_Points, Players_Pre_Rating, Chess_Tournament$Avg)
+colnames(Chess_Final) <- c("Player's Name", "Player's State", "Total Number of Points", "Player's Pr-Rating", "Average Pre Chess Rating of Opponents")
+head(Chess_Final, 64)
+```
+
+# Generate a .csv file
+
+```{r}
+write.csv(Chess_Final, file = "Data 607 Project 1.csv")
+```
+

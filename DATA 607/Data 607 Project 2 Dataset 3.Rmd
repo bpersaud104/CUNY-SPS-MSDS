@@ -1,0 +1,87 @@
+---
+title: "Data 607 Project 2 Dataset 3"
+author: "Bryan Persaud"
+date: "10/6/2019"
+output: html_document
+---
+
+```{r}
+library(tidyr)
+library(dplyr)
+library(stringr)
+library(ggplot2)
+```
+
+# For my third dataset, I will be using the Pokemon dataset discussed in my own discussion post
+
+```{r}
+# Get data from file I uploaded to github
+theURL <- "https://raw.githubusercontent.com/bpersaud104/Data607/master/Pokemon(csv).csv"
+Pokemon <- read.table(file = theURL, header = TRUE, sep = ",")
+head(Pokemon)
+```
+
+# Data Tidying and Transformations
+
+```{r}
+Pokedex <- select(Pokemon, Number, Name, Type1, Type2, Generation, Legendary)
+head(Pokedex)
+```
+
+```{r}
+Statistics <- select(Pokemon, Number, Name, HP, Attack, Defense, SpecialAtk, SpecialDef, Speed, Total)
+head(Statistics)
+```
+
+The only tidying needed to be done was to seperate the data into two tables. One table showing the pokemon's information, i.e their type(s), what generation they're from, and if they are legendary or not. The other table shows the pokemon's stats, ranging from six different attributes, hp, attack, defense, special attack, special defense, and speed. The total of all these attributes for each pokemon is also listed.
+
+# Data Analysis
+
+The analysis we want to see is comparing the strongest and weakest pokemon between two different types. Let's compare the strongest and weakest pokemon for electric and grass type pokemon. Since there are some pokemon that have two types, lets include any pokemon as long as their type is either electric or grass. Even though we did some data tidying, we can actually use the original dataset to do this kind of analysis.
+
+```{r}
+# List all electric type pokemon
+Electric_pokemon <- filter(Pokemon, Type1 == 'Electric' | Type2 == 'Electric')
+Electric_pokemon
+```
+
+```{r}
+# List all grass type pokemon
+Grass_pokemon <- filter(Pokemon, Type1 == 'Grass' | Type2 == 'Grass')
+Grass_pokemon
+```
+
+```{r}
+# Graph depicting electric type pokemon
+ggplot(data = Electric_pokemon) + geom_col(aes(x = Name, y = Total), position = "dodge") + labs(title = "Electric Pokemon", x = "Pokemon", y = "Stats")
+```
+
+```{r}
+# Graph depicting grass type pokemon
+ggplot(data = Grass_pokemon) + geom_col(aes(x = Name, y = Total), position = "dodge") + labs(title = "Grass Pokemon", x = "Pokemon", y = "Total")
+```
+
+```{r}
+Strongest_electric_pokemon <- filter(Electric_pokemon, Total == max(Total))
+Strongest_electric_pokemon
+
+```
+
+```{r}
+Weakest_electric_pokemon <- filter(Electric_pokemon, Total == min(Total))
+Weakest_electric_pokemon
+```
+
+```{r}
+Strongest_grass_pokemon <- filter(Grass_pokemon, Total == max(Total))
+Strongest_grass_pokemon
+```
+
+```{r}
+Weakest_grass_pokemon <- filter(Grass_pokemon, Total == min(Total))
+Weakest_grass_pokemon
+```
+
+# Conclusion
+
+As we can see above, the strongest electric type pokemon is Zekrom and the strongest grass type pokemon is Mega Sceptile. When we compare the two we see that Zekrom is stronger than Mega Sceptile based on the total stats as well as every other stat except for special attack and speed. The weakest electric type pokemon is Pichu and the weakest grass type pokemon is Sunkern. Pichu is stronger than Sunkern based on total stats as well as every other stat except fo HP and defense. Note that for the strongest electric type pokemon is legendary and the strongest grass type pokemon isn't. Both of the weakest electric and grass type pokemon are not legendary.

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Fantasy_Books>
+	<Book>
+		<Title>The Lord of the Rings: The Fellowship of the Ring</Title>
+		<Author>J.R.R. Tolkein</Author>
+		<Author>DNE</Author>
+		<Year_Published>1954</Year_Published>
+		<Pages>423</Pages>
+	</Book>
+	<Book>
+		<Title>Harry Potter and the Chamber of Secrets</Title>
+		<Author>J.K. Rowling</Author>
+		<Author>DNE</Author>
+		<Year_Published>1999</Year_Published>
+		<Pages>315</Pages>
+	</Book>	 
+	<Book>
+		<Title>The Talisman</Title>
+		<Author>Stephen King</Author>
+		<Author>Peter Straub</Author>
+		<Year_Published>1984</Year_Published>
+		<Pages>921</Pages>
+	</Book>
+</Fantasy_Books>

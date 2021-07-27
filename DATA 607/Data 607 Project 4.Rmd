@@ -1,0 +1,189 @@
+---
+title: "Data 607 Project 4"
+author: "Bryan Persaud"
+date: "11/8/2019"
+output: html_document
+---
+
+```{r}
+library(tidyr)
+library(dplyr)
+library(stringr)
+library(wordcloud)
+library(tm)
+library(readtext)
+library(caTools)
+library(randomForest)
+```
+
+# Download dataset
+
+```{r}
+# Function to extract just the message body of the emails(remove header)
+Email_body <- function(emailcontent) {
+  message <- str_split(emailcontent, "\n\n") %>%
+    unlist()
+  body <- paste(message[2:length(message)], collapse = ' ')
+  return(body)
+}
+```
+
+```{r}
+# Read spam dataset
+Spam_directory = "C:/Users/Bryan/Documents/Data 607/Week 10/spamham/spam_2/"
+Spam_files <- list.files(Spam_directory)
+Spam_message_content <- NA
+for (i in 1:length(Spam_files)) {
+  Spam_path <- paste0(Spam_directory, Spam_files[i])
+  Spam_content <- suppressWarnings(warning(readtext(Spam_path)))
+  Spam_message <- Email_body(Spam_content)
+  Spam_message <- gsub("< ; * ?>", " ", Spam_message)
+  Spam_list <- list(paste(Spam_message, collapse = "\n"))
+  Spam_message_content = c(Spam_message_content, Spam_list)
+}
+```
+
+```{r}
+# Read Ham dataset
+Ham_directory = "C:/Users/Bryan/Documents/Data 607/Week 10/spamham/easy_ham/"
+Ham_files <- list.files(Ham_directory)
+Ham_message_content <- NA
+for (i in 1:length(Ham_files)) {
+  Ham_path <- paste0(Ham_directory, Ham_files[i])
+  Ham_content <- suppressWarnings(warning(readtext(Ham_path)))
+  Ham_message <- Email_body(Ham_content)
+  Ham_message <- gsub("< ; * ?>", " ", Ham_message)
+  Ham_list <- list(paste(Ham_message, collapse = "\n"))
+  Ham_message_content = c(Ham_message_content, Ham_list)
+}
+```
+
+# Create dataframes
+
+```{r}
+Spam_df <- data.frame()
+Spam_df <- as.data.frame(unlist(Spam_message_content), stringsAsFactors = FALSE)
+Spam_df$class <- 1 # Label spam emails as 1
+colnames(Spam_df) <- c("Message", "Class")
+Ham_df <- data.frame()
+Ham_df <- as.data.frame(unlist(Ham_message_content), stringsAsFactors = FALSE)
+Ham_df$class <- 0 # Label ham emails as 0
+colnames(Ham_df) <- c("Message", "Class")
+```
+
+```{r}
+# Combine both dataframes
+Spamham_df <- rbind(Spam_df, Ham_df)
+```
+
+# Create corpus
+```{r}
+Spamham_corpus = VCorpus(VectorSource(Spamham_df$Message))
+Spamham_corpus = tm_map(Spamham_corpus, content_transformer(tolower))
+Spamham_corpus = tm_map(Spamham_corpus, removeNumbers)
+Spamham_corpus = tm_map(Spamham_corpus, removePunctuation)
+Spamham_corpus = tm_map(Spamham_corpus, removeWords, stopwords())
+Spamham_corpus = tm_map(Spamham_corpus, stemDocument)
+Spamham_corpus = tm_map(Spamham_corpus, stripWhitespace)
+```
+
+# Create Document term matrix
+
+```{r}
+Spamham_dtm = DocumentTermMatrix(Spamham_corpus)
+Spamham_dtm = removeSparseTerms(Spamham_dtm, 0.95)
+Spamham_data <- as.data.frame(as.matrix(Spamham_dtm))
+Spamham_data$Classtype = Spamham_df$Class
+```
+
+# Data Analysis
+
+```{r}
+# Number of observations for spam and ham dataframes
+nrow(Spam_df)
+nrow(Ham_df)
+```
+
+```{r}
+# Number of observations for combined dataframe
+nrow(Spamham_df)
+```
+
+Let's see if the number of observations for spam and ham dataframes are different if we use the document term matrix created.
+
+```{r}
+Spam_df2 <- Spamham_data %>% 
+            filter(Classtype == "1")
+nrow(Spam_df2)
+Ham_df2 <- Spamham_data %>%
+            filter(Classtype == "0")
+nrow(Ham_df2)
+```
+
+The number of observations are the same. With these new dataframes we can use them to calculate the most words that appear in the spam and ham dataframes.
+
+```{r}
+Spam_frequency <- colSums(Spam_df2)
+Spam_frequency <- sort(Spam_frequency, decreasing = TRUE)
+Spam_frequency[1:10]
+```
+
+```{r}
+Ham_frequency <- colSums(Ham_df2)
+Ham_frequency <- sort(Ham_frequency, decreasing = TRUE)
+Ham_frequency[1:10]
+```
+
+# Graphs
+
+```{r}
+Spam_names <- names(Spam_frequency)
+wordcloud(Spam_names[1:50], Spam_frequency[1:50])
+```
+
+```{r}
+Ham_names <- names(Ham_frequency)
+wordcloud(Ham_names[1:50], Ham_frequency[1:50])
+```
+
+# Create a model to predict if the email is spam or ham
+
+```{r}
+# Randomize data
+Spamham_random <- Spamham_data[sample(1:nrow(Spamham_data)), ]
+#Split data into training and test set with 75/25 ratio
+set.seed(150)
+Split_data <- sample.split(Spamham_random$Classtype, SplitRatio = 0.75)
+Training_set = subset(Spamham_random, Split_data == TRUE)
+Test_set = subset(Spamham_data, Split_data == FALSE)
+```
+
+```{r}
+# Total number of observations in data
+Observations_data <- ncol(Training_set) - 1
+Observations_data
+```
+
+```{r}
+# Create model using random forest
+Spamham_forest = randomForest(x = Training_set[-Observations_data], 
+                              y = Training_set$Classtype,
+                              ntree = 5)
+```
+
+```{r}
+# Predicting from data
+Prediction = predict(Spamham_forest, newdata = Test_set[-Observations_data])
+Confusion_matrix <- table(Prediction > 0, Test_set$Classtype)
+Confusion_matrix
+```
+
+```{r}
+Success_rate <- Confusion_matrix['TRUE', 2] + Confusion_matrix['FALSE', 1]
+Accuracy_rate <- round(Success_rate / nrow(Test_set) * 100, 2)
+print(paste("The model is ", Accuracy_rate, "% accurate"))
+```
+
+# Conclusion
+
+I first created a function to extract the body of an email, that way our datasets that we get have emails with no header. Once I downloaded the spam and ham datasets from my computer I used them to create dataframes for spam, ham, and spam and ham combined. The combined dataframe was used to create the corpus and document term matrix. From the analysis, we see that there are more ham emails than spam emails. The most frequent words that appear in the spam and ham emails can be seen from the tables showing the top ten words and from the wordclouds showing the top fifty words. The spam emails contain odd and misspelled words. The ham emails contain words that you would expect to see in a real email. For creating a model to predict if an email is spam or ham I chose to use random forest. The accuracy of the model can be seen above. 

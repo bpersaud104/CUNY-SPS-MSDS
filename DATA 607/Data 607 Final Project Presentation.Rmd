@@ -1,0 +1,209 @@
+---
+title: "Data 607 Final Project Presentation"
+author: "Bryan Persaud"
+date: "12/11/2019"
+output:
+  slidy_presentation: default
+  'slidy_presentation: default': default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Introduction
+
+For my final project I am looking to analyze different food reviews. I love Japanese food it is my favorite type of food. I have always been curious to see if people feel the same way. This is my motivation for this project, to come to a conclusion to see if Japanese food is liked. Also in case you take a trip to Japan you know what to expect. The data sources I plan to use are the Food World Cup dataset I found on FiveThirtyEight and the Yelp Fusion API.  Everyone thinks about food, and I hope to show people about cuisines they might be missing out on.
+
+## Load Library
+
+```{r}
+library(tidyverse)
+library(yelpr) 
+```
+
+## Load Data from FiveThirtyEight
+
+```{r cars, echo = TRUE}
+Food_dataset <- read.csv("https://raw.githubusercontent.com/fivethirtyeight/data/master/food-world-cup/food-world-cup-data.csv", na.strings = c("", "N/A"))
+head(Food_dataset, 50) 
+```
+
+## 
+
+- Data was collected asking 1373 Americans
+- They were asked about their level of knowledge of cuisines from different parts of the world, their interest of cuisines from different parts of the world, and to
+rate how much they liked the cuisine from that country from 1 to 5.
+- Knowledge was answered based on intermediate to advanced level and interest was answered based on either some to a lot.
+- I also showed the first 50 results to show that the data was successfully loaded into a dataframe.
+
+## Load Data from Yelp API
+
+```{r}
+key <- "Qoi21Z2DwMDfcEmcrK2hv7lXeX5nYw6WB9Z076I_VUeU9UyehuMYD8YWaahsh87AEUzZah1xqDJxDIwVyHzPMbxIoou3S5RocQ5KGntB-SXsQQngkLGDcI69BhHOXXYx"
+Food_NY <- business_search(api_key = key, location = 'New York', term = 'Japanese', limit = 50)
+head(Food_NY, 50)
+```
+
+```{r}
+Food_NV <- business_search(api_key = key, location = "Nevada", term = 'Japanese', limit = 50)
+head(Food_NV, 50)
+```
+
+
+##
+
+- Yelpr is a package containing different functions to use with the Yelp Fusion API to navigate through Yelp for data. I chose to use the business_search function. The function takes a search criteria and searches for what you are looking for based on how you would search for them on Yelp. I made my search criteria a location, the term Japanese to look at only Japanese restaurants, and I wanted to look at the first 50 results from the search.
+- I was limited as to what I can take, so I chose two different locations, New York and Nevada to analyze different Japanese restaurants.
+- The was limited to up to 50 restaurants for each location.
+- I also showed the first 50 results to show that the data was successfully loaded.
+
+## Data Tidying and Transformation
+
+```{r}
+Japan_dataset <- Food_dataset %>%
+  select(RespondentID, Generally.speaking..how.would.you.rate.your.level.of.knowledgeÊof.cuisines.from.different.parts.of.the.world., How.much..if.at.all..are.you.interested.in.cuisines.from.different.parts.of.the.world., Please.rate.how.much.you.like.the.traditional.cuisine.of.Japan.) %>%
+  rename(Knowledge.of.Different.Cuisines = Generally.speaking..how.would.you.rate.your.level.of.knowledgeÊof.cuisines.from.different.parts.of.the.world., Interest.of.Different.Cuisines = How.much..if.at.all..are.you.interested.in.cuisines.from.different.parts.of.the.world., Japanese.Cuisine.Ratings = Please.rate.how.much.you.like.the.traditional.cuisine.of.Japan.)
+Japan_dataset
+```
+
+## 
+
+```{r}
+Food_NY_data <- as.data.frame(Food_NY)
+Food_NV_data <- as.data.frame(Food_NV)
+```
+
+```{r}
+ggplot(Food_NY_data, aes(x = businesses.name, y = businesses.review_count)) + geom_bar(stat = "identity") + theme(axis.text.x = element_text(angle = 75, hjust = 1))
+```
+
+##
+
+```{r}
+ggplot(Food_NV_data, aes(x = businesses.name, y = businesses.review_count)) + geom_bar(stat = "identity") + theme(axis.text.x = element_text(angle = 75, hjust = 1))
+```
+
+```{r}
+Food_NY_data2 <- select(Food_NY_data, businesses.alias, businesses.name, businesses.review_count, businesses.rating, businesses.price)
+```
+
+```{r}
+Food_NV_data2 <- select(Food_NV_data, businesses.alias, businesses.name, businesses.review_count, businesses.rating, businesses.price)
+```
+##
+
+- I did some tidying for the  first dataset to select only the information relating to Japanese cuisines. The column names were a little too long, so I renamed them to better read them.
+- I transformed the data I got from both the New York and Nevada  Yelp API into a dataframe.
+- I plotted graphs showing the businesses and the number of reviews for each business to show that the data was successfully put into a dataframe.
+- There were a lot of columns in the dataframe, so I selected the necessary information to use for my analysis.
+- Note how when the data was put into a dataframe businesses was added to the front of each column.
+
+## Data Analysis
+
+```{r}
+summary(Japan_dataset)
+```
+
+## 
+
+- Here we can see that majority of the respondents have little to some knowledge of cuisines from different parts of the world. 
+- We also see that there are more people with some and a lot of interest than people with little to no interest, showing us that there is more interest in cuisines from different parts of the world. For the ratings we see that the mean is 3.695 and the median is 4.
+
+##
+
+```{r}
+ggplot(Japan_dataset, aes(x = Knowledge.of.Different.Cuisines, y = Interest.of.Different.Cuisines)) + geom_bar(stat = "identity") + theme(axis.text.x = element_text(angle = 75))
+```
+
+## 
+
+- From the plot above we can see that there is an interest in cuisines from different parts of the world regardless of the knowledge of cuisines from different parts of the world the person has.
+
+##
+
+```{r}
+Japan_interest <- filter(Japan_dataset, Interest.of.Different.Cuisines == "A lot")
+Japan_interest
+```
+
+```{r}
+summary(Japan_interest)
+```
+
+## 
+
+```{r}
+Japan_knowledge <- filter(Japan_dataset, Knowledge.of.Different.Cuisines == "Advanced")
+Japan_knowledge
+```
+
+```{r}
+summary(Japan_knowledge)
+```
+
+##
+
+- I wanted to show how the data looks when you look a the group that had a lot of interest and the group that had advanced knowledge.
+- The two are closely related, both have the same median equal to 4. The mean is for a lot is interest is 4.081 and the mean for advanced knowledge is 4.181.
+- There is only a difference of 1 in the means.
+
+
+## Data Analysis for New York Yelp API
+
+```{r}
+head(Food_NY_data2, 50)
+```
+
+```{r}
+summary(Food_NY_data2)
+```
+
+## 
+
+```{r}
+ggplot(Food_NY_data2, aes(x = businesses.review_count, y = businesses.rating)) + geom_point() + theme(axis.text.x = element_text(angle = 75, hjust = 1))
+```
+
+
+##
+
+- From the data above we can see that for the data we got on New York, majority of the Japanese restaurants have high ratings. The lowest rating we see is a 3.5 and that is from one restaurant. The number of reviews range from 8 to 2228.
+- From the plot above we can see that whether a restaurant has a lot of reviews or a little reviews, majority of Japanese restaurants in New York have a high rating.
+
+## Data Analysis for Nevada Yelp API
+
+```{r}
+head(Food_NV_data2, 50)
+```
+
+```{r}
+summary(Food_NV_data2)
+```
+
+##
+
+```{r}
+ggplot(Food_NV_data2, aes(x = businesses.review_count, y = businesses.rating)) + geom_point() + theme(axis.text.x = element_text(angle = 75, hjust = 1))
+```
+
+##
+
+- From the data above we can see that for Nevada majority of the Japanese restaurants have high ratings. The lowest rating we see is a 4.0 and that is from multiple restaurants. The number of reviews range from 4 to 3506.
+- From the plot above we can see that whether a restaurant has a lot of reviews or a little reviews, majority of Japanese restaurants in Nevada have a high rating.
+
+## Conclusion
+
+Using the Food World Cup dataset from FiveThirtyEight and the Yelp Fusion API I can come to a conclusion as to whether people like Japanese food or not. After getting the Food World Cup dataset from FiveThirtyEight and tidying the data to get only the data relating to Japanese cuisine, I was able to analyse the data obtained to show that majority of people have some knowledge of cuisines from different parts of the world but overall majority of people have interest in cuisines from different parts of the world. This is a general response about how people feel about not just Japan but other parts of the world as well. But looking at the ratings we can see there were some who did not answer, but from the ones who did most gave a high rating. For the Yelp Fusion API, I decided to chose two locations to use for my analysis, New York and Nevada. There was a limit as to what I can show and the data I was able to obtain showed the first 50 results of Japanese restaurants. The data showed the information of the restaurant according to Yelp. I transformed this data into two dataframes, one for New York and one for Nevada,  and included only the necessary information to use for my analysis. From my analysis I showed that for the Japanese restaurants from both New York and Nevada majority of restaurants had high ratings. The plots show that whether a restaurant had a few reviews or a lot of reviews overall the restaurant had a high rating. From the data above and the analysis done, I can conclude that people do like Japanese food.
+
+## References
+
+- These are my references that I used to help me do my final project.
+
+https://github.com/fivethirtyeight/data/tree/master/food-world-cup
+
+https://github.com/OmaymaS/yelpr
+
+https://www.yelp.com/developers/documentation/v3/get_started
+
+## Questions

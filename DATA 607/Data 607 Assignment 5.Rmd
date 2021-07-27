@@ -1,0 +1,75 @@
+---
+title: "Data 607 Assignment 5"
+author: "Bryan Persaud"
+date: "9/29/2019"
+output: html_document
+---
+
+```{r}
+library(tidyr)
+library(dplyr)
+library(stringr)
+```
+
+```{r}
+# Get data from file I uploaded to github
+theURL <- "https://raw.githubusercontent.com/bpersaud104/Data607/master/Data%20607%20Week%205%20Assignment.csv"
+Airlines <- read.table(file = theURL, header = TRUE, sep = ",")
+head(Airlines)
+```
+
+# Data Tidying and Transformations
+
+```{r}
+Airlines_2 <- Airlines[-3, ]
+Airlines_2[2,1] <- 'ALASKA'
+Airlines_2[4,1] <- 'AM WEST'
+Airlines_2
+```
+
+I removed the blank space seperating the two airlines and added the airlines names in the first column for the delayed rows since they were blank.
+
+```{r}
+Airlines_tidy <- Airlines_2 %>% 
+rename('Airline' = 'X1', 'Airline_Status' = 'X2')
+Airlines_tidy <- Airlines_tidy %>%
+gather(key = Location, value = Flight_Count, 3:7)
+# Get rid of the periods in the location's name
+Airlines_tidy$Location <- str_replace_all(Airlines_tidy$Location,"\\.", " ") 
+Airlines_tidy
+```
+
+I renamed X1 and X2 to Airline and Airline_Status to give them a proper column name that fits the data. The rest of the column names were all different locations, so to tidy the data I took all of them and put them into a single column that I named Location. Each row then had a different number to show the flights that were either on time or delayed. To tidy the data even more I took all the numbers and put them into a single column that I named Flight_Count.
+
+# Data Analysis
+
+```{r}
+Airlines_tidy %>%
+group_by(Airline, Airline_Status) %>%
+summarise(Total = sum(Flight_Count))
+```
+
+We can see the number of delayed flights for both airlines. Alaska Airlines has less delays than AM West Airlines but AM West Airlines has way more flights. Let's find the ratio of delayed flights for both airlines to get a better analysis.
+
+```{r}
+Airlines_ratio <- Airlines_tidy %>%
+group_by(Airline, Airline_Status) %>%
+summarise(Total = sum(Flight_Count)) %>%
+mutate(Ratio = Total / sum(Total))
+Airlines_ratio
+```
+
+As you can see, the ratio of delayed flights is lower for Alaska Airlines compared to AM West Airlines. Alaska Airline has a delayed ratio of 13.27% and AM West has a delayed ratio of 10.90%.
+
+Let's look at the ratios by location.
+
+```{r}
+Airlines_delay <- Airlines_tidy %>%
+group_by(Airline, Airline_Status, Location) %>%
+summarise(Total = sum(Flight_Count)) %>%
+mutate(Ratio = Total / sum(Total))
+Airlines_delay
+```
+
+# Conclusion
+Based on the data analysis, the number of delays vary by the number of flights the airline does and the ratio of delayed flights. Alaska Airlines has less delays throughout every city except for Seattle. But the ratio for Seattle is higher for AM West Airlines than Alaska Airlines. The total ratio for delays is higher for Alaska Airlines than AM West Airlines, despite Alaska Airlines having less total delays. In conclusion, it is safe to say that the more flights you have, the more delays you should expect to see as shown in the data. AM West Airlines has way more flights than Alaska Airlines and you can see that it has more delays as well.

@@ -1,0 +1,89 @@
+---
+title: "Data 607 Week 1 Assignment"
+author: "Bryan Persaud"
+date: "8/31/2019"
+output: html_document
+---
+library(RCurl)
+
+# Load Data into R
+```{r}
+theUrl <- "https://raw.githubusercontent.com/bpersaud104/Data607/master/agaricus-lepiota.csv"
+mushroom <- read.table(file = theUrl, header = TRUE, sep = ",")
+head(mushroom)
+summary(mushroom)
+```
+
+# Data Dictionary
+```{r}
+x <- "https://raw.githubusercontent.com/bpersaud104/Data607/master/Mushroom%20Data%20Dictionary.txt"
+dictionary <- read.table(file = x, row.names = 1, header = FALSE, sep = ":", quote = "")
+row.names(dictionary)
+head(dictionary, 23)
+```
+
+# Creating a Subset
+```{r}
+mushroom_subset <- data.frame(subset(mushroom[c(1, 4, 6, 9, 22)]))
+head(mushroom_subset)
+summary(mushroom_subset)
+```
+
+# Transforming Abbreviations in Subset
+```{r}
+#Rename columns
+names(mushroom_subset) <- c("p" = "Classes", "n" = "Cap-color", "p.1" = "Odor", "n.1" = "Gil-size", "s.3" = "Population")
+head(mushroom_subset)
+```
+
+```{r}
+# Rename abbreviations in column one
+levels(mushroom_subset$Classes) <- c(levels(mushroom_subset$Classes), "Edible", "Poisonous") 
+mushroom_subset$Classes[mushroom_subset$Classes == "e"] <- "Edible"
+mushroom_subset$Classes[mushroom_subset$Classes == "p"] <- "Poisonous"
+
+# Rename abbreviations in column two
+levels(mushroom_subset$`Cap-color`) <- c(levels(mushroom_subset$`Cap-color`), "Brown", "Buff", "Cinnamon", "Gray", "Green", "Pink", "Purple", "Red", "White", "Yellow")
+mushroom_subset$`Cap-color`[mushroom_subset$`Cap-color` == "n"] <- "Brown"
+mushroom_subset$`Cap-color`[mushroom_subset$`Cap-color` == "b"] <- "Buff"
+mushroom_subset$`Cap-color`[mushroom_subset$`Cap-color` == "c"] <- "Cinnamon"
+mushroom_subset$`Cap-color`[mushroom_subset$`Cap-color` == "g"] <- "Gray"
+mushroom_subset$`Cap-color`[mushroom_subset$`Cap-color` == "r"] <- "Green"
+mushroom_subset$`Cap-color`[mushroom_subset$`Cap-color` == "p"] <- "Pink"
+mushroom_subset$`Cap-color`[mushroom_subset$`Cap-color` == "u"] <- "Purple"
+mushroom_subset$`Cap-color`[mushroom_subset$`Cap-color` == "e"] <- "Red"
+mushroom_subset$`Cap-color`[mushroom_subset$`Cap-color` == "w"] <- "White"
+mushroom_subset$`Cap-color`[mushroom_subset$`Cap-color` == "y"] <- "Yellow"
+
+#Rename abbreviations in column three
+levels(mushroom_subset$Odor) <- c(levels(mushroom_subset$Odor), "Almond", "Anise", "Creosote", "Fishy", "Foul", "Musty", "None", "Pungent", "Spicy")
+mushroom_subset$Odor[mushroom_subset$Odor == "a"] <- "Almond"
+mushroom_subset$Odor[mushroom_subset$Odor == "l"] <- "Anise"
+mushroom_subset$Odor[mushroom_subset$Odor == "c"] <- "Creosote"
+mushroom_subset$Odor[mushroom_subset$Odor == "y"] <- "Fishy"
+mushroom_subset$Odor[mushroom_subset$Odor == "f"] <- "Foul"
+mushroom_subset$Odor[mushroom_subset$Odor == "m"] <- "Musty"
+mushroom_subset$Odor[mushroom_subset$Odor == "n"] <- "None"
+mushroom_subset$Odor[mushroom_subset$Odor == "p"] <- "Pungent"
+mushroom_subset$Odor[mushroom_subset$Odor == "s"] <- "Spicy"
+
+#Rename abbreviations in column four
+levels(mushroom_subset$`Gil-size`) <- c(levels(mushroom_subset$`Gil-size`), "Broad", "Narrow")
+mushroom_subset$`Gil-size`[mushroom_subset$`Gil-size` == "b"] <- "Broad"
+mushroom_subset$`Gil-size`[mushroom_subset$`Gil-size` == "n"] <- "Narrow"
+
+#Rename abbreviations in column five
+levels(mushroom_subset$Population) <- c(levels(mushroom_subset$Population), "Abundant", "Clustered", "Numerous", "Scattered", "Several", "Solitary")
+mushroom_subset$Population[mushroom_subset$Population == "a"] <- "Abundant"
+mushroom_subset$Population[mushroom_subset$Population == "c"] <- "Clustered"
+mushroom_subset$Population[mushroom_subset$Population == "n"] <- "Numerous"
+mushroom_subset$Population[mushroom_subset$Population == "s"] <- "Scattered"
+mushroom_subset$Population[mushroom_subset$Population == "v"] <- "Several"
+mushroom_subset$Population[mushroom_subset$Population == "y"] <- "Solitary"
+```
+
+# Updated Subset after Transformations
+```{r}
+summary(mushroom_subset)
+head(mushroom_subset, 50)
+```

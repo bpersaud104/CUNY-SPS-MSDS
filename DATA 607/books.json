@@ -1,0 +1,22 @@
+{"Fantasy Books": 
+[
+	{
+		"Title": "The Lord of the Rings: The Fellowship of the Ring",
+		"Authors": "J.R.R. Tolkein",
+		"Year Published": 1954,
+		"Pages": 423
+	},
+	{
+		"Title": "Harry Potter and the Chamber of Secrets",
+		"Authors": "J.K. Rowling",
+		"Year Published": 1999,
+		"Pages": 315
+	}, 
+	{
+		"Title": "The Talisman",
+		"Authors": ["Stephen King", "Peter Straub"],
+		"Year Published": 1984,
+		"Pages": 921
+	}
+]
+}

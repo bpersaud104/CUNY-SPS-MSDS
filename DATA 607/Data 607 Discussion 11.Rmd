@@ -1,0 +1,24 @@
+---
+title: "Data 607 Discussion 11"
+author: "Bryan Persaud"
+date: "11/5/2019"
+output: html_document
+---
+
+An existing recommender system that I find interesting is Pandora.
+
+# Scenario Design
+
+1. The target users are people who are looking to listen to music and people who want to find a new variety of songs and music genres to listen to.
+
+2. Their key goals are to give users a personalized radio station where the songs they like and dislike are taken into account so the station can play music that fits the user's interests.
+
+3. I can help them accomplish these goals by creating a more accurate feedback system. The current system Pandora uses is either a thumbs up if you liked the song or a thumbs down if you did not. A ratings system can help to improve the feedback to get a better understanding on what songs the user is in the mood to listen to. A ratings system from 1 to 5, 1 you disliked the song to 5 you liked the song, can give a more accurate feedback on how much the user liked or disliked the song.
+
+# Reverse Engineer
+
+Pandora is a music streaming and automated music recommendation Internet radio service. Users can search for artists, songs, or music genres to create stations to play music that fits the traits of the artist, song, or genre they searched for. The user can then give feedback in the form of a thumbs up or thumbs down to provide the station with information on what song to play next. The next song played is an attempt to recommend a song the user might like based on their feedback. Pandora can be accessed from a web browser or a mobile app. Users can use a free version of Pandora where you can listen for free but there are advertisements and limited number of skips. The paid version offers Ad-free listening with unlimited skips and offline listening.
+
+# Recommendations
+
+Recommendations I can give to improve the site's recommendation capabilities going forward is looking to create a small survey that a user can take to give more feedback on a song they like or dislike. For example, if a user gave a song a thumbs up a survey could be implemented to ask why they gave the song a thumbs up. This could help if a thumbs up was given to multiple songs to compare the songs to see which ones the user liked more. Figuring out the most liked songs out of all the thumbs up could help recommend more songs the user is interested in. Also a more accurate feedback can be used for thumbs down songs. This is because if a user gave a song a thumbs down it doesn't necessarily mean that the genre of the song is disliked and this could affect the recommendation since the station will try to avoid music similar to the ones you gave a thumbs down to. Doing this can impact the users who are looking for new music to listen to.
