@@ -1,0 +1,135 @@
+---
+title: "Data Collection and Analysis"
+author: "Bryan Persaud"
+date: "5/11/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r}
+# Libraries
+library(dplyr)
+library(ggplot2)
+library(randomForest)
+library(caTools)
+```
+
+Two datasets were collected from Kaggle. The first one shows different streaming services, Netflix, Hulu, Amazon Prime Video, and Disney+. The second one shows the number of subscribers for Netflix.
+
+# Data Exploration
+
+Let's explore these datasets a little to see what they contain.
+
+```{r}
+shows <- read.csv("https://raw.githubusercontent.com/bpersaud104/Data698/main/Data%20Collection%20and%20Analysis/Datasets/tv_shows.csv")
+summary(shows)
+head(shows, 50)
+```
+
+The first dataset has each observation as a different TV show, there are 5611 different observation. Each of them is shown the year the show came out, the IMDb and Rotten Tomatoes rating, and whether the show is in the specified streaming service. A value of 1 means that the show is included in the streaming service and a value of 0 means that the show is not in the streaming service.
+
+```{r}
+Netflix_subs <- read.csv("https://raw.githubusercontent.com/bpersaud104/Data698/main/Data%20Collection%20and%20Analysis/Datasets/DataNetflixSubscriber2020_V2.csv")
+head(Netflix_subs, 40)
+```
+
+The second dataset has each observation as a certain area for each quarter from the year 2018 to 2020. There are 40 observations showing 4 quarters for the year 2018 and 2019, and the first two quarters for the year 2020. The number of subscribers are shown for each area by the quarter of that year.
+
+# Data Analysis
+
+```{r}
+Netflix_data <- shows %>%
+  select(Title, Year, Age, IMDb, Rotten.Tomatoes, Netflix) %>%
+  filter(Netflix == 1) %>%
+  group_by(Title)
+Netflix_data
+```
+
+```{r}
+Hulu_data <- shows %>%
+  select(Title, Year, Age, IMDb, Rotten.Tomatoes, Hulu) %>%
+  filter(Hulu == 1) %>%
+  group_by(Title)
+Hulu_data
+```
+
+```{r}
+Prime_video_data <- shows %>%
+  select(Title, Year, Age, IMDb, Rotten.Tomatoes, Prime.Video) %>%
+  filter(Prime.Video == 1) %>%
+  group_by(Title)
+Prime_video_data
+```
+
+```{r}
+Disney_plus_data <- shows %>%
+  select(Title, Year, Age, IMDb, Rotten.Tomatoes, Disney.) %>%
+  filter(Disney. == 1) %>%
+  group_by(Title)
+Disney_plus_data
+```
+
+From sorting the data we see what shows are available for each streaming services, Netflix, Hulu, Prime video, and Disney+. We see that Prime Video contains more shows than the other streaming services while Disney+ contains the least amount. From the data we can see that Netflix contains more shows that have higher ratings. This is based on the IMDb and Rotten Tomatoes scores.
+
+```{r}
+ggplot(Netflix_data, aes(x = Title, y = IMDb)) + geom_point()
+ggplot(Hulu_data, aes(x = Title, y = IMDb)) + geom_point()
+ggplot(Prime_video_data, aes(x = Title, y = IMDb)) + geom_point()
+ggplot(Disney_plus_data, aes(x = Title, y = IMDb)) + geom_point()
+```
+
+Since Netflix and Amazon Prime Video seem to be two of the biggest streaming services let us look into the number of people who have subscribed to these services over the years. This will give us an insight on whether people are using these services and how much they have grown. I will be using data I found on Netflix subscriptions to show this.
+
+For the second dataset since the data is split by different regions and shows the number of subscribers from the year 2018 to the first half of 2020 a shiny app was created to visualize the data. For this visualization a shiny app was created. It can be viewed here: https://bpersaud104.shinyapps.io/Netflix_Analysis/
+
+From the shiny app we can see the number of subscriptions for Netflix divided by four areas, United States and Canada, Europe, Middle East, and Africa, Latin American, and Asia-Pacific. For all four areas the number of subscribers have increased since 2018. North America and Canada has the most subscribers going from around sixty million in 2018 to around 72 million in the first half of 2020. Europe, Middle East, and Africa has seen the most rise in subscribers going from around 29 million in 2018 to around 61 million in the first half of 2020.
+
+# Model Building
+
+Two models will be made to show the relationship between the rating of a show and whether a person is subscribed to a streaming service or not. One model will be a count regression model and the other one will be a random forest.
+
+```{r}
+model1 <- lm(IMDb ~ Netflix + Hulu + Prime.Video + Disney., data = shows)
+summary(model1)
+```
+
+The first model shows a p-value that is very high. This large value tells me that whether a streaming service has high ratings shows does not affect whether someone subscribes or not.
+
+```{r}
+sapply(shows, class)
+```
+
+We can see above that some columns are not accurately. Le us transform the data to change the type of Netflix, Hulu, Prime.Video, and Disney.
+
+```{r}
+ratings <- transform(shows, X = as.integer(X), Title = as.character(Title), Year = as.integer(Year), Age = as.character(Age), IMDb = as.numeric(IMDb), Rotten.Tomatoes = as.character(Rotten.Tomatoes), Netflix = as.factor(Netflix), Hulu = as.factor(Hulu), Prime.Video = as.factor(Prime.Video), Disney. = as.factor(Disney.), type = as.integer(type))
+ratings <- na.omit(ratings)
+summary(ratings)
+```
+
+A train/test split will be set up to use for the random forest model.
+
+```{r}
+set.seed(17)
+sample <- sample.split(ratings$IMDb, SplitRatio = 0.80)
+train <- subset(ratings, sample == TRUE)
+test <- subset(ratings, sample == FALSE)
+dim(train)
+dim(test)
+```
+
+```{r}
+model2 <- randomForest(IMDb ~ Netflix + Hulu + Prime.Video + Disney., data = train)
+model2
+```
+
+A model was created using random forest on the train dataset. 
+
+```{r}
+pred <- predict(model2, newdata = test[-12])
+confusion_matrix <- table(observed = test[,11], predicted = pred)
+confusion_matrix
+```
+
+Here we can see a confusion matrix set up using the model created. It shows that for the train dataset most of the data lies in ratings between 6.8 and 7.1. I would say that this model does not show a good relationship between whether a rating of a show affects if someone subscribes to a streaming service. 

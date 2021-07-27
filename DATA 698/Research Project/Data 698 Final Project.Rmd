@@ -1,0 +1,275 @@
+---
+title: "Data 698 Final Project"
+author: "Bryan Persaud"
+date: "5/18/2021"
+output:
+  pdf_document:
+    toc: TRUE
+  html_document: default
+abstract: Watching TV used to be you watch shows on TV channels provided by some TV provider. This has seen     some change in the modern world with the introduction of streaming services. This project will look to monitor  this change by looking to answer these two questions, 1. Are streaming services being used and how much growth  have they seen? 2. Can we see if streaming services are having an impact on the TV industry? The               methodology will include using different datasets containing information on streaming service usage. The       parts of the project that will show this are data exploration, data preparation, data analysis, and model      building. The models will be built to show if streaming services rely on highly rated shows, which the random  forest model created shows that streaming services do not rely on highly rated shows. 
+ \par\textbf{Keywords:} Streaming services, TV, Ratings, Subscriptions, Netflix
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, error = FALSE, warning = FALSE, message = FALSE)
+```
+
+```{r loadLibraries}
+library(dplyr)
+library(ggplot2)
+library(caTools)
+library(randomForest)
+```
+
+```{r loadData}
+shows <- read.csv("https://raw.githubusercontent.com/bpersaud104/Data698/main/Data%20Collection%20and%20Analysis/Datasets/tv_shows.csv")
+Netflix_subs <- read.csv("https://raw.githubusercontent.com/bpersaud104/Data698/main/Data%20Collection%20and%20Analysis/Datasets/DataNetflixSubscriber2020_V2.csv")
+```
+
+# Introduction
+
+Streaming services are impacting the way we watch TV. With the start of Netflix viewership of TV shows have started to change and people started to move away from the norm of watching cable TV. Over the years there have been a boom of streaming services that changed the way TV is looked at. My project looks to see the trends in streaming services and how these trends have caused change in the TV industry.
+
+This project will look to answer these two questions: 
+
+1. Are streaming services being used and how much growth  have they seen? 
+
+2. Can we see if streaming services are having an impact on the TV industry? 
+
+The rest of the project will include a literature review, an insight to the methodology, the details of the data analysis and model building, the findings of these details and the possible future works to look for from these findings, and finally the appendix and references.
+
+# Literature Review
+
+Streaming services have grown over the years and has changed the TV industry. The way we watch TV has changed over the years as we no longer have just one option of watching TV. Before it would be you watch TV through cable or satellite provided by a TV company. But now with there are ways to watch TV over the Internet either through websites or streaming services provided by different companies. This literature review will focus on seeing how much of an impact streaming services has had on the TV industry by looking at the changes and trends caused by streaming service usage.
+
+Johannes H Snyman, & Debora J Gilliard (2019) discuss the history of the TV industry and how the start and rise of streaming services began. TV has evolved over the years from broadcasting to cable television to satellite television and now streaming television using the Internet. In the early 2000s the way TV was being viewed changed by certain services such as iTunes and Amazon Video offering people the ability to purchase TV shows and companies such as YouTube and Netflix that offered streaming services. Someone who wanted to watch their favorite TV show had to wait to watch it live, record the show, or rent/buy a DVD/VHS tape. Even with streaming services people at first preferred this way of watching TV, but over the years people would shift to using streaming services.
+
+In 2007 Netflix came out with a different option to watch TV by shifting their business model from sending DVDs through mail to offering a monthly paid service that offered unlimited viewing on streaming shows. This would pay off as more and more people would switch to streaming services and as a result Netflix would become the largest streaming service to this day. This switch from cable or satellite television to streaming television would be known as chord cutting and this has been on the rise since 2012 [1]. People would see the benefit of streaming shows as it gave them a way to watch shows when they wanted to and be able to watch these shows with little to no commercials interrupting.
+
+The ability to watch your favorite shows with no commercials or advertisements interrupting has caused changed in the TV industry. This change has made it so TV providers have to rethink how they handle advertisements so that people do not resort to cord cutting. One such thing TV providers have done is provide people with video on-demand, where a collection of aired episodes for certain shows can be viewed. This allows people to watch episodes for shows they may have missed or want to watch again, and people have the option to fast forward through the episode. People using this have some way to avoid advertisements, but people using streaming services can do this and still be able to binge-watch shows.
+
+Binge-watching is a term used to describe when someone watches multiple episodes to a show in one sitting, usually it is multiple episodes for a single show. With the rise of streaming service usage there has been an increase in binge-watching, as over 70% of Americans binge-watch [2]. Streaming services make it so you have access to almost all of the episodes for a show and access to all these episodes promotes binge-watching as you have the option to continue watching. Also adding in having no commercials interrupting an episode makes majority of people pick binge-watching on streaming services rather than TV. Binge-watching is changing the way people view television as you went from having to wait a week between viewing episodes to having multiple episodes ready to view at once. 
+
+# Methodology
+
+As for the research to be done I will look at different datasets containing information on streaming services. The information that will be looked at include the number of subscriptions, number of TV shows offered, and TV ratings. I will also look to monitor trends in streaming services and what changes are done. I will do some data analysis to show the growth of streaming services and how this growth has caused an increased use of streaming services. I will look to model if streaming services rely on highly rated shows to gain more subscriptions.
+
+Two datasets were taken from Kaggle to do this project, one showing the different shows offered by streaming services and the other one showing the number of subscriptions over the years for Netflix. The project consists of the following parts: data exploration, data preparation, data analysis, and model building. The data exploration helps to show the data we are working with and helps to see the characteristics of each variable in the dataset. Data preparation will be done for any changes to these characteristics and handling any missing data. The data analysis done includes splitting the dataset to see the different shows offered for each streaming service and visualizing these shows based on their ratings. Also a shiny app was done to help show the dataset with the number of subscriptions for Netflix. Two models were built, one a multiple linear regression model and the one model created using random forest. These models will be compared to see which one better shows if a streaming service relies on shows with high ratings.
+
+# Experimentation and Results
+
+## Data Exploration
+
+```{r dataExplore}
+head(shows, 25)
+summary(shows)
+head(Netflix_subs, 40)
+summary(Netflix_subs)
+```
+
+The first dataset has each observation as a different TV show, there are 5611 different observation. For each of them you can see the year the show came out, the IMDb and Rotten Tomatoes rating, and whether the show is in the specified streaming service. A value of 1 means that the show is included in the streaming service and a value of 0 means that the show is not in the streaming service.
+
+The second dataset has each observation as a certain area for each quarter from the year 2018 to the first half of 2020. There are 40 observations in total with 4 different areas, United States and Canada, Europe, Middle East, and Africa, Latin America, and Asia-Pacific. The number of subscribers are shown for each area by the quarter of that year.
+
+## Data Preperation
+
+We can see above that some columns for the first dataset are not accurately as each streaming service should be a categorical factor. Let us transform the data to change the type of Netflix, Hulu, Prime.Video, and Disney. Also for the IMDb column there are NAs, these won't be removed just yet so we can get an accurate number of the number of shows offered by each streaming service.
+
+```{r dataPrep}
+# Change variables to factors
+streaming_shows <- transform(shows, X = as.integer(X), Title = as.character(Title), Year = as.integer(Year), Age = as.character(Age), IMDb = as.numeric(IMDb), Rotten.Tomatoes = as.character(Rotten.Tomatoes), Netflix = as.factor(Netflix), Hulu = as.factor(Hulu), Prime.Video = as.factor(Prime.Video), Disney. = as.factor(Disney.), type = as.integer(type))
+summary(streaming_shows)
+```
+
+Now we can see how many shows each streaming service has and how many shows they do not have. Amazon Prime Video has the most with 2144 and Disney+ has the least with 180. However, for each streaming service you can see that there are more shows not included then there are included. 
+
+## Data Analysis
+
+Some data analysis will be done to see the shows that are offered for each streaming service and the ratings for each show. There are two different ratings, IMDb and Rotten Tomatoes. The IMDb rating for a show is a score from 1 to 10 and the Rotten Tomatoes rating is a percentage from 0 to 100. I will be using the IMDb rating as the data for this rating is more reliable to use.
+
+```{r dataAnalysis}
+# Get shows that are on Netflix
+Netflix_data <- shows %>%
+  select(Title, Year, Age, IMDb, Rotten.Tomatoes, Netflix) %>%
+  filter(Netflix == 1) %>%
+  arrange(desc(IMDb))
+head(Netflix_data, 10)
+summary(Netflix_data)
+
+# Get shows that are on Hulu
+Hulu_data <- shows %>%
+  select(Title, Year, Age, IMDb, Rotten.Tomatoes, Hulu) %>%
+  filter(Hulu == 1) %>%
+  arrange(desc(IMDb))
+head(Hulu_data, 10)
+summary(Hulu_data)
+
+# Get shows on Amazon Prime Video
+Prime_video_data <- shows %>%
+  select(Title, Year, Age, IMDb, Rotten.Tomatoes, Prime.Video) %>%
+  filter(Prime.Video == 1) %>%
+  arrange(desc(IMDb))
+head(Prime_video_data, 10)
+summary(Prime_video_data)
+
+# Get shows on Disney+
+Disney_plus_data <- shows %>%
+  select(Title, Year, Age, IMDb, Rotten.Tomatoes, Disney.) %>%
+  filter(Disney. == 1) %>%
+  arrange(desc(IMDb))
+head(Disney_plus_data, 10)
+summary(Disney_plus_data)
+```
+
+From sorting the data we see what shows are available for each streaming services, Netflix, Hulu, Prime video, and Disney+. In addition to seeing which shows are available for each streaming service, the data is also sorted by their IMDb rating. Let us visualize this data to get a better look at these ratings.
+
+```{r ratingsPlot}
+#Plot Netflix shows by ratings
+ggplot(Netflix_data, aes(x = Title, y = IMDb)) + geom_point() + xlab("TV Shows") + ylab("Ratings") + ggtitle("Ratings for Shows on Netflix")
+
+# Plot Hulu shows by ratings
+ggplot(Hulu_data, aes(x = Title, y = IMDb)) + geom_point() + xlab("TV Shows") + ylab("Ratings") +  ggtitle("Ratings for Shows on Hulu")
+
+# Plot Amazon Prime Video shows by ratings
+ggplot(Prime_video_data, aes(x = Title, y = IMDb)) + geom_point() + xlab("TV Shows") + ylab("Ratings") + ggtitle("Ratings for Shows on Amazon Prime Video")
+
+# Plot Disney+ shows by ratings
+ggplot(Disney_plus_data, aes(x = Title, y = IMDb)) + geom_point() + xlab("TV Shows") + ylab("Ratings") + ggtitle("Ratings for Shows on Disney+")
+```
+
+From the data we can see that Netflix and Amazon Prime Video contain more shows that have higher ratings. Netflix is seen as the biggest streaming service and we can see that by the number of shows it offers and the high ratings for some of these shows. Let us look into the number of people who have subscribed to Netflix over the years. This will give us an insight on how much streaming services have grown.
+
+For the second dataset since the data is split by different regions and shows the number of subscribers from the year 2018 to the first half of 2020 a shiny app was created to help visualize this data. It can be viewed here: https://bpersaud104.shinyapps.io/Netflix_Analysis/
+
+From the shiny app we can see the number of subscriptions for Netflix divided by four areas, United States and Canada, Europe, Middle East and Africa, Latin America, and Asia-Pacific. For all four areas the number of subscribers have increased since 2018. North America and Canada has the most subscribers going from around sixty million in 2018 to around 72 million in the first half of 2020. Europe, Middle East, and Africa has seen the most rise in subscribers going from around 29 million in 2018 to around 61 million in the first half of 2020.
+
+## Model Building
+
+The first model to be built is a multiple linear regression model. The model will consist of the IMDb rating and each streaming service.
+
+```{r model1}
+# Multiple linear regression model using IMDb
+model1 <- lm(IMDb ~ Netflix + Hulu + Prime.Video + Disney., data = shows)
+summary(model1)
+
+# Plot for model
+qqnorm(model1$residuals)
+qqline(model1$residuals)
+```
+
+The first model shows a p-value that is very high. The Q-Q-plot shown is skewed and does not follow the line. This means that this model does not do a good job of showing whether a streaming service relies on shows with high ratings.
+
+For the second model it will be built using random forest. Since there are NAs in the IMDB column they will be removed for the random forest model. A train/test split will be also be set up.
+
+```{r train/testSplit}
+# Set seed
+set.seed(120)
+# Get rid of NAs
+ratings <- na.omit(streaming_shows)
+# Split the data into train and test datasets
+sample <- sample.split(ratings$IMDb, SplitRatio = 0.80)
+train <- subset(ratings, sample == TRUE)
+test <- subset(ratings, sample == FALSE)
+```
+
+```{r model2}
+# Build model using random forest
+model2 <- randomForest(IMDb ~ Netflix + Hulu + Prime.Video + Disney., data = train)
+model2
+```
+
+A confusion matrix will be made from the random forest model.
+
+```{r confusionMatrx}
+# Prediction on test data using random forest model
+prediction <- predict(model2, newdata = test[,-11])
+# Build confusion matrix
+confusion_matrix <- table(observed = test[,11], predicted = prediction)
+confusion_matrix
+```
+
+Here we can see a confusion matrix set up using the model created. It shows that for the train dataset most of the data lies in ratings between 6.9 and 7.2. I would say that this model shows that a streaming service does not rely on shows with high ratings, since the confusion matrix is showing us scores around a 7. 
+
+# Findings and Conclusion
+
+From the start there were two questions to answer:
+
+1. Are streaming services being used and how much growth have they seen? 
+
+2. Can we see if streaming services are having an impact on the TV industry? 
+
+From our data exploration, preparation and analysis we can see the growth of streaming services over the years. Going through a dataset containing 5611 different shows offered by different streaming services helps us to see the amount of shows offered by each of them. You can see that more shows are not offered than offered for each streaming service. This is probably because of licensing restrictions and each streaming service offering their own original shows, but more data is needed to confirm this. Also from the shows that are offered there are some with high ratings. From this we can answer the first question, but not so much the second question. 
+
+For the first model, the multiple linear regression model, it does not do a good job of showing evidence of a streaming service relying oh highly rated shows. The second model, the random forest model, is the better of the two models because it helps us to see that streaming services do not rely on highly rated shows. Streaming services might not be getting more subscriptions through the use of highly rated shows but from the shiny app we can see that the number of subscriptions are increasing, at least for Netflix anyways. Further investigation will be needed to help show this increase in subscriptions and if this is happening for the other streaming services as well.
+
+This project is a baseline to help show the growth of streaming services and the impact they have had on the TV industry. Streaming services has helped influence movements such as cord cutting and binge-watching through the use of more and more people seeing the value in using streaming services over cable TV. Future works in this area of study can include comparing this data to TV providers and top TV channels to see if this growth in streaming services has caused a diminish in TV usage. Also there are some TV channels, such as HBO coming out with HBO Max and NBC coming out with Peacock, that can also be looked at to monitor the trends in streaming services and how these streaming services will affect the viewership of their counterpart TV channel. There are also streaming services such as Hulu that offer packages that include live TV, so this is another area that can be used in future works. 
+
+# Appendix
+
+```{r appendix}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+```
+
+```{r loadLibraries}
+```
+
+```{r loadData}
+```
+
+<!-- Data Exploration -->
+
+```{r dataExplore}
+```
+
+<!-- Data Preparation -->
+
+```{r dataPrep}
+```
+
+<!-- Data Analysis -->
+
+```{r dataAnalysis}
+```
+
+```{r ratingsPlot}
+```
+
+<!-- Model Building -->
+
+```{r model1}
+```
+
+```{r model2}
+```
+
+```{r train/testSplit}
+```
+
+```{r model2}
+```
+
+```{r confusionMatrix}
+```
+
+Code for Shiny App located here:
+
+https://github.com/bpersaud104/Data698/blob/main/Data%20Collection%20and%20Analysis/Netflix_Analysis/app.R
+<!-- References Last -->
+
+# References
+
+[1] Johannes H Snyman, & Debora J Gilliard. (2019). The Streaming Television Industry: Mature or Still Growing? Journal of Marketing Development and Competitiveness, 13(4), 94–105. https://doi.org/10.33423/jmdc.v13i4.2355
+
+[2] Steiner, E., & Xu, K. (2020). Binge-watching motivates change: Uses and gratifications of streaming video viewers challenge traditional TV research. Convergence (London, England), 26(1), 82–101. https://doi.org/10.1177/1354856517750365
+
+[3] David A. Schweidel, & Wendy W. Moe. (2016). Binge Watching and Advertising. Journal of Marketing, 80(5), 1–19. https://doi.org/10.1509/jm.15.0258
+
+[4] Wayne, M. (2018). Netflix, Amazon, and branded television content in subscription video on-demand portals. Media, Culture & Society, 40(5), 725–741. https://doi.org/10.1177/0163443717736118
+
+[5] Bikfalvi, A., García-Reinoso, J., Vidal, I., Valera, F., & Azcorra, A. (2011). P2P vs. IP multicast: Comparing approaches to IPTV streaming based on TV channel popularity. Computer Networks (Amsterdam, Netherlands : 1999), 55(6), 1310–1325. https://doi.org/10.1016/j.comnet.2010.12.020
+
+[6] Kelly, J. (2019). Television by the numbers: The challenges of audience measurement in the age of Big Data. Convergence (London, England), 25(1), 113–132. https://doi.org/10.1177/1354856517700854
+
+[7] Christian, A. (2020). Beyond Branding: The Value of Intersectionality on Streaming TV Channels. Television & New Media, 21(5), 457–474. https://doi.org/10.1177/1527476419852241
+
+[8] Schauerte, R., Feiereisen, S., & Malter, A. (2020). What does it take to survive in a digital world? Resource-based theory and strategic change in the TV industry. Journal of Cultural Economics. https://doi.org/10.1007/s10824-020-09389-x
