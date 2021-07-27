@@ -22,4 +22,3 @@ DATA 620 - Web Analytics
 DATA 621 - Business Analytics and Data Mining 
 
 DATA 698 - Analytics Master’s Research Project
-
