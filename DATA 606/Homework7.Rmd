@@ -1,0 +1,312 @@
+---
+title: "Chapter 7 - Inference for Numerical Data"
+author: "Bryan Persaud"
+output:
+  pdf_document:
+    extra_dependencies:
+    - geometry
+    - multicol
+    - multirow
+    - xcolor
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+**Working backwards, Part II.** (5.24, p. 203) A 90% confidence interval for a population mean is (65, 77). The population distribution is approximately normal and the population standard deviation is unknown. This confidence interval is based on a simple random sample of 25 observations. Calculate the sample mean, the margin of error, and the sample standard deviation.
+
+```{r}
+(65 + 77) / 2
+```
+
+The sample mean is 71.
+
+```{r}
+(77 - 65) / 2
+```
+
+The margin of error is 6.
+
+```{r}
+# Calculate T-score
+df <- 25 -1
+p <- 0.90
+x <- p + (1 - p) / 2
+T_score <- qt(x, df)
+SE <- 6 / T_score
+Standard_deviation <- SE * sqrt(25)
+Standard_deviation
+```
+
+The sample standard deviation is 17.53.
+--------------------------------------------------------------------------------
+
+\clearpage
+
+**SAT scores.** (7.14, p. 261) SAT scores of students at an Ivy League college are distributed with a standard deviation of 250 points. Two statistics students, Raina and Luke, want to estimate the average SAT score of students at this college as part of a class project. They want their margin of error to be no more than 25 points.
+
+(a) Raina wants to use a 90% confidence interval. How large a sample should she collect?
+(b) Luke wants to use a 99% confidence interval. Without calculating the actual sample size, determine whether his sample should be larger or smaller than Raina’s, and explain your reasoning.
+(c) Calculate the minimum required sample size for Luke.
+
+# (a)
+```{r}
+Z_score <- 1.645
+Standard_deviation_2 <- 250
+Margin_error <- 25
+Sample_size <- ((Z_score * Standard_deviation_2) / Margin_error)^ 2
+Sample_size
+```
+
+If Raina wants to use a 90% confidence interval, she would need to collect a sample of 271.
+
+# (b)
+If Luke wants to use a 99% confidence interval, he would need a larger sample size than Raina because he would be using a higher confidence interval, which means a higher z-score. So a larger sample is required to be more accurate.
+
+# (c)
+```{r}
+Z_score_99 <- 2.576
+Standard_deviation_2 <- 250
+Margin_error <- 25
+Sample_size_2 <- ((Z_score_99 * Standard_deviation_2) / Margin_error)^ 2
+Sample_size_2
+```
+
+The minimum required sample size for Luke is 664.
+--------------------------------------------------------------------------------
+
+\clearpage
+
+**High School and Beyond, Part I.** (7.20, p. 266) The National Center of Education Statistics conducted a survey of high school seniors, collecting test data on reading, writing, and several other subjects. Here we examine a simple random sample of 200 students from this survey. Side-by-side box plots of reading and writing scores as well as a histogram of the differences in scores are shown below.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.show="hold", out.width="50%", fig.height=3}
+library(openintro)
+data(hsb2)
+scores <- c(hsb2$read, hsb2$write)
+gp <- c(rep('read', nrow(hsb2)), rep('write', nrow(hsb2)))
+par(mar = c(3, 4, 0.5, 0.5), las = 1, mgp = c(2.8, 0.7, 0), 
+    cex.axis = 1.1, cex.lab = 1.1)
+openintro::dotPlot(scores, gp, vertical = TRUE, ylab = "scores", 
+                   at=1:2+0.13, col = COL[1,3], 
+                   xlim = c(0.5,2.5), ylim = c(20, 80), 
+                   axes = FALSE, cex.lab = 1.25, cex.axis = 1.25)
+axis(1, at = c(1,2), labels = c("read","write"), cex.lab = 1.25, cex.axis = 1.25)
+axis(2, at = seq(20, 80, 20), cex.axis = 1.25)
+boxplot(scores ~ gp, add = TRUE, axes = FALSE, col = NA)
+
+par(mar=c(3.3, 2, 0.5, 0.5), las = 1, mgp = c(2.1, 0.7, 0), 
+    cex.lab = 1.25, cex.axis = 1.25)
+histPlot(hsb2$read - hsb2$write, col = COL[1], 
+         xlab = "Differences in scores (read - write)", ylab = "")
+```
+
+(a) Is there a clear difference in the average reading and writing scores?
+(b) Are the reading and writing scores of each student independent of each other?
+(c) Create hypotheses appropriate for the following research question: is there an evident difference in the average scores of students in the reading and writing exam?
+(d) Check the conditions required to complete this test.
+(e) The average observed difference in scores is ${ \widehat { x }  }_{ read-write }=-0.545$, and the standard deviation of the differences is 8.887 points. Do these data provide convincing evidence of a difference between the average scores on the two exams?
+(f) What type of error might we have made? Explain what the error means in the context of the application.
+(g) Based on the results of this hypothesis test, would you expect a confidence interval for the average difference between the reading and writing scores to include 0? Explain your reasoning.
+
+# (a)
+There is no clear difference in the average reading and writing scores based on the plots.
+
+# (b)
+The reading and writing scores of each student are not independent of each other, they are paired.
+
+# (c)
+H0: There is no evident difference in the average scores of students in the reading and writing exam.
+HA: There is evident difference in the average scores of students in the reading and writing exam.
+
+# (d)
+The sample taken is random and we can assume that the sample size is less than 10% of the population, so we can the samples are independent. The sample size is large enough to assume a normal distribution.
+
+# (e)
+```{r}
+Standard_deviation_3 <- 8.887
+Average_difference <- -0.545
+Sample_size_3 <- 200
+df_2 <- Sample_size_3 - 1
+SE_2 <- Standard_deviation_3 / sqrt(Sample_size_3)
+# Calculate T-score
+T_score_2 <- (Average_difference - 0) / SE_2
+
+# Use T-score to calculate p-value
+P_value <- 2 * pt(T_score_2, df_2)
+P_value
+```
+
+P-value is 0.387. Since the p-value is greater than 0.05, and if we are assuming a 95% confidence interval, we fail to reject H0. Therefore, there is not enough data to provide convincing evidence of a difference between the average scores on the two exams.
+
+# (f)
+The type of error we might have made is a Type 2 error. This means that we may have incorrectly rejected HA.
+
+# (g)
+Based on the results of the hypothesis test, I would expect a confidence interval for the average difference between the reading and writing scores to include 0. This is because since we failed to reject H0, and it included the value of 0, we could also expect a confidence interval of 0.
+--------------------------------------------------------------------------------
+
+\clearpage
+
+**Fuel efficiency of manual and automatic cars, Part II.** (7.28, p. 276) The table provides summary statistics on highway fuel economy of cars manufactured in 2012. Use these statistics to calculate a 98\% confidence interval for the difference between average highway mileage of manual and automatic cars, and interpret this interval in the context of the data.
+
+\begin{tabular}{l c c }
+\hline
+        & \multicolumn{2}{c}{Hwy MPG} \\
+\hline
+            & Automatic     & Manual         \\
+Mean    & 22.92         & 27.88          \\
+SD      & 5.29          & 5.01           \\
+n       & 26            & 26 \\
+\hline
+& \\
+& \\
+\end{tabular}
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=3, fig.height=3}
+library(openintro)
+fuel_eff <- read.csv("https://github.com/jbryer/DATA606Fall2019/raw/master/course_data/fuel_eff.csv")
+man_rows <- which(fuel_eff$transmission == "M")
+aut_rows <- which(fuel_eff$transmission == "A")
+set.seed(3583)
+man_rows_samp <- sample(man_rows, 26)
+aut_rows_samp <- sample(aut_rows, 26)
+fuel_eff_samp <- fuel_eff[c(man_rows_samp,aut_rows_samp), ]
+fuel_eff_samp$transmission <- droplevels(fuel_eff_samp$transmission)
+levels(fuel_eff_samp$transmission) <- c("automatic", "manual")
+boxPlot(fuel_eff_samp$hwy_mpg, fact = fuel_eff_samp$transmission, ylim = c(10, 37), 
+        xlab = "Hwy MPG", axes = FALSE, xlim = c(0.5, 2.5))
+axis(1, at = c(1,2), labels = c("automatic","manual"))
+axis(2, at = c(15,25,35))
+```
+
+```{r}
+SE_3 <- sqrt((5.29)^ 2 / 9 + (5.01)^ 2 / 9)
+Average_difference_2 <- 22.92 - 27.88
+# Calculate T-score
+df_3 <- 9 -1
+p_2 <- 0.98
+x_2 <- p_2 + (1 - p_2) / 2
+T_score_3 <- qt(x_2, df_3)
+Lower_interval <- Average_difference_2 - T_score_3 * SE_3
+Upper_interval <- Average_difference_2 + T_score_3 * SE_3
+c(Lower_interval, Upper_interval)
+```
+
+The 98% confidence interval for the difference between average highway mileage of manual and automatic cars is (-11.99, 2.07).
+--------------------------------------------------------------------------------
+
+\clearpage
+
+**Email outreach efforts.** (7.34, p. 284) A medical research group is recruiting people to complete short surveys about their medical history. For example, one survey asks for information on a person’s family history in regards to cancer. Another survey asks about what topics were discussed during the person’s last visit to a hospital. So far, as people sign up, they complete an average of just 4 surveys, and the standard deviation of the number of surveys is about 2.2. The research group wants to try a new interface that they think will encourage new enrollees to complete more surveys, where they will randomize each enrollee to either get the new interface or the current interface. How many new enrollees do they need for each interface to detect an effect size of 0.5 surveys per enrollee, if the desired power level is 80%?
+
+```{r}
+Z_score_80 <- 1.28
+Standard_deviation_4 <- 2.2
+Margin_error_2 <- 0.5
+Sample_size_4 <- ((Z_score_80 * Standard_deviation_4) / Margin_error_2)^ 2
+Sample_size_4
+```
+
+If the medical research group wants a desired power level of 80%, they would need to collect a sample of 32.
+--------------------------------------------------------------------------------
+
+\clearpage
+
+**Work hours and education.** The General Social Survey collects data on demographics, education, and work, among many other characteristics of US residents.47 Using ANOVA, we can consider educational attainment levels for all 1,172 respondents at once. Below are the distributions of hours worked by educational attainment and relevant summary statistics that will be helpful in carrying out this analysis.
+
+\begin{center}
+\begin{tabular}{l  r  r  r  r  r  r}
+                & \multicolumn{5}{c}{\textit{Educational attainment}} \\
+\cline{2-6}
+                & Less than HS  & HS    & Jr Coll   & Bachelor's & Graduate & Total \\
+\hline
+Mean            & 38.67         & 39.6  & 41.39     & 42.55     & 40.85     & 40.45 \\
+SD              & 15.81         & 14.97 & 18.1      & 13.62     & 15.51     & 15.17 \\
+n               & 121           & 546   & 97        & 253       & 155       & 1,172 \\
+\hline
+\end{tabular}
+\end{center}
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width=10, fig.height=3}
+library(openintro)
+library(xtable)
+if(!file.exists('gss2010.Rda')) {
+	download.file('https://github.com/jbryer/DATA606Fall2019/raw/master/course_data/gss2010.Rda',
+				  dest = 'gss2010.Rda', mode = "wb")
+}
+load("gss2010.Rda")
+gss <- gss2010
+gss_sub <- gss[which(!is.na(gss$hrs1) & !is.na(gss$degree)), ]
+gss_sub <- gss_sub[, which(names(gss_sub) == "degree" | names(gss_sub) == "hrs1")]
+levels(gss_sub$degree) <- c("Less than HS","HS","Jr Coll","Bachelor's","Graduate")
+par(mar = c(2,3.5,0.5,.5), mgp = c(2.3,0.7,0), las = 1)
+
+boxPlot(gss_sub$hrs1, fact = gss_sub$degree, 
+        col = COL[1,2], ylab = "Hours worked per week", xlim=c(0.6, 5.4))
+```
+
+(a) Write hypotheses for evaluating whether the average number of hours worked varies across the five groups.
+(b) Check conditions and describe any assumptions you must make to proceed with the test.
+(c) Below is part of the output associated with this test. Fill in the empty cells.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{lrrrrr}
+  \hline
+            & Df    
+                    & Sum Sq        
+                            & Mean Sq       
+                                    & F-value      
+                                            & Pr($>$F) \\ 
+  \hline
+degree      & \fbox{\textcolor{white}{{\footnotesize XXXXX}}}       
+                    & \fbox{\textcolor{white}{{\footnotesize XXXXX}}}       
+                            & 501.54    
+                                    & \fbox{\textcolor{white}{{\footnotesize XXXXX}}}   
+                                            & 0.0682 \\ 
+Residuals   & \fbox{\textcolor{white}{{\footnotesize XXXXX}}} 
+                    & 267,382     
+                            & \fbox{\textcolor{white}{{\footnotesize  XXXXX}}}          
+                                    &       
+                                            &  \\ 
+   \hline
+Total       & \fbox{\textcolor{white}{{\footnotesize XXXXX}}} 
+                    &\fbox{\textcolor{white}{{\footnotesize XXXXX}}}
+\end{tabular}
+\end{center}
+
+(d) What is the conclusion of the test?
+
+# (a)
+HO: The average number of hours worked does no vary across the five groups.
+HA: The average number of hours worked does vary across the five groups.
+
+# (b)
+We assume that the sample taken is random. The sample is less than 10% of the population so we can assume indendence. The sample size is large enough to assume a normal distribution.
+
+# (c)
+```{r}
+df_degree <- 5 - 1
+df_degree
+Sample_size_5 <- 1172
+Mean_degree <- 501.54
+Sum_resident <- 267382
+df_resident <- Sample_size_5 - 5
+df_resident
+df_total <- df_degree + df_resident
+df_total
+Sum_degree <- df_degree * Mean_degree
+Sum_degree
+Sum_total <- Sum_resident + Sum_degree
+Sum_total
+Mean_resident <- Sum_resident / df_resident
+Mean_resident
+F_value <- Mean_degree / Mean_resident
+F_value
+```
+
+# (d)
+The conclusion of the test is if we assume a 95% confidence interval, then the p-value = 0.0682 is greater than 0.05. This means that we would fail to reject HO. However, there is not enough evidence to accept HA.
