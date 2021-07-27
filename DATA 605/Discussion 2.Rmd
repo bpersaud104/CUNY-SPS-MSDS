@@ -1,0 +1,27 @@
+---
+title: "Discussion 2"
+author: "Bryan Persaud"
+date: "2/4/2020"
+output: html_document
+---
+
+
+# Chapter Determinants Section DM Exercise M11
+
+Find a value of k so that the matrix A = [1 2 1
+                                          2 0 1
+                                          2 3 k] has det(A) = 0, or explain why it is not possible.
+                                          
+Solution:
+
+First break down the 3x3 matrix into a 2x2 matrix by taking the number in row 1, column 1 and multiplying it by the 2x2 matrix not in the row and column of the number in row 1, column 1. You do this for every other number in the first row. This will give you:
+1|0 1  - 2|2 1 - 1|2 0 
+  3 k|     2 k|    2 3|                                                 
+= 1(0(k) - 3(1)) - 2(2(k) - 1(2)) - 1(2(3) - 2(0)) = -3 - 2(2k - 2) + 1(6 - 0)
+= -3 - 4k + 4 + 6 = (-3 + 4 + 6) - 4k = 7 - 4k
+det(A) = 0 therefore 7 - 4k = 0
+7 - 4k = 0
+-4k = -7
+k = 7 / 4
+
+det(A) = 0 if k = 7 / 4.

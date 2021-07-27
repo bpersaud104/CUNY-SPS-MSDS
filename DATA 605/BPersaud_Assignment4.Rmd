@@ -1,0 +1,130 @@
+---
+title: "Data 605 HW 4"
+author: "Bryan Persaud"
+date: "2/23/2020"
+output: html_document
+---
+
+# Problem Set 1
+
+matrix A:
+
+$\begin{bmatrix} 1 & 2 & 3 \\ -1 & 0 & 4 \end{bmatrix}$
+
+```{r}
+A <- matrix(c(1, -1, 2, 0, 3, 4), nrow = 2)
+```
+
+Compute $x\ =A{ A }^{ T }$ and $y = { A }^{ T }A$
+
+Solution:
+
+```{r}
+X = A %*% t(A) # Multiply matrix A by the transpose of matrix A
+X
+```
+
+```{r}
+Y = t(A) %*% A # Multiply the transpose of matrix A by the matrix A
+Y
+```
+
+Compute Eigenvalues and Eigenvectors of X and Y
+
+Solution:
+
+```{r}
+eigen_X <- eigen(X) # Finds the eigenvalues and eigenvectors of matrix X
+eigen_values_X <- round(eigen_X$values, 3) # Stores eigenvalues of matrix X in eigen_values_X
+eigen_values_X
+eigen_vectors_X <- eigen_X$vectors # Stores eigenvectors of matrix X in eigen_vectors_X
+eigen_vectors_X
+```
+
+```{r}
+eigen_Y <- eigen(Y) # Finds the eigenvalues and eigenvectors of matrix Y
+eigen_values_Y <- round(eigen_Y$values, 3) # Stores eigenvalues in matrx Y in eigen_values_Y
+eigen_values_Y
+eigen_vectors_Y <- eigen_Y$vectors #Stores eigenvectors of matrix Yin eigen_vectors_Y
+eigen_vectors_Y
+```
+
+Compute left-singular, singular values, and right-singular vectors of A
+
+Solution:
+
+```{r}
+svd_A <- svd(A) # Finds the left-singular, singular values, and right-singular vectors of matrix A
+```
+```{r}
+left_singular <- svd_A$u # Stores the left singular vectors of matrix A in left_singular
+left_singular
+```
+
+```{r}
+singular_values <- round(svd_A$d, 3) # Stores the singular values of A in singular_values
+singular_values
+```
+
+```{r}
+right_singular <- svd_A$v # Stores the right singular vectors of matrix A in right_singular
+right_singular
+
+```
+
+Examine the two sets of singular vectors and show that they are indeed
+eigenvectors of X and Y
+
+Solution:
+
+```{r}
+eigen_vectors_X
+left_singular
+```
+
+```{r}
+eigen_vectors_Y
+right_singular
+```
+
+As you can see above, the two sets of singular vectors are indeed eigenvectors of X and Y. The difference being that there are some negative values in the first column for the two sets of singular vectors that the eigenvectors of X and Y have positive. Also the right singlar vectors don't have a third column, but you can see that the third column for the eigenvectors of Y are close to 0.
+
+In addition, the two non-zero eigenvalues (the 3rd value will
+be very close to zero, if not zero) of both X and Y are the same and are squares of the
+non-zero singular values of A.
+
+```{r}
+eigen_values_X
+eigen_values_Y
+```
+
+```{r}
+round(singular_values ^ 2, 3)
+```
+The eigenvalues of both X and Y and the squares of the singular values of A are equal to each other. The only difference being that the singular values are slightly off due to rounding. 
+
+# Problem Set 2
+
+```{r}
+myinverse <- function(A){
+  dimension_A <- nrow(A) # Find the dimension of matrix A and store it in dimension_A
+  matrix <- matrix(NA, nrow = dimension_A, ncol = dimension_A) # Create an empty matrix using the dimension of matrix A
+  for (i in 1:dimension_A) {
+    for (j in 1:dimension_A) {
+      matrix[i,j] <- det(A[-i,-j]) * (-1) ^ (i + j) # Use determinant of matrix A to find values for matrix
+    }
+  }
+  tranpose_matrix <- t(matrix) # Take the transpose of created matrix
+  inverse_matrix <- tranpose_matrix / det(A) # Find inverse of created matrix by dividing transpose of matrix by the determinant of matrix A
+  return(inverse_matrix)
+}
+```
+
+```{r}
+A <- matrix(c(1, 2, 0, 6, 7, 8, 9, 3, 4), nrow = 3)
+B <- myinverse(A)
+B 
+```
+```{r}
+round(A %*% B, 3) # Verify that multiplying A and B gives the Identity matrix I
+```

@@ -1,0 +1,171 @@
+---
+title: "Data 605 HW 9"
+author: "Bryan Persaud"
+date: "3/29/2020"
+output: html_document
+---
+
+# 1
+
+#11 page 363
+
+The price of one share of stock in the Pilsdorff Beer Company (see Exercise 8.2.12) is given by Yn on the nth day of the year. Finn observes that the differences Xn = Yn+1 − Yn appear to be independent random variables with a common distribution having mean µ = 0 and variance σ2 = 1/4. If Y1 = 100, estimate the probability that Y365 is
+
+(a) ≥ 100.
+(b) ≥ 110.
+(c) ≥ 120.
+
+Solution:
+
+${ S }_{ n }={ X }_{ 1 }+{ X }_{ 2 }+..+{ X }_{ n }$ The sum of Xn and we are told Xn = Yn+1 - Yn, so
+
+$({ Y }_{ 2 }-{ Y }_{ 1 })+({ Y }_{ 3 }-{ Y }_{ 2 })+...+({ Y }_{ n+1 }-{ Y }_{ n })$ =
+
+${ Y }_{ 2 }-{ Y }_{ 1 }+{ Y }_{ 3 }-{ Y }_{ 2 }+...+{ Y }_{ n+1 }-{ Y }_{ n }$ Then when we eliminate we end up with
+
+${ Y }_{ n+1 }-{ Y }_{ 1 }$ and we are told Y1 = 100 so 
+
+${ Y }_{ n+1 }-{ 100 }$
+
+Let n = 364, then we get ${ S }_{ 364 }={ Y }_{ 365 }-100$ and ${ Y }_{ 365 }={ S }_{ 364 }+100$
+
+The variance of ${ S }_{ n }$ is n * σ2, so we get $365*\frac { 1 }{ 4 }$ or $\frac { 365 }{ 4 }$  and $σ=\sqrt { \frac { 365 }{ 4 }  }$
+
+To find the probability we take ${ S }_{ 364 }$ and divide it by σ.
+
+(a)
+
+$P({ Y }_{ 365 }\ge 100)$ =
+
+${ S }_{ 364 }=100-100$
+
+
+```{r}
+(100 - 100) / sqrt(365 / 4)
+```
+
+```{r}
+pnorm(0)
+```
+
+The probability that ${ Y }_{ 365 }\ge 100)$ is 0.5. 
+
+(b)
+
+$P({ Y }_{ 365 }\ge 110)$ =
+
+${ S }_{ 364 }=110-100$
+
+```{r}
+(110 - 100) / sqrt(365 / 4)
+```
+
+```{r}
+round(1 - pnorm(1.046848), 4)
+```
+
+The probability that ${ Y }_{ 365 }\ge 110)$ is 0.1476.
+
+(c)
+
+$P({ Y }_{ 365 }\ge 120)$ =
+
+${ S }_{ 364 }=120-100$
+
+```{r}
+(120 - 100) / sqrt(365 / 4)
+```
+
+```{r}
+round(1 - pnorm(2.093696), 4)
+```
+
+The probability that ${ Y }_{ 365 }\ge 120)$ is 0.0181.
+
+# 2
+
+Calculate the expected value and variance of the binomial distribution using the moment generating function.
+
+Solution:
+
+For the binomial distribution the function for the probability is $f\left( x \right) =\begin{pmatrix} n \\ x \end{pmatrix}{ p }^{ x }{ (1-p) }^{ n-x }$
+
+We can use this to find the moment generating function
+
+$M\left( t \right) =\sum _{ x=0 }^{ n }{ { e }^{ tx } } \begin{pmatrix} n \\ x \end{pmatrix}{ p }^{ x }{ (1-p) }^{ n-x }$ 
+
+$M\left( t \right) =\sum _{ x=0 }^{ n }{ \begin{pmatrix} n \\ x \end{pmatrix}{ pe }^{ t }{ (1-p) }^{ n-x } }$ 
+
+$M\left( t \right) ={ { (pe }^{ t }+(1-p) })^{ n }$
+
+To find the expected value, take the derivative of M(t), where t = 0.
+
+$M'\left( t \right) =n({ pe }^{ t }){ ((1-p)+{ pe }^{ t }) }^{ n-1 }$ 
+
+$M'\left( 0 \right) =n({ pe }^{ 0 }){ ((1-p)+{ pe }^{ 0 }) }^{ n-1 }$ 
+
+$M'\left( 0 \right) =np$
+
+The expected value of the binomial distribution using the moment generating function is np.
+
+To find the variance, take the derivative of M(t) a second time and subtract it from the first derivative of M(t) squared, where t = 0.
+
+$M''\left( t \right) =n(n-1){ ({ pe }^{ t }) }^{ 2 }{ ((1-p)+{ pe }^{ t }) }^{ n-2 }+n(({ pe }^{ t }){ ((1-p)+{ pe }^{ t }) }^{ n-1 }$ 
+
+$M''\left( 0 \right) =n(n-1){ ({ pe }^{ 0 }) }^{ 2 }{ ((1-p)+{ pe }^{ 0 }) }^{ n-2 }+n(({ pe }^{ 0 }){ ((1-p)+{ pe }^{ 0 }) }^{ n-1 }$ 
+
+$M''\left( 0 \right) =n(n-1){ p }^{ 2 }+np$ 
+
+$M''\left( 0 \right) -{ (M'\left( 0 \right)  })^{ 2 }=n(n-1){ p }^{ 2 }+np-{ (np) }^{ 2 }$ 
+
+$M''\left( 0 \right) -{ (M'\left( 0 \right)  })^{ 2 }=np(1-p)$
+
+The variance of the binomial distribution using the moment generating function is np(1-p).
+
+# 3
+
+Calculate the expected value and variance of the exponential distribution using the moment generating function.
+
+Solution:
+
+For the exponential distribution the function for the probability is $f\left( x \right) =\lambda { e }^{ -x\lambda  }$
+
+We can use this to find the moment generating function
+
+$M\left( t \right) =\int _{ o }^{ \infty  }{ { e }^{ tx }\lambda { e }^{ -x\lambda  } } dx$ 
+
+$M\left( t \right) =\lambda \int _{ o }^{ \infty  }{ { e }^{ -x(\lambda -t) } }$ 
+
+$M\left( t \right) =\lambda \frac { { e }^{ -x(\lambda -t) } }{ \lambda -t }$
+
+$M\left( t \right) =\frac { \lambda  }{ \lambda -t }$
+
+To find the expected value, take the derivative of M(t), where t = 0. 
+
+$M'\left( t \right) =\frac { \lambda  }{ { (\lambda -t) }^{ 2 } } $
+
+$M'\left( 0 \right) =\frac { \lambda  }{ { (\lambda -0) }^{ 2 } }$
+
+$M'\left( 0 \right) =\frac { \lambda  }{ { \lambda  }^{ 2 } }$
+
+$M'\left( 0 \right) =\frac { 1 }{ { \lambda  } }$
+
+The expected value of the exponential distribution using the moment generating function is $\frac { 1 }{ \lambda  }.$
+
+To find the variance, take the derivative of M(t) a second time and subtract it from the first derivative of M(t) squared, where t = 0.
+
+$M''\left( t \right) =\frac { 2\lambda  }{ { (\lambda -t) }^{ 3 } }$
+
+$M''\left( 0 \right) =\frac { 2\lambda  }{ { (\lambda -0) }^{ 3 } }$
+
+$M''\left( 0 \right) =\frac { 2\lambda  }{ \lambda ^{ 3 } }$
+
+$M''\left( 0 \right) =\frac { 2 }{ \lambda ^{ 2 } }$
+
+$M''\left( 0 \right) -{ (M'\left( 0 \right) ) }^{ 2 }=\frac { 2 }{ \lambda ^{ 2 } } -{ (\frac { 1 }{ \lambda  } ) }^{ 2 }$
+
+$M''\left( 0 \right) -{ (M'\left( 0 \right) ) }^{ 2 }=\frac { 2 }{ \lambda ^{ 2 } } -{ \frac { 1 }{ { \lambda  }^{ 2 } }  }$
+
+$M''\left( 0 \right) -{ (M'\left( 0 \right) ) }^{ 2 }=\frac { 1 }{ \lambda ^{ 2 } }$
+
+The variance of the exponential distribution using the moment generating function is $\frac { 1 }{ \lambda ^{ 2 } }.$

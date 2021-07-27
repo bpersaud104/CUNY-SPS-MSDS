@@ -1,0 +1,35 @@
+---
+title: "Discussion 11"
+author: "Bryan Persaud"
+date: "4/14/2020"
+output: html_document
+---
+
+Using R, build a regression model for data that interests you. Conduct residual analysis. Was the linear model appropriate? Why or why not?
+
+The data I chose to use is the candy dataset from fivethiryeight. https://github.com/fivethirtyeight/data/tree/master/candy-power-ranking
+
+```{r}
+candy <- read.csv("https://raw.githubusercontent.com/fivethirtyeight/data/master/candy-power-ranking/candy-data.csv")
+head(candy)
+```
+
+Let's build a regression model that calculates the sugar percentage based on if the candy contains chocolate.
+
+```{r}
+model <- lm(chocolate ~ sugarpercent, data = candy)
+summary(model)
+```
+
+Residual analysis of the data
+
+```{r}
+plot(fitted(model), resid(model))
+```
+
+```{r}
+qqnorm((resid(model)))
+qqline((resid(model)))
+```
+
+Based on the residual analysis, I would say that the linear model is not appropriate. This is because from the plots you can see that the points do not follow the straight line. This tells us that the residuals are not normally distributed. 

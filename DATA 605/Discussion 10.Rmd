@@ -1,0 +1,26 @@
+---
+title: "Discussion 10"
+author: "Bryan Persaud"
+date: "3/31/2020"
+output: html_document
+---
+
+# Chapter 12 Section 12.1 Exercise 13
+
+Using Stirling’s Formula, prove that $(\frac { 2n }{ n } )\sim \frac { { 2 }^{ { 2 }^{ n } } }{ \sqrt { \pi n }  }.$
+
+Solution:
+
+Stirling's Formula is $n!\sim \sqrt { 2\pi n } { (\frac { n }{ e } ) }^{ n }$
+
+Taking the fornula twice would give us $n!n!\sim 2\pi n{ (\frac { n }{ e } ) }^{ 2n }$
+
+We can also take (2n)! which would give us $(2n!)\sim 2\sqrt { \pi n } ({ \frac { 2n }{ e } ) }^{ 2n }$
+
+Now we combine n!n! and (2n)! in terms of $(\frac { 2n }{ n } )$ 
+
+$\frac { 2n! }{ n!n! } \sim (\frac { 1 }{ 2\pi n } { \frac { e }{ n }  }^{ 2n })(2\sqrt { \pi n } ({ \frac { 2n }{ e } ) }^{ 2n })$
+
+You can simply this to get $\frac { { 2 }^{ 2n } }{ \sqrt { \pi n }  }$
+
+So by using Stirling's Formula, we can prove that $(\frac { 2n }{ n } )\sim \frac { { 2 }^{ 2n } }{ \sqrt { \pi n }  }$

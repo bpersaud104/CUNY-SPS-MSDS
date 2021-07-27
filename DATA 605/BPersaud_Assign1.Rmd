@@ -1,0 +1,72 @@
+---
+title: "Data 605 HW 1"
+author: "Bryan Persaud"
+date: "2/2/2020"
+output: html_document
+---
+
+# Problem Set 1
+
+(1) Calculate the dot product u.v where u = [0.5; 0.5] and v = [3; −4]
+
+u = [0.5; 0.5] and v = [3; −4]
+
+u · v = (0.5 * 3) + (0.5 * -4)
+      = 1.5 + (-2)
+u · v = -0.5
+
+(2) What are the lengths of u and v? Please note that the mathematical notion of the
+length of a vector is not the same as a computer science definition.
+
+||u|| = sqrt((0.5)^2 + (0.5)^2)
+      = sqrt(0.25 + 0.25)
+      = sqrt(0.50)
+||u|| = 0.7071
+
+||v|| = sqrt((3)^2 + (-4)^2)
+      = sqrt(9 + 16)
+||v|| = 5
+
+(3) What is the linear combination: 3u − 2v?
+
+3u - 2v = 3[0.5, 0,5] - 2[3, -4]
+        = [1.5, 1.5] - [6, -8]
+        = [1.5 - 6], [1.5 - (-8)]
+3u - 2v = [-4.5, 9.5]
+
+(4) What is the angle between u and v
+
+cosθ = (u · v) / ||u|| · ||v||
+     = -0.5 / 0.7071 · 5
+     = -0.5 / 3.5355
+cosθ = -0.1414
+θ = cos-1(-0.1414)
+θ = 98.1302
+
+# Problem Set 2
+
+```{r}
+Solve_Function <- function(A, b) 
+{
+  combine <- cbind(A, b) 
+  
+  zero_pivot <- combine[2,1] / combine[1,1] 
+  combine[2,] <- combine[2,] - combine[1,] * zero_pivot
+  
+  zero_pivot2 <- combine[3,1] / combine[1,1]
+  combine[3,] <- combine[3,] - combine[1,] * zero_pivot2
+  
+  zero_pivot3 <- combine[3,2] / combine[2,2]
+  combine[3,] <- combine[3,] - combine[2,] * zero_pivot3
+  
+  x3 <- combine[3,4] / combine[3,3]
+  x2 <- (combine[2,4] - (combine[2,3] * x3)) / combine[2,2]
+  x1 <- (combine[1,4] - (combine[1,3] * x3) - (combine[1,2] * x2)) /        combine[1,1]
+  Solution <- matrix(c(x1, x2, x3), nrow = 3)
+  return(round(Solution, 2))
+}
+
+A <- matrix(c(1, 2, -1, 1, -1, -2, 3, 5, 4), nrow = 3, ncol = 3)
+b <- c(1, 2, 6)
+Solve_Function(A, b)
+```

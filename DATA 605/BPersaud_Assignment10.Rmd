@@ -1,0 +1,44 @@
+---
+title: "Data 605 HW 10"
+author: "Bryan Persaud"
+date: "4/5/2020"
+output: html_document
+---
+
+Smith is in jail and has 1 dollar; he can get out on bail if he has 8 dollars. A guard agrees to make a series of bets with him. If Smith bets A dollars, he wins A dollars with probability .4 and loses A dollars with probability .6. Find the probability that he wins 8 dollars before losing all of his money if
+
+(a) he bets 1 dollar each time (timid strategy).
+(b) he bets, each time, as much as possible but not more than necessary to bring his fortune up to 8 dollars (bold strategy).
+(c) Which strategy gives Smith the better chance of getting out of jail?
+
+Solution:
+
+This follows the Gambler's Ruin Problem where p = 0.4 and q = 0.6.
+
+# (a)
+
+For the timid strategy, we look at a chain of 8 different probabilities since we are looking to find the probability that Smith wins 8 dollars before losing all of his money. In this case the probability would be the first part in the chain.
+
+```{r}
+p <- 0.4
+q <- 0.6
+k <- q / p 
+Timid_strategy <- (1 - (k ^ 1)) / (1 - (k ^ 8))
+round(Timid_strategy, 4)
+```
+
+The probability that he wins 8 dollars before losing all of his money if he bets 1 dollar each time, otherwise known as the timid strategy, is 0.0203.
+
+# (b)
+
+For the bold strategy, each time Smith bets he bets as much as possible. If we assume that each time he bets he wins, then since he starts with 1 dollar his winnings would follow the pattern 1, 2, 4, and 8 since him winning would give him 2 dollars, then 4 dollars, then 8 dollars. So by looking at this we see that he needs to win 3 times in a row.
+
+```{r}
+(0.4) ^ 3
+```
+
+The probability that he wins 8 dollars before losing all of his money if he bets, each time, as much as possible but not more than necessary to bring his fortune up to 8 dollars is 0.064.
+
+# (c)
+
+The strategy that gives Smith a better chance of getting out of jail is the bold strategy. This is because the bold strategy gives him a 6.4% chance of winning as opposed to the timid strategy that gives him a 2.03% chance of winning.

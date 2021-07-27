@@ -1,0 +1,70 @@
+---
+title: "Data 605 HW 2"
+author: "Bryan Persaud"
+date: "2/9/2020"
+output: html_document
+---
+
+# Problem Set 1
+
+(1) Show that ${ A }^{ T }A \neq A{ A }^{ T }$ in general. (Proof and demonstration.)
+
+Solution:
+
+Proof:
+
+Suppose we have A that is a m x n matrix. The transpose of A, ${ A }^{ T }$, would be a n x m matrix. Using the definition of matrix multiplication, we can multiply ${ A }^{ T }$ by A which would result in a n x n matrix; a square matrix. If we multiply A by ${ A }^{ T }$ this would result in a m x m matrix; also square matrix. Since you end up with two different square matrices, one that is n x n and the other that is m x m, ${ A }^{ T } A \neq A{ A }^{ T }$.
+
+Demonstration:
+
+Let A be a 2 x 3 matrix. Then the transpose of A is ${ A }^{ T }$, a 3 x 2 matrix. Then ${ A }^{ T }A$ would be a 3 x 3 matrix and  $A{ A }^{ T }$ would be a 2 x 2 matrix.
+
+A = $\begin{bmatrix} 1 & 2\quad 3 \\ 3 & 2\quad 1 \end{bmatrix}$
+
+${ A }^{ T }$ = $\begin{bmatrix} 1 & 3 \\ 2 & 2 \\ 3 & 1 \end{bmatrix}$
+
+${ A }^{ T }A$ = $\begin{bmatrix} 1 & 3 \\ 2 & 2 \\ 3 & 1 \end{bmatrix}$ * $\begin{bmatrix} 1 & 2\quad 3 \\ 3 & 2\quad 1 \end{bmatrix}$
+
+= $\begin{bmatrix} 10 & 8 & 6 \\ 8 & 8 & 8 \\ 6 & 8 & 10 \end{bmatrix}$
+
+$A{ A }^{ T }$ = $\begin{bmatrix} 1 & 2\quad 3 \\ 3 & 2\quad 1 \end{bmatrix}$ * $\begin{bmatrix} 1 & 3 \\ 2 & 2 \\ 3 & 1 \end{bmatrix}$
+
+= $\begin{bmatrix} 14 & 10 \\ 10 & 14 \end{bmatrix}$ 
+
+As you can see above, ${ A }^{ T }A \neq A{ A }^{ T }$.
+
+(2) For a special type of square matrix A, we get ${ A }^{ T }A = A{ A }^{ T }$. Under what conditions could this be true? (Hint: The Identity matrix I is an example of such a matrix).
+
+Solution:
+
+The conditions that could make ${ A }^{ T }A = A{ A }^{ T }$ for a special type of square matrix A is if A and ${ A }^{ T }$ are equal to each other. Since A and ${ A }^{ T }$ are equal to each other, this would mean the special type of square matrix would be a symmetric matrix. For example the Identity matrix is a special type of square matrix that shows this since it is a square matrix whose transpose would be equal to itself. In conclusion, if a square matrix A is a symmetric matrix, meaning that A and ${ A }^{ T }$ are equal to each other, then ${ A }^{ T }A = A{ A }^{ T }$. 
+
+# Problem Set 2
+
+```{r}
+Matrix_Factorization <- function(A) {
+  x <- dim(A)[1]
+  D <- matrix(diag(x), nrow = x, ncol = x)
+  L <- D
+  U <- A
+  for (b in 1:(x - 1)) {
+    for (a in (b + 1):x) {
+      L[a,b] <- U[a,b] / U[b,b]
+      U[a,] <- U[a,] - U[b,] * L[a,b]
+    }
+  }
+  diag(D) <- diag(U)
+  for (c in 1:x) {
+    U[c,] <- U[c,] / U[c,c]
+  }
+  LDU = list("Lower" = L, "Diagonal" = D, "Upper" = U)
+  return(LDU)
+}
+```
+
+Test to see if function works:
+
+```{r}
+A <- matrix(c(1, 3, 4, 2, 3, 1, 4, 1, 3), nrow = 3, byrow = TRUE)
+Matrix_Factorization(A)
+```

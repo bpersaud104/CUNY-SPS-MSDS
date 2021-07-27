@@ -1,0 +1,30 @@
+---
+title: "Discussion 8"
+author: "Bryan Persaud"
+date: "3/17/2020"
+output: html_document
+---
+
+# Chapter 8 Section 8.1 Exercise 3
+
+Write a program to toss a coin 10,000 times. Let Sn be the number of heads in the first n tosses. Have your program print out, after every 1000 tosses,
+Sn − n/2. On the basis of this simulation, is it correct to say that you can expect heads about half of the time when you toss a coin a large number of times?
+
+Solution:
+
+```{r}
+n <- 1000 # Number of tosses equal to 1000
+Sn <- c() # Stores the number of heads
+sum_heads <- 0 # Stores the sum of the number of heads
+n <- c() # Stores the number of tosses
+for(i in 1:10){
+  simulation <- sample(0:1, 1000, rep = T) # Tosses coin 1000 times
+  sum_heads <- sum_heads + sum(simulation == 1) # Gets the sum of heads
+  Sn <- c(Sn, sum_heads / (1000 * i)) # Gets the number of heads
+  n <- c(n, 1000 * i) # Gets the number of tosses
+}
+data_frame <- data.frame(n, Sn) # Dataframe to show the number of tosses and number of heads
+data_frame
+```
+
+For my program, it runs a simulation of 1000 coin tosses, where heads is a 1 and tails is a 0, and loops through 10 times to show 10000 tosses. Each time it loops, the number of heads, the sum of heads, and the number of tosses are being stored. I created a dataframe to display every 1000 tosses and the number of heads for every 1000 tosses. Based on the simulation and the dataframe I displayed, it is correct to say that you can expect heads about half of the time when you toss a coin a large number of times. This is because you can see as the tosses go from 1000 to 10000, the number of heads are within 1/2 of the tosses.

@@ -1,0 +1,230 @@
+---
+title: "Data 605 HW 3"
+author: "Bryan Persaud"
+date: "2/16/2020"
+output: html_document
+---
+
+# Problem Set 1
+
+(1) What is the rank of the matrix A? 
+
+A = $\begin{bmatrix} 1 & 2 & 3 & 4 \\ -1 & 0 & 1 & 3 \\ 0 & 1 & -2 & 1 \\ 5 & 4 & -2 & -3 \end{bmatrix}$
+
+Solution:
+
+Reduce matrix A to row echelon form 
+
+row 1 + row 2 to row 2 = $\begin{bmatrix} 1 & 2 & 3 & 4 \\ 0 & 2 & 4 & 7 \\ 0 & 1 & -2 & 1 \\ 5 & 4 & -2 & -3 \end{bmatrix}$
+
+-5 * row 1 + row 4 to row 4 = $\begin{bmatrix} 1 & 2 & 3 & 4 \\ 0 & 2 & 4 & 7 \\ 0 & 1 & -2 & 1 \\ 0 & -6 & -17 & -23 \end{bmatrix}$
+
+(1/2) * row 2 to row 2 = $\begin{bmatrix} 1 & 2 & 3 & 4 \\ 0 & 1 & 2 & 7/2 \\ 0 & 1 & -2 & 1 \\ 0 & -6 & -17 & -23 \end{bmatrix}$
+
+-1 * row 2 + row 3 to row 3 = $\begin{bmatrix} 1 & 2 & 3 & 4 \\ 0 & 1 & 2 & 7/2 \\ 0 & 0 & -4 & -5/2 \\ 0 & -6 & -17 & -23 \end{bmatrix}$
+
+6 * row 2 + row 4 to row 4 = $\begin{bmatrix} 1 & 2 & 3 & 4 \\ 0 & 1 & 2 & 7/2 \\ 0 & 0 & -4 & -5/2 \\ 0 & 0 & -5 & -2 \end{bmatrix}$
+
+-(1/4) * row 3 to row 3 = $\begin{bmatrix} 1 & 2 & 3 & 4 \\ 0 & 1 & 2 & 7/2 \\ 0 & 0 & 1 & 5/8 \\ 0 & 0 & -5 & -2 \end{bmatrix}$
+
+5 * row 3 + row 4 to row 4 = $\begin{bmatrix} 1 & 2 & 3 & 4 \\ 0 & 1 & 2 & 7/2 \\ 0 & 0 & 1 & 5/8 \\ 0 & 0 & 0 & 9/8 \end{bmatrix}$
+
+(8/9) * row 4 to row 4 = $\begin{bmatrix} 1 & 2 & 3 & 4 \\ 0 & 1 & 2 & 7/2 \\ 0 & 0 & 1 & 5/8 \\ 0 & 0 & 0 & 1 \end{bmatrix}$
+
+-(5/8) * row 4 + row 3 to row 3 = $\begin{bmatrix} 1 & 2 & 3 & 4 \\ 0 & 1 & 2 & 7/2 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1 \end{bmatrix}$
+
+-(7/2) * row 4 + row 2 to row 2 = $\begin{bmatrix} 1 & 2 & 3 & 4 \\ 0 & 1 & 2 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1 \end{bmatrix}$
+
+-4 * row 4 + row 1 to row 1 = $\begin{bmatrix} 1 & 2 & 3 & 0 \\ 0 & 1 & 2 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1 \end{bmatrix}$
+
+-2 * row 3 + row 2 to row 2 = $\begin{bmatrix} 1 & 2 & 3 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1 \end{bmatrix}$
+
+-3 * row 3 + row 1 to row 1 = $\begin{bmatrix} 1 & 2 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1 \end{bmatrix}$
+
+-2 * row 2 + row 1 to row 1 =  $\begin{bmatrix} 1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1 \end{bmatrix}$
+
+Since matrix A is now in reduced row echelon form to find the rank of A count the number of non-zero rows. The matrix is now the Identity matrix $I_{ 4 }$, so there are 4 non-zero rows. So the rank of the matrix A is 4.
+
+(2) Given an mxn matrix where m > n, what can be the maximum rank? The minimum rank, assuming that the matrix is non-zero?
+
+Solution:
+
+The maximum rank for a mxn matrix where m > n is n since the maximum rank is the minimum between the number of rows and the numbers of columns. Since we are told m > n the maximum rank for the matrix would be the value of n. The minimum rank for a mxn matrix where m > n is 1 since we are told to assume that the matrix is non-zero. There is at least one non-zero value in the matrix, so the minimum rank of the matrix would be 1. 
+
+(3) What is the rank of matrix B?
+
+B = $\begin{bmatrix} 1 & 2 & 1 \\ 3 & 6 & 3 \\ 2 & 4 & 2 \end{bmatrix}$
+
+Solution:
+
+Reduce matrix B to row echelon form
+
+3 * row 1 - row 2 to row 2 = $\begin{bmatrix} 1 & 2 & 1 \\ 0 & 0 & 0 \\ 2 & 4 & 2 \end{bmatrix}$
+
+2 * row 1 - row 3 to row 3 = $\begin{bmatrix} 1 & 2 & 1 \\ 0 & 0 & 0 \\ 0 & 0 & 0 \end{bmatrix}$
+
+Since matrix B is now in reduced row echelon form to find the rank of B count the number of non-zero rows. Since only 1 non-zero row remains after reducing to row echelon form, the rank of matrix A is 1.
+
+# Problem Set 2
+
+matrix A = $\begin{bmatrix} 1 & 2 & 3 \\ 0 & 4 & 5 \\ 0 & 0 & 6 \end{bmatrix}$
+
+Find the characteristic polynomial
+
+$det(A - \lambda I_{3})$ = 0
+
+Solve for $A - \lambda I_{3}$
+
+  = $\begin{bmatrix} 1 & 2 & 3 \\ 0 & 4 & 5 \\ 0 & 0 & 6 \end{bmatrix} - \lambda \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix}$
+                   
+  = $\begin{bmatrix} 1 & 2 & 3 \\ 0 & 4 & 5 \\ 0 & 0 & 6 \end{bmatrix} - \begin{bmatrix} \lambda & 0 & 0 \\ 0 & \lambda & 0 \\ 0 & 0 & \lambda \end{bmatrix}$
+  
+  = $\begin{bmatrix} (1 - \lambda) & 2 & 3 \\ 0 & (4 - \lambda) & 5 \\ 0 & 0 & (6 - \lambda) \end{bmatrix}$
+
+$A - \lambda I_{3} = \begin{bmatrix} (1 - \lambda) & 2 & 3 \\ 0 & (4 - \lambda) & 5 \\ 0 & 0 & (6 - \lambda) \end{bmatrix}$
+
+$det(\begin{bmatrix} (1 - \lambda) & 2 & 3 \\ 0 & (4 - \lambda) & 5 \\ 0 & 0 & (6 - \lambda) \end{bmatrix}) = 0$
+
+  = $(1 - \lambda)((4 - \lambda)(6 - \lambda) - (-5 * 0)) - 2(0(6 - \lambda) - (5 * 0)) + 3((0 * 0) - (4 - \lambda) * 0)) = 0$
+                      
+  = $(1 - \lambda)((4 - \lambda)(6 - \lambda)) = 0$
+  
+  = $(1 - \lambda)(24 - 10 \lambda + \lambda ^2) = 0$ 
+  
+  = $(24 - 10 \lambda + \lambda ^2 - 24 \lambda + 10 \lambda^2 - \lambda ^3)$
+  
+  = $(-\lambda ^3 + 11 \lambda^2 - 34 \lambda + 24) = 0$
+  
+multiply by -1 to make leading coefficient positive
+
+$-1(- \lambda ^3 + 11 \lambda^2 - 34 \lambda + 24)= 0$   
+
+= $(\lambda ^3 - 11 \lambda^2 + 34 \lambda - 24)= 0$
+
+The characteristic polynomial is $\lambda ^3 - 11 \lambda^2 + 34 \lambda - 24 = 0$
+
+Compute Eigenvalues
+
+Since we found the characteristic polynomial, we can use it to find the eigenvalues as the roots of the characteristic polynomial are equal to the eigenvalues
+
+$\lambda ^3 - 11 \lambda^2 + 34 \lambda - 24 = 0$
+
+= $(1 - \lambda)(4 - \lambda)(6 - \lambda) = 0$
+
+= $1 - \lambda = 0 | 4 - \lambda = 0 | 6 - \lambda = 0$
+
+= $\lambda = 1 | \lambda = 4 | \lambda = 6$
+
+The eigenvalues for the matrix A are $\lambda = 1$, $\lambda = 4$, and $\lambda = 6$
+
+Compute Eigenvectors
+
+To find the eigenvectors, we use the eigenvalues and plug them into $(A - \lambda I_{3})v = 0$ where v is a vector
+
+$\lambda = 1$
+
+$(A - 1I_{3})v = 0$
+
+= $(\begin{bmatrix} 1 & 2 & 3 \\ 0 & 4 & 5 \\ 0 & 0 & 6 \end{bmatrix} - \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix})v = 0$
+
+= $\begin{bmatrix} 0 & 2 & 3 \\ 0 & 3 & 5 \\ 0 & 0 & 5 \end{bmatrix}v = 0$
+
+reduce to row echelon form (I won't show the steps due to not making my assignment too long and repetitive)
+
+= $\begin{bmatrix} 0 & 1 & 0 \\ 0 & 0 & 1 \\ 0 & 0 & 0 \end{bmatrix}v = 0$
+
+= $\begin{bmatrix} 0 & 1 & 0 \\ 0 & 0 & 1 \\ 0 & 0 & 0 \end{bmatrix} \begin{bmatrix} v1 \\ v2 \\ v3 \end{bmatrix} = 0$
+
+$0 * v1 + 1 * v2 + 0 * v3 = 0$
+
+$v2 = 0$
+
+$0 * v1 + 0 * v2 * 1 * v3 = 0$
+
+$v3 = 0$
+
+Let v1 = 1 
+
+$v1 = 1$
+
+Eigenvector for $\lambda = 1$ is $\begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}$
+
+$\lambda = 4$
+
+$(A - 4I_{3})v = 0$
+
+= $(\begin{bmatrix} 1 & 2 & 3 \\ 0 & 4 & 5 \\ 0 & 0 & 6 \end{bmatrix} - \begin{bmatrix} 4 & 0 & 0 \\ 0 & 4 & 0 \\ 0 & 0 & 4 \end{bmatrix})v = 0$
+
+= $\begin{bmatrix} -3 & 2 & 3 \\ 0 & 0 & 5 \\ 0 & 0 & 2 \end{bmatrix}v = 0$
+
+reduce to row echelon form (I won't show the steps due to not making my assignment too long and repetitive)
+
+= $\begin{bmatrix} 1 & -2/3 & 0 \\ 0 & 0 & 1 \\ 0 & 0 & 0 \end{bmatrix}v = 0$
+
+= $\begin{bmatrix} 1 & -2/3 & 0 \\ 0 & 0 & 1 \\ 0 & 0 & 0 \end{bmatrix} \begin{bmatrix} v1 \\ v2 \\ v3 \end{bmatrix} = 0$
+
+= $1 * v1 - (2/3)v2 + 0 * v3 = 0$
+
+= $v1 - (2/3)v2 = 0$
+
+$v1 = (2/3)v2$
+
+$0 * v1 + 0 * v2 + 1 * v3 = 0$
+
+$v3 = 0$
+
+Let v2 = 1
+
+$v2 = 1$
+
+Then solve for v1
+
+$v1 = (2/3)(1) = 2/3$
+
+$v1 = 2/3$
+
+Eigenvector for $\lambda = 4$ is $\begin{bmatrix} 2/3 \\ 1 \\ 0 \end{bmatrix}$
+
+$\lambda = 6$
+
+$(A - 6I_{3})v = 0$
+
+= $(\begin{bmatrix} 1 & 2 & 3 \\ 0 & 4 & 5 \\ 0 & 0 & 6 \end{bmatrix} - \begin{bmatrix} 6 & 0 & 0 \\ 0 & 6 & 0 \\ 0 & 0 & 6 \end{bmatrix})v = 0$
+
+= $\begin{bmatrix} -5 & 2 & 3 \\ 0 & -2 & 5 \\ 0 & 0 & 0 \end{bmatrix}v = 0$
+
+reduce to row echelon form (I won't show the steps due to not making my assignment too long and repetitive)
+
+= $\begin{bmatrix} 1 & 0 & -8/5 \\ 0 & 1 & -5/2 \\ 0 & 0 & 0 \end{bmatrix}v = 0$
+
+=$\begin{bmatrix} 1 & 0 & -8/5 \\ 0 & 1 & -5/2 \\ 0 & 0 & 0 \end{bmatrix} \begin{bmatrix} v1 \\ v2 \\ v3 \end{bmatrix} = 0$
+
+$1 * v1 + 0 * v2 - (8/5)v3 = 0$
+
+= $v1 - (8/5)v3 = 0$
+
+$v1 = (8/5)v3$
+
+$0 * v1 + 1 * v2 - (5/2)v3 = 0$
+
+= $v2 - (5/2)v3 = 0$
+
+= $v2 = (5/2)v3$
+
+Let v3 = 1
+
+$v3 = 1$
+
+Then solve for v1 and v2
+
+$v1 = (8/5)(1) = 8/5$
+
+$v1 = 8/5$
+
+v2 = (5/2)(1) = 5/2
+
+$v2 = 5/2$
+
+Eigenvector for $\lambda = 6$ is $\begin{bmatrix} 8/5 \\ 5/2 \\ 1 \end{bmatrix}$
+
+The eigenvectors for the matrix A are $\begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}$, $\begin{bmatrix} 2/3 \\ 1 \\ 0 \end{bmatrix}$, and $\begin{bmatrix} 8/5 \\ 5/2 \\ 1 \end{bmatrix}$

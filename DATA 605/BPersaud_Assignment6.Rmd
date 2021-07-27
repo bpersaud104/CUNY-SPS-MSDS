@@ -1,0 +1,224 @@
+---
+title: "Data 605 HW 6"
+author: "Bryan Persaud"
+date: "3/8/2020"
+output: html_document
+---
+
+# 1
+
+A box contains 54 red marbles, 9 white marbles, and 75 blue marbles. If a marble is randomly selected from the box,
+what is the probability that it is red or blue? Express your answer as a fraction or a decimal number rounded to four
+decimal places.
+
+Solution:
+
+```{r}
+round((54 + 75) / (54 + 9 + 75), 4)
+```
+
+The probability that a randomly selected marble from the box is red or blue is 0.9348 or 93.48%.
+
+# 2
+
+You are going to play mini golf. A ball machine that contains 19 green golf balls, 20 red golf balls, 24 blue golf balls, and
+17 yellow golf balls, randomly gives you your ball. What is the probability that you end up with a red golf ball? Express
+your answer as a simplified fraction or a decimal rounded to four decimal places.
+
+Solution:
+
+```{r}
+round(20 / (19 + 20 + 24 + 17), 4)
+```
+
+The probability that the randomly given golf ball from the ball machine is red is 0.25 or 25%.
+
+# 3
+
+A pizza delivery company classifies its customers by gender and location of residence. The research department has
+gathered data from a random sample of 1399 customers. The data is summarized in the table below.What is the probability that a customer is not male or does not live with parents? Write your answer as a fraction or a
+decimal number rounded to four decimal places.
+
+Solution:
+
+```{r}
+round((728 + 932 - 476) / 1399, 4)
+```
+
+The probability that a customer is not male or does not live with parents is 0.8463 or 84.63%.
+
+# 4
+
+Determine if the following events are independent.
+Going to the gym. Losing weight.
+Answer: A) Dependent B) Independent
+
+Solution:
+
+The answer is A) Dependent. Going to the gym and losing weight have a correlation, if the probability of going to the gym is high then the probability of losing weight will be high as well.
+
+# 5
+
+A veggie wrap at City Subs is composed of 3 different vegetables and 3 different condiments wrapped up in a tortilla. If
+there are 8 vegetables, 7 condiments, and 3 types of tortilla available, how many different veggie wraps can be made?
+
+Solution:
+
+```{r}
+(factorial(8) / (factorial(8 - 3) * factorial(3))) * (factorial(7) / (factorial(7 - 3) * factorial(3))) * (factorial(3) / (factorial(3 - 1) * factorial(1)))
+```
+
+The different number of veggie wraps that can be made are 5880.
+
+# 6
+
+Determine if the following events are independent.
+Jeff runs out of gas on the way to work. Liz watches the evening news.
+Answer: A) Dependent B) Independent
+
+Solution:
+
+The answer is B) Independent. Jeff runs out of gas on the way to work and Liz watches the evening news have no correlation, the probability of Jeff running out of gas does not affect the probability of Liz watching the evening news.
+
+# 7
+
+The newly elected president needs to decide the remaining 8 spots available in the cabinet he/she is appointing. If there
+are 14 eligible candidates for these positions (where rank matters), how many different ways can the members of the
+cabinet be appointed?
+
+Solution:
+
+```{r}
+factorial(14) / factorial(14 - 8)
+```
+
+The different ways the members of the cabinet can be appointed are 121080960.
+
+# 8
+
+A bag contains 9 red, 4 orange, and 9 green jellybeans. What is the probability of reaching into the bag and randomly
+withdrawing 4 jellybeans such that the number of red ones is 0, the number of orange ones is 1, and the number of green
+ones is 3? Write your answer as a fraction or a decimal number rounded to four decimal places.
+
+Solution:
+
+```{r}
+round((factorial(9) / (factorial(9 - 0) * factorial(0))) * (factorial(4) / (factorial(4 - 3) * factorial(3))) * factorial(9) / (factorial(9 - 3) * factorial(3)) * ((factorial(22 - 4) * factorial(4)) / factorial(22)), 4)
+```
+
+The probability of reaching into the bag and randomly withdrawing 4 jellybeans such that the number of red ones is 0, he number of orange ones is 1, and the number of green ones is 1 is 0.0459 or 4.59%.
+
+# 9
+
+Evaluate the following expression.
+11!/7!
+
+Solution:
+
+```{r}
+factorial(11) / factorial(7)
+```
+
+The answer is 7920.
+
+# 10
+
+Describe the complement of the given event.
+67% of subscribers to a fitness magazine are over the age of 34
+
+Solution:
+
+The complement of the given event 67% of subscribers to a fitness magazine are over the age of 34 is 33% of subscribers to a fitness magazine are of the age 34 or under the age of 34.
+
+# 11
+
+If you throw exactly three heads in four tosses of a coin you win $97. If not, you pay me $30.
+Step 1. Find the expected value of the proposition. Round your answer to two decimal places.
+Step 2. If you played this game 559 times how much would you expect to win or lose? (Losses must be entered as
+negative.)
+
+Solution:
+
+Step 1:
+
+```{r}
+factorial(4) / (factorial(4 - 3) * factorial(3) * (4^2))
+```
+
+```{r}
+round((97 * 0.25) + (-30 * 0.75), 2)
+```
+
+The expected value of the proposition is $1.75.
+
+Step 2:
+
+```{r}
+559 * 1.75
+```
+
+If you played this game 559 times, you would expect to win $978.25.
+
+# 12
+
+Flip a coin 9 times. If you get 4 tails or less, I will pay you $23. Otherwise you pay me $26.
+Step 1. Find the expected value of the proposition. Round your answer to two decimal places.
+Step 2. If you played this game 994 times how much would you expect to win or lose? (Losses must be entered as
+negative.)
+
+Solution:
+
+Step 1:
+
+```{r}
+round((23 * 0.50 - 26 * 0.50), 2)
+```
+
+The expected value of the proposition is $-1.5.
+
+Step 2:
+
+```{r}
+994 * -1.5
+```
+
+If you played this game 994 times, you would expect to lose $-1491.
+
+# 13
+
+The sensitivity and specificity of the polygraph has been a subject of study and debate for years. A 2001 study of the
+use of polygraph for screening purposes suggested that the probability of detecting a liar was .59 (sensitivity) and that
+the probability of detecting a "truth teller" was .90 (specificity). We estimate that about 20% of individuals selected for
+the screening polygraph will lie.
+a. What is the probability that an individual is actually a liar given that the polygraph detected him/her as such? (Show
+me the table or the formulaic solution or both.)
+b. What is the probability that an individual is actually a truth-teller given that the polygraph detected him/her as
+such? (Show me the table or the formulaic solution or both.)
+c. What is the probability that a randomly selected individual is either a liar or was identified as a liar by the
+polygraph? Be sure to write the probability statement.
+
+Solution:
+
+a.
+
+```{r}
+round((0.59 * 0.20) / (0.59 * 0.20 + (1 - 0.90) * (1 - 0.20)), 4)
+```
+
+The probability that an individual is actually a liar given that the polygraph detected him/her as such is 0.5960 or 59.60%
+
+b.
+
+```{r}
+round(((0.90 * (1 - 0.20)) / ((1 - 0.59) * 0.20 + 0.90 * (1 - 0.20))), 4)
+```
+
+The probability that an individual is actually a truth-teller given that the polygraph detected him/her as such is 0.8978 or 89.78%.
+
+c.
+
+```{r}
+0.20 + 0.59 - 0.59 * 0.20
+```
+
+The probability that a randomly selected individual is either a liar or was identified as a liar by the polygraph is 0.672 or 67.20%.

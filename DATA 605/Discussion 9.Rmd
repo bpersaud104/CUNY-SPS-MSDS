@@ -1,0 +1,90 @@
+---
+title: "Discussion 9"
+author: "Bryan Persaud"
+date: "3/24/2020"
+output: html_document
+---
+
+# Chapter 9 Section 9.2 Exercise 5
+
+A die is thrown until the first time the total sum of the face values of the die is 700 or greater. Estimate the probability that, for this to happen,
+
+(a) more than 210 tosses are required.
+(b) less than 190 tosses are required.
+(c) between 180 and 210 tosses, inclusive, are required.
+
+Solution:
+
+First lets calculate the total sum of the face values of the die. 
+
+${ S }_{ n }={ X }_{ 1 }+{ X }_{ 2 }+...+{ X }_{ n }$
+
+The expected value and variance would be:
+
+$E(X)=\frac { 7 }{ 2 }$ and $E({ S }_{ n })=n*\frac { 7 }{ 2 }$
+
+$V(X)=\frac { 35 }{ 12 } $ and $V({ S }_{ n })=n*\frac { 35 }{ 12 }$ which means that $σ({ S }_{ n })=\sqrt { n*\frac { 35 }{ 12 }  }$
+
+(a)
+
+$P({ S }_{ 210 }<700)$
+
+$E({ S }_{ 210 })=210*\frac { 7 }{ 2 }=735$
+ 
+$σ({ S }_{ 210 })=\sqrt { 210*\frac { 35 }{ 12 }  }=24.75$
+ 
+```{r}
+round((700 - 735) / 24.75, 4)
+```
+ 
+```{r}
+round(pnorm(-1.4141), 4)
+```
+
+$P({ S }_{ 210 }<700)=0.0787$
+
+The probability that the total sum of the face values of the die requires more than 210 tosses is 0.0787.
+
+(b)
+
+$P({ S }_{ 190 }\ge 700)$
+
+$E({ S }_{ 190 })=190*\frac { 7 }{ 2 }=665$
+ 
+$σ({ S }_{ 190 })=\sqrt { 190*\frac { 35 }{ 12 }  }=23.54$
+
+```{r}
+round((700 - 665) / 23.54, 4)
+```
+
+```{r}
+round(1 - pnorm(1.4868), 4)
+```
+
+$P({ S }_{ 190 }\ge 700)$
+
+The probability that the total sum of the face values of the die requires less than 190 tosses is 0.0685.
+
+(c)
+
+$P({ S }_{ 180 }<700, P({ S }_{ 210 }\ge 700)$ =
+
+$P({ S }_{ 180 }<700)-P({ S }_{ 180 }<700, P({ S }_{ 210 }\ge 700)$ =
+
+$P({ S }_{ 180 }<700)-P({ S }_{ 210 }\ge 700)$
+
+$P({ S }_{ 180 }<700)$
+
+$E({ S }_{ 180 })=180*\frac { 7 }{ 2 }=630$
+ 
+$σ({ S }_{ 180 })=\sqrt { 180*\frac { 35 }{ 12 }  }=22.91$
+
+```{r}
+pnorm(22.91)
+```
+
+```{r}
+1 - 0.0757
+```
+
+The probability that the total sum of the face values of the die requires between 180 and 210 tosses is 0.0685.

@@ -1,0 +1,50 @@
+---
+title: "Discussion 15"
+author: "Bryan Persaud"
+date: "5/12/2020"
+output: html_document
+---
+
+# Chapter 12 Section 12.3 Exercise 17
+
+In Exercises 9 – 26, find fx, fy, fxx, fyy, fxy and fyx.
+
+17. f(x, y) = cos(5xy^3)
+
+Solution:
+
+To find fx, you take the derivative of f(x, y) and treat y as a constant.
+
+fx(x, y) = $-5{ y }^{ 3 }sin(5x{ y }^{ 3 })$ 
+
+To find fy, you take the derivative of f(x, y) and treat x as a constant.
+
+fy(x, y) = $-15x{ y }^{ 2 }sin(5x{ y }^{ 3 })$
+
+To find fxx, you take the derivative of fx and treat y as a constant.
+
+fxx(x, y) = $-25{ y }^{ 6 }cos(5x{ y }^{ 3 })$
+
+To find fyy, you take the derivative of fy and treat x as a constant.
+
+$-15x{ y }^{ 2 }sin(5x{ y }^{ 3 })$ Take out constants.
+
+$-15x({ y }^{ 2 }sin(5x{ y }^{ 3 }))$ Take the derivative with regards to derivative of products.
+
+fyy(x, y) = $-15x(2ysin(5x{ y }^{ 3 })+15x{ y }^{ 4 }cos(5x{ y }^{ 3 }))$
+
+To find fxy, you take the derivative of fx and treat x as a constant.
+
+$-5{ y }^{ 3 }sin(5x{ y }^{ 3 })$ Take out constant.
+
+$-5({ y }^{ 3 }sin(5x{ y }^{ 3 }))$ Take the derivative with regards to derivative of products.
+
+fxy(x, y) = $-5(3{ y }^{ 2 }sin(5x{ y }^{ 3 })+15x{ y }^{ 5 }cos(5x{ y }^{ 3 }))$
+
+To find fyx, you take the derivative of fy and treat y as a constant.
+
+$-15x{ y }^{ 2 }sin(5x{ y }^{ 3 })$ Take out constants.
+
+$-15{ y }^{ 2 }(xsin(5x{ y }^{ 3 }))$ Take the derivative with regards to derivative of products.
+
+$-15{ y }^{ 2 }(sin(5x{ y }^{ 3 })5x{ y }^{ 3 }+cos(5x{ y }^{ 3 }))$

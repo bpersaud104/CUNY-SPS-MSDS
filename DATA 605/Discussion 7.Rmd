@@ -1,0 +1,22 @@
+---
+title: "Discussion 7"
+author: "Bryan Persaud"
+date: "3/10/2020"
+output: html_document
+---
+
+# Chapter 6 Section 6.1 Exercise 29
+
+In the casino game of blackjack the dealer is dealt two cards, one face up and one face down, and each player is dealt two cards, both face down. If the
+dealer is showing an ace the player can look at his down cards and then make a bet called an insurance bet. (Expert players will recognize why it is called
+insurance.) If you make this bet you will win the bet if the dealer’s second card is a ten card: namely, a ten, jack, queen, or king. If you win, you are
+paid twice your insurance bet; otherwise you lose this bet. Show that, if the only cards you can see are the dealer’s ace and your two cards and if your
+cards are not ten cards, then the insurance bet is an unfavorable bet. Show, however, that if you are playing two hands simultaneously, and you have no
+ten cards, then it is a favorable bet. (Thorp13 has shown that the game of blackjack is favorable to the player if he or she can keep good enough track
+of the cards that have been played.)
+
+Solution:
+
+If the only cards you can see are the dealer's ace and your own two cards, and neither of your two cards are a 10, then the insurance bet is an unfavorable bet. This is because there are 49 cards remaining in the deck and 16 out of the 49 cards are a 10(4 ten cards, 4 jacks, 4 queens, and 4 kings). If you do an insurance bet, then the expected value is $2*\frac { 16 }{ 49 } -1*\frac { 33 }{ 49 } =\frac { 32 }{ 49 } -\frac { 33 }{ 49 } =-\frac { 1 }{ 49 }$ or -0.0204.
+
+If the only cards you can see are the dealer's ace and the cards in the two hands you are playing simultaneously, and you have no ten cards, then the insurance bet is a favorable one. This is because there are 47 cards remaining in the deck and 16 out of 47 cards are a 10. If you do an insurance bet then the expected value is $2*\frac { 16 }{ 47 } -1*\frac { 31 }{ 47 } =\frac { 32 }{ 47 } -\frac { 31 }{ 49 } =\frac { 1 }{ 47 }$ or 0.0213.

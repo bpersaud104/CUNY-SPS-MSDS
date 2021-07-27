@@ -1,0 +1,46 @@
+---
+title: "Discussion 6"
+author: "Bryan Persaud"
+date: "3/3/2020"
+output: html_document
+---
+
+# Chapter 3 Section 3.2 Exercise 12
+
+2 A poker hand is a set of 5 cards randomly chosen from a deck of 52 cards.
+Find the probability of a
+(a) royal flush (ten, jack, queen, king, ace in a single suit).
+(b) straight flush (five in a sequence in a single suit, but not a royal flush).
+(c) four of a kind (four cards of the same face value).
+(d) full house (one pair and one triple, each of the same face value).
+(e) flush (five cards in a single suit but not a straight or royal flush).
+(f) straight (five cards in a sequence, not all the same suit). (Note that in
+straights, an ace counts high or low.)
+
+Solution:
+
+The number of possible hands you can achieve are $\begin{pmatrix} 52 \\ 5 \end{pmatrix} = (\frac { 52! }{ 5!(52-5)! } ) = 2,598,960$
+
+# (a)
+
+There are 4 possible way to get a royal flush, one for each suit. So the probability of a royal flush is $\frac { 4 }{ 2,598,960 } = 0.000001539%$.
+
+# (b)
+
+Since we are not including a royal flush, the highest card we look at is a king and the lowest card we look at is an ace. There are 9 hands we can make for our 5 card hand, from a 5 high straight flush to a king high straight flush. There are 4 possible suits for each of these 9 hands so the probability of getting a straight flush is $\frac { 9*4 }{ 2,598,960 } = \frac { 36 }{ 2,598,960 } = 0.00001385%$.
+
+# (c)
+
+There are 13 possible ways to get a four of a kind, since there are 13 different kinds of cards in a deck. We have 5 cards in a poker hand so the remaining card will be from the 48 remaining cards. So the probability of getting a four of a kind is $\frac { 13*48 }{ 2,598,960 } = \frac { 624 }{ 2,598,960 } = 0.0002401%$.
+
+# (d)
+
+We need a three of a kind and a pair to form a full house. For the three of a kind we have 13 ways to get a three of a kind, since there are 13 different kind of cards. The three of a kind can be formed from any 4 suits. The last two cards in the 5 card hand is a pair, and there are 12 ways to get a pair since one kind of card is used for the three of a kind. The suit can be any 2 of 4 suits since the pair is two cards that have the same face value, so there are $\begin{pmatrix} 4 \\ 2 \end{pmatrix} = (\frac { 4! }{ 2!(4-2)! } ) = 6$ possible ways to get 2 our of 4 suits. So the probability of getting a full house is $\frac { 13*4*12*6 }{ 2,598,960 } = \frac { 3744 }{ 2,598,960 } = 0.001441%$.
+
+# (e)
+
+To get a flush we need all 5 cards in the hand to have the same suit. There are 13 different kinds of cards and only 5 cards in the hand, so $\begin{pmatrix} 13 \\ 5 \end{pmatrix} = (\frac { 13! }{ 5!(13-5)! } ) = 1278$. We are told not to include any straights, so there are 10 straights that can be formed from king high straight to 5 high straight to take out. 1287 - 10 = 1277. There are 4 suits, so the probability of getting a flush is $\frac { 1277*4 }{ 2,598,960 } = \frac { 5108 }{ 2,598,960 } = 0.001965%$.
+
+# (f)
+
+To get a straight we need 5 consecutive numbers, the suit of the card is not important. So there are 10 possible ways to a straight. Once we get the first card we would already know the 4 other cards that follow, we just need to know what suit the cards are. So there are 4 suits to be determined for the 5 cards, so 4 * 4 * 4 * 4 * 4 or = 1024. There are 10 possible ways to get a straight, so 10 * 1024 = 10240. We also need to subtract the number of straight flushes and royal flushes, so the probability of getting a straight is $\frac { 10240-36-4 }{ 2,598,960 } = \frac { 10200 }{ 2,598,960 } = 0.003925%$.

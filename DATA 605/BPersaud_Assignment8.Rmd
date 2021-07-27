@@ -1,0 +1,105 @@
+---
+title: "Data 605 HW 8"
+author: "Bryan Persaud"
+date: "3/22/2020"
+output: html_document
+---
+
+# 11
+
+A company buys 100 lightbulbs, each of which has an exponential lifetime of 1000 hours. What is the expected time for the first of these bulbs to burn out? (See Exercise 10.)
+
+Solution:
+
+By looking at exercise 10, we know that if ${ X }_{ i }\sim Exp({ \lambda  })$ then $min{ X }_{ i }\sim Exp(\Sigma { \lambda  })$, which gives us:
+
+$\frac { 1 }{ { \lambda  } } =1000$ since we are told each lightbulb has an exponential lifetime of 1000 hours.
+
+${ \lambda  }=\frac { 1 }{ 1000 }$
+
+$min{ X }_{ i }\sim Exp(\lambda )=100*\frac { 1 }{ 1000 } =\frac { 100 }{ 1000 } =\frac { 1 }{ 10 }$ since we are told the company buys 100 lightbulbs.
+
+$E(min{ X }_{ i }) =\frac { 1 }{ \lambda  } =\frac { 1 }{ \frac { 1 }{ 10 }  } =10$
+
+The expected time for the first of these bulbs to burn out is 10 hours.
+
+# 14
+
+Assume that X1 and X2 are independent random variables, each having an exponential density with parameter λ. Show that Z = X1 − X2 has density fZ(z) = (1/2)λe−λ|z|
+.
+
+Solution:
+
+$Z={ X }_{ 1 }-{ X }_{ 2 }$ which we can rewrite as ${ X }_{ 1 }=Z+{ X }_{ 2 }$ Let us have ${ X }_{ 1 }=X and { X }_{ 2 }=Y$
+
+Then ${ f }_{ z }(Z)=\int _{ -\infty  }^{ \infty  }{ { f }_{ { X } }(Z+Y){ f }_{ y }(Y)dy }$
+
+If X < 0 then we know that ${ f }_{ x }(X)$ and ${ f }_{ y }(X)$ are 0. and if Z <= 0, then (Z + Y) and Y must both be positive. This tells us that Y > -Z.
+
+Then we get ${ f }_{ z }(Z)=\int _{ -\infty  }^{ \infty  }{ { f }_{ x }(Z+Y){ f }_{ y }(Y) } dy=\int _{ -z }^{ \infty  }{ { \lambda  }^{ 2 }{ e }^{ -\lambda (z+2y) }dy=\frac { -\lambda  }{ 2 } { e }^{ -\lambda (z+2y) } }$ which equals to $\frac { \lambda  }{ 2 } { e }^{ \lambda z }=\frac { 1 }{ 2 } \lambda { e }^{ -\lambda \left| z \right|  }$
+
+We also need to check if z > 0. If Z > 0, then this tells us that y > 0. 
+
+Then we get ${ f }_{ z }(Z)=\int _{ 0 }^{ \infty  }{ { f }_{ x }(Z+Y){ f }_{ y }(Y) } dy$ which is equal to  $\frac { \lambda  }{ 2 } { e }^{ \lambda z }=\frac { 1 }{ 2 } \lambda { e }^{ -\lambda \left| z \right|  }$
+
+So $Z={ X }_{ 1 }-{ X }_{ 2 }$ has density $\frac { 1 }{ 2 } \lambda { e }^{ -\lambda \left| z \right|  }$
+
+# 1
+
+Let X be a continuous random variable with mean µ = 10 and variance σ2 = 100/3. Using Chebyshev’s Inequality, find an upper bound for the following probabilities.
+
+(a) P(|X − 10| ≥ 2).
+(b) P(|X − 10| ≥ 5).
+(c) P(|X − 10| ≥ 9).
+(d) P(|X − 10| ≥ 20).
+
+Chebyshev's Inequality is $P(\left| X-\mu  \right| \ge y)\le \frac { { σ }^{ 2 } }{ {y }^{ 2 } }$ 
+
+
+(a)
+
+Solution:
+
+$P(\left| X-10 \right| \ge 2)\le \frac { \frac { 100 }{ 3 }  }{ 2^{ 2 } } =\frac { 100 }{ 3*4 } =\frac { 100 }{ 12 }$
+
+```{r}
+round((100 / 12), 4)
+```
+
+An upper bound for (a) is 8.3333.
+
+(b)
+
+Solution:
+
+$P(\left| X-10 \right| \ge 5)\le \frac { \frac { 100 }{ 3 }  }{ { 5 }^{ 2 } } =\frac { 100 }{ 3*25 } =\frac { 100 }{ 75 } =\frac { 4 }{ 3 }$
+
+```{r}
+round((4 / 3), 4)
+```
+
+An upper bound for (b) is 1.3333.
+
+(c)
+
+Solution:
+
+$P(\left| X-10 \right| \ge 9)\le \frac { \frac { 100 }{ 3 }  }{ 9^{ 2 } } =\frac { 100 }{ 3*81 } =\frac { 100 }{ 243 }$
+
+```{r}
+round((100 / 243), 4)
+```
+
+An upper bound for (c) is 0.4115.
+
+(d)
+
+Solution:
+
+$P(\left| X-10 \right| \ge 20)\le \frac { \frac { 100 }{ 3 }  }{ 20^{ 2 } } =\frac { 100 }{ 3*400 } =\frac { 100 }{ 1200 } =\frac { 1 }{ 12 }$
+
+```{r}
+round((1 / 12), 4)
+```
+
+An upper bound for (d) is 0.0833.

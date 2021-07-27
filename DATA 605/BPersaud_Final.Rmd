@@ -1,0 +1,281 @@
+---
+title: "Data 605 Final Exam"
+author: "Bryan Persaud"
+date: "5/22/2020"
+output: html_document
+---
+
+# Problem 1
+
+Using R, generate a random variable X that has 10,000 random uniform numbers from 1 to N, where N can be any number of your choosing greater than or equal to 6. Then generate a random variable Y that has 10,000 random normal numbers with a mean of $\mu =\sigma =(N+1)/2$.  
+
+```{r}
+N <- 11 # Set a value for N
+numbers <- 10000 # Set the amount for the random numbers
+X <- runif(numbers, min = 1, max = N) # Generate random variable X
+summary(X) # Display X's information
+mu = sigma = (N + 1) / 2 # Set value for mu and sigma
+Y <- rnorm(numbers, mean = mu, sd = sigma) # Generate random variable Y
+summary(Y) # Display Y's information
+```
+
+Probability. Calculate as a minimum the below probabilities a through c.  Assume the small letter "x" is estimated as the median of the X variable, and the small letter "y" is estimated as the 1st quartile of the Y variable.  Interpret the meaning of all probabilities.
+5 points  a.   P(X>x | X>y)		b.  P(X>x, Y>y)		c.  P(X<x | X>y)
+
+```{r}
+x <- median(X) # Median of X
+y <- quantile(Y, 0.25) # 1st quartile of Y
+```
+
+a. P(X>x | X>y)
+
+```{r}
+prob_Xx_and_Xy <- sum(X > x & X > y) / numbers # Probabilty that X > x and X > y
+prob_Xy <- sum(X > y) / numbers # Probability that X > y
+round(prob_Xx_given_Xy <- prob_Xx_and_Xy / prob_Xy, 4) # Divide the first probability found by the second probability found
+```
+
+The probability that X > x given that X > y is equal to 0.5561 or 55.61%. (at the moment I ran the code) 
+
+b. P(X>x, Y>y)
+
+```{r}
+round(sum(X > x & Y > y) / numbers, 4) # Probability that X > x and Y > y
+```
+
+The probability that X > x while at the same time Y > y is 0.3754 or 37.54%. (at the moment I ran the code)
+
+c. P(X<x | X>y)
+
+```{r}
+prob_Xx_and_Xy_less <- sum(X < x & X > y) / numbers # Probability that X < x and X > y
+round(prob_Xx_and_Xy_less / prob_Xy, 4)
+```
+
+The probability that X < x given that X > y is 0.4439 or 44.39%. (at the moment I ran the code)
+
+5 points.   Investigate whether P(X>x and Y>y)=P(X>x)P(Y>y) by building a table and evaluating the marginal and joint probabilities.
+
+```{r}
+table <- matrix(c(sum(X > x & Y < y) / numbers, sum(X > x & Y > y) / numbers, sum(X < x & Y < y) / numbers, sum(X < x & Y > y) / numbers), ncol = 2, byrow = TRUE) # Create a matrix showing the different probabilities
+table <- cbind(table, c(table[1,1] + table[1,2], table[2,1] + table[2,2])) # Get total of columns
+table <- rbind(table, c(table[1,1] + table[2,1], table[1,2] + table[2,2], table[1,3] + table[2,3])) # Get total of rows
+colnames(table) <- c("X > x", "X < x", "Total") # Rename columns to show probabilites of X and x
+rownames(table) <- c("Y < y", "Y > y", "Total") # Rename rows to show probabilities of Y and y
+as.table(table) # Convert matrix into a table
+```
+
+```{r}
+round(table[3,1] * table[2,3], 4) # P(X >  x) * P(Y > y)
+round(table[2,1], 4) # P(X > x & Y > y)
+```
+
+From the table built and by evaluating the marginal and joint probabilities, we can see that P(X > x and Y > y) is almost equal to P(X > x) * P(Y > y). There is a slight rounding error. 
+
+5 points.  Check to see if independence holds by using Fisher’s Exact Test and the Chi Square Test.  What is the difference between the two? Which is most appropriate?
+
+```{r}
+fisher.test(table)
+```
+
+```{r}
+chisq.test(table)
+```
+
+For both the Fisher's Exact Test and the Chi Square Test independence holds. This is seen by the high p-value we get from both tests. The difference between the two is Fisher's Exact Test is best used when dealing with a small sample size and the Chi Square Test is best used when dealing with a large sample size. Chi Square Test would be most appropriate to use in this situation.
+
+# Problem 2
+
+```{r}
+train_dataset <- read.csv("https://raw.githubusercontent.com/bpersaud104/Data605/master/train.csv", header = TRUE) # Load training dataset from Kaggle
+test_dataset <- read.csv("https://raw.githubusercontent.com/bpersaud104/Data605/master/test.csv", header = TRUE) # Load testing dataset from Kaggle
+```
+
+5 points.  Descriptive and Inferential Statistics. Provide univariate descriptive statistics and appropriate plots for the training data set. Provide a scatterplot matrix for at least two of the independent variables and the dependent variable. Derive a correlation matrix for any three quantitative variables in the dataset. Test the hypotheses that the correlations between each pairwise set of variables is 0 and provide an 80% confidence interval. Discuss the meaning of your analysis.  Would you be worried about familywise error? Why or why not?
+
+```{r}
+summary(train_dataset) # Show statistics for training dataset
+```
+
+I chose LotArea and GarageArea as the two independent variables and SalePrice as the dependent variable. Let's plot these variables.
+
+```{r}
+hist(train_dataset$LotArea) # Plot LotArea variable from training dataset
+```
+
+```{r}
+hist(train_dataset$GarageArea) # Plot GarageArea variable from training dataset
+```
+
+```{r}
+hist(train_dataset$SalePrice) # Plot SalePrice from training dataset
+```
+
+For the most part, all three appear to be right skewed, with LotArea being heavily right skewed. 
+
+Let's show a scatterplot of LotArea and GarageArea with SalePrice.
+
+```{r}
+plot(train_dataset$LotArea, train_dataset$SalePrice) # Scatterplot of LotArea and SalePrice
+```
+
+```{r}
+plot(train_dataset$GarageArea, train_dataset$SalePrice) # Scatterplot of OverallQual and SalePrice
+```
+
+The scatterplot for LotArea has most of its points all in one area, the bottom left of the graph. The scatterplot for GarageArea has its points more spread out. 
+
+Let's use the same three variables, LotArea, GarageArea, and SalePrice as the three quantitative variables and use them to make a correlation matrix.
+
+```{r}
+correlation_matrix <- cbind(train_dataset$LotArea, train_dataset$GarageArea, train_dataset$SalePrice)
+correlation_matrix <- cor(correlation_matrix)
+correlation_matrix
+```
+
+Let's do a hypothesis test using these three variables with a 80% confidence interval.
+
+```{r}
+cor.test(train_dataset$LotArea, train_dataset$SalePrice, conf.level = 0.80)
+cor.test(train_dataset$LotArea, train_dataset$GarageArea, conf.level =  0.80)
+cor.test(train_dataset$GarageArea, train_dataset$SalePrice, conf.level = 0.80)
+```
+
+From the hypothesis test between LotArea and SalePrice, we can say that there is a correlation since the p-value is below 0.05 and the 80% confidence interval is (0.2323391, 0.2947946). From the hypothesis test between LotArea and GarageArea we can say there is a correlation since the p-value is below 0.05 and the 80% confidence interval is (0.1477356, 0.2126767). From the hypothesis test between GarageArea and SalePrice we can say there is a correlation since the p-value is below 0.05 and the 80% confidence interval is (0.6024756, 0.6435283). My analysis shows that the there is a correlation between the three variables picked, LotArea, GarageArea, and SalePrice. There is little correlation between LotArea and GarageArea as the correlation is only 0.1804 . There is a big correlation between GarageArea and SalePrice as the correlation is 0.6234. Based on this analysis I would be worried about familywise error because each of the p-values are below 0.05, showing that there is some correlation. This means that we reject the null hypothesis.
+
+5 points. Linear Algebra and Correlation.  Invert your correlation matrix from above. (This is known as the precision matrix and contains variance inflation factors on the diagonal.) Multiply the correlation matrix by the precision matrix, and then multiply the precision matrix by the correlation matrix. Conduct LU decomposition on the matrix.  
+
+```{r}
+precision_matrix <- solve(correlation_matrix) # Create precision matrix using correlation matrix
+precision_matrix
+```
+
+```{r}
+round(correlation_matrix %*% precision_matrix, 4) # Multiply correlation matrix by precision matrix
+round(precision_matrix %*% correlation_matrix, 4) # Multiply precision matrix by correlation matrix
+```
+
+In both cases, multiplying the correlation matrix by the precision matrix and multiplying the precision matrix by the correlation matrix gives the Identity matrix.
+
+```{r}
+LU_decomposition <- function(A){ # Simple function to calculate LU decomposition
+  rows = columns = dim(A)[1] # Get rows and columns
+  U = A # Get upper
+  L = diag(rows) # Get Lower
+  for (j in 1:(columns-1)) { 
+    for(i in (j+1):rows){
+      L[i,j] = (U[i,j] / U[j,j]) # Calculate Lower
+      U[i,] = U[i,] - (U[j,] * L[i,j]) # Calculate Upper
+    }
+  }
+  LU = list("Lower" = L, "Upper" = U) # List Lower and Upper
+  return(LU)
+}
+LU_decomposition(correlation_matrix) # LU decomposition on correlation matrix
+LU_decomposition(precision_matrix) # LU decomposition on precision matrix
+```
+
+From the LU decomposition above we can see the lower and upper matrices for both the correlation matrix and the precision matrix. In both cases, multiplying the lower by the upper gives us the original matrix.
+
+5 points.  Calculus-Based Probability & Statistics. Many times, it makes sense to fit a closed form distribution to data. Select a variable in the Kaggle.com training dataset that is skewed to the right, shift it so that the minimum value is absolutely above zero if necessary. Then load the MASS package and run fitdistr to fit an exponential probability density function. (See https://stat.ethz.ch/R-manual/R-devel/library/MASS/html/fitdistr.html ). Find the optimal value of  for this distribution, and then take 1000 samples from this exponential distribution using this value (e.g., rexp(1000, )). Plot a histogram and compare it with a histogram of your original variable. Using the exponential pdf, find the 5th and 95th percentiles using the cumulative distribution function (CDF). Also generate a 95% confidence interval from the empirical data, assuming normality. Finally, provide the empirical 5th percentile and 95th percentile of the data.  Discuss.
+
+```{r}
+library(MASS) # Load MASS pacakge
+```
+
+I chose to use the PoolArea variable due to it being heavily right skewed. The min of PoolArea is 0 so let us add 1 to it so we can have a min above 0.
+
+```{r}
+fit_variable <- train_dataset$PoolArea + 1 
+summary(fit_variable)
+```
+
+
+```{r}
+fit_exp_function <- fitdistr(fit_variable, "exponential") # Fit exponential probability function using created variable
+fit_exp_function
+```
+
+```{r}
+lambda <- fit_exp_function$estimate # Compute optimal values of lambda
+lambda
+exponential_samples <- rexp(1000, lambda) # Use optimal value to create 1000 samples of exponential distribution
+exponential_samples
+```
+
+```{r}
+hist(exponential_samples) # Plot samples
+hist(train_dataset$PoolArea) # Plot original variable
+```
+
+From the plots, you can see for the original variable PoolArea is heavily right skewed with almost all of its data at 0. Looking at the plot from the fitted variable, we see the distribution is still right skewed but its data is more spread out. 
+
+```{r}
+round(qexp(0.05, rate = lambda), 4) # Find 5th percentile
+round(qexp(0.95, rate = lambda), 4) # Find 95th percentile
+```
+
+The 5th percentile is 0.1928 and the 95th percentile is 11.2607.
+
+```{r}
+Z <- 1.96 # Z value for 95% confidence interval
+n <- length(train_dataset$PoolArea) # length of PoolArea
+mean <- mean(train_dataset$PoolArea) # Mean of PoolArea
+standard_deviation <- sd(train_dataset$PoolArea) # Standard deviation of PoolArea
+upper_bound <- round(mean + Z * standard_deviation / sqrt(n), 4) # Calculate upper bound of confidence interval
+lower_bound <- round(mean - Z * standard_deviation / sqrt(n), 4) # Calculate lower bound of confidence interval
+c(lower_bound, upper_bound) # Display confidence interval
+```
+
+The confidence interval is (0.6980, 4.8198).
+
+```{r}
+quantile(fit_variable, 0.05) # Find empirical 5th percentile
+quantile(fit_variable, 0.95) # Find empirical 95th percentile
+```
+
+The empirical 5th percentile and empirical 95th percentile are both 1. 
+
+10 points.  Modeling.  Build some type of multiple regression  model and submit your model to the competition board. Provide your complete model summary and results with analysis. Report your Kaggle.com user name and score.
+
+
+To build the multiple regression model. let's chose the variables that are a good fit. From looking over the data, I chose LotArea, GarageArea, OverallQual, and GrLivArea.
+
+```{r}
+linear_model <- lm(train_dataset$SalePrice ~ train_dataset$LotArea + train_dataset$GarageArea + train_dataset$PoolArea + train_dataset$OverallQual + train_dataset$GrLivArea)
+summary(linear_model)
+```
+
+This model doesn't seem to be good. Let's remove LotArea and PoolArea since those have the highest values.
+
+```{r}
+linear_model <- lm(train_dataset$SalePrice ~ + train_dataset$GarageArea + train_dataset$OverallQual + train_dataset$GrLivArea)
+summary(linear_model)
+```
+
+The formula based on the summary of the linear model is SalePrice = 72.948 * GarageArea + 27910.785 * OverallQual + 49.649 * GrLivArea - 99060.087.
+
+```{r}
+hist(linear_model$residuals)
+qqnorm(linear_model$residuals)
+qqline(linear_model$residuals)
+```
+
+The histogram looks to show a nearly normal distribution. The Q-Q Plot shows that most points follow the straight line. So we could assume there is a normal distribution. 
+
+```{r}
+SalePrice <- (72.948 * train_dataset$GarageArea) + (27910.785 * train_dataset$OverallQual) + (49.649 * train_dataset$GrLivArea) - 99060.087 # Change SalePrice to match linear regression model 
+test_data <- test_dataset[,c("Id", "GarageArea", "OverallQual", "GrLivArea")] # Get variables from test dataset to use in model
+model_submission <- cbind(test_data$Id, SalePrice) # Create model to submit using Id test dataset and altered SalePrice
+model_submission[model_submission < 0] <- median(SalePrice) # To avoid any negative numbers in model
+colnames(model_submission) <- c("Id", "SalePrice") # Change to appropriate column names
+model_submission <- as.data.frame(model_submission[1:1459,]) # Change to a dataframe with 1459 observations
+head(model_submission) # Display model
+```
+
+```{r}
+write.csv(model_submission, file = "Kaggle Submission.csv", row.names = FALSE) # Create csv file to submit to Kaggle
+```
+
+Kaggle.com Username: bpersaud
+Score: 0.59837

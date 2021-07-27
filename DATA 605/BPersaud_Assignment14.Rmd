@@ -1,0 +1,136 @@
+---
+title: "Data 605 HW 14"
+author: "Bryan Persaud"
+date: "5/10/2020"
+output: html_document
+---
+
+This week, we’ll work out some Taylor Series expansions of popular functions.
+• f(x) = 1 / (1−x)
+• f(x) = e^x
+• f(x) = ln(1 + x)
+For each function, only consider its valid ranges as indicated in the notes when you are computing the Taylor Series expansion. Please submit your assignment as a R-Markdown document.
+
+Solution:
+
+The Taylor Series of f(x) centered at c is $\sum _{ n=0 }^{ \infty  }{ \frac { { f }^{ (n) }(c) }{ n! }  } { (x-c ) }^{ n }$ Let c = 0, this also gives us the Maclaurin Series of f(x), $\sum _{ n=0 }^{ \infty  }{ \frac { { f }^{ (n) }(0) }{ n! }  } { x }^{ n }$
+
+# f(x) = 1 / (1 - x)
+
+$f\left( x \right) = \frac { 1 }{ (1-x) }$
+
+f(0) = 1
+
+$f'(x) = \frac { 1 }{ { (1-x) }^{ 2 } }$
+
+f'(0) = 1
+
+$f''(x) = \frac { 2 }{ { (1-x) }^{ 3 } }$
+
+f''(0) = 2
+
+$f'''(x) = \frac { 6 }{ { (1-x) }^{ 4 } }$
+
+f'''(0) = 6
+
+$f''''(x) = \frac { 24 }{ { (1-x) }^{ 5 } }$
+
+f''''(0) = 24
+
+We can notice a pattern where the only term left is the n factorial of the nth derivative when we set that derivative equal to 0.
+
+Plug the results into $\sum _{ n=0 }^{ \infty  }{ \frac { { f }^{ (n) }(0) }{ n! }  } { x }^{ n }$
+
+$\sum _{ n=0 }^{ \infty  }{ \frac { { f }^{ (n) }(0) }{ n! }  } { x }^{ n }$ =
+
+${ \frac { { f }^{ (0) }(0) }{ 0! }  } { x }^{ 0 }+{ \frac { { f }^{ (1) }(0) }{ 1! }  } { x }^{ 1 }+{ \frac { { f }^{ (2) }(0) }{ 2! }  } { x }^{ 2 }+{ \frac { { f }^{ (3) }(0) }{ 3! }  } { x }^{ 3 }+{ \frac { { f }^{ (4) }(0) }{ 4! }  } { x }^{ 4 }+...$ =
+
+${ \frac { 1 }{ 1! }  } { x }^{ 0 }+{ \frac { 1 }{ 1! }  } { x }^{ 1 }+{ \frac { 2 }{ 2! }  } { x }^{ 2 }+{ \frac { 6 }{ 3! }  } { x }^{ 3 }+{ \frac { 24 }{ 4! }  } { x }^{ 4 }+...$ =
+
+$1+x+{ x }^{ 2 }+{ x }^{ 3 }+{ x }^{ 4 }+...$
+
+The Taylor Series expansion for $f\left( x \right) =\frac { 1 }{ (1-x) }$ is $1+x+{ x }^{ 2 }+{ x }^{ 3 }+{ x }^{ 4 }+...$.
+
+The formula for $f\left( x \right) =\frac { 1 }{ (1-x) }$ is $\sum _{ n=0 }^{ \infty  }{ x }^{ n }$
+
+# f(x) = e ^ x
+
+$f\left( x \right) = { e }^{ x }$
+
+f(0) = 1
+
+$f'(x) = { e }^{ x }$
+
+f'(0) = 1
+
+$f''(x) = { e }^{ x }$
+
+f''(0) = 1
+
+$f'''(x) = { e }^{ x }$
+
+f'''(0) = 1
+
+The derivative of ${ e }^{ x }$ is always ${ e }^{ x }$. That means we always get 1 when we set the derivative equal to 0.
+
+Plug the results into $\sum _{ n=0 }^{ \infty  }{ \frac { { f }^{ (n) }(0) }{ n! }  } { x }^{ n }$
+
+$\sum _{ n=0 }^{ \infty  }{ \frac { { f }^{ (n) }(0) }{ n! }  } { x }^{ n }$ =
+
+${ \frac { { f }^{ (0) }(0) }{ 0! }  } { x }^{ 0 }+{ \frac { { f }^{ (1) }(0) }{ 1! }  } { x }^{ 1 }+{ \frac { { f }^{ (2) }(0) }{ 2! }  } { x }^{ 2 }+{ \frac { { f }^{ (3) }(0) }{ 3! }  } { x }^{ 3 }+...$ =
+
+${ \frac { { f }^{ (0) }(0) }{ 0! }  } { x }^{ 0 }+{ \frac { { f }^{ (1) }(0) }{ 1! }  } { x }^{ 1 }+{ \frac { { f }^{ (2) }(0) }{ 2! }  } { x }^{ 2 }+{ \frac { { f }^{ (3) }(0) }{ 3! }  } { x }^{ 3 }+...$ =
+
+${ \frac { 1 }{ 0! }  } { x }^{ 0 }+{ \frac { 1 }{ 1! }  } { x }^{ 1 }+{ \frac { 1 }{ 2! }  } { x }^{ 2 }+{ \frac { 1 }{ 3! }  } { x }^{ 3 }+...$ =
+
+$1+x+{ \frac { 1 }{ 2! }  } { x }^{ 2 }+{ \frac { 1 }{ 3! }  } { x }^{ 3 }+...$
+
+The Taylor Series expansion for $f\left( x \right) ={ e }^{ x }$ is $1+x+{ \frac { 1 }{ 2! }  } { x }^{ 2 }+{ \frac { 1 }{ 3! }  } { x }^{ 3 }+...$
+
+The formula for $f\left( x \right) ={ e }^{ x }$ is $\sum _{ n=0 }^{ \infty  }{ \frac { 1 }{ n! }  } { x }^{ n }$
+
+# f(x) = ln(1 + x)
+
+$f\left( x \right)=ln(1+x)$
+
+f(0) = 0
+
+$f'(x) = \frac { 1 }{ (1+x) }$
+
+f'(0) = 1
+
+$f''(x) = -\frac { 1 }{ { (1+x) }^{ 2 } }$
+
+f''(0) = -1
+
+$f'''(x) = \frac { 2 }{ { (1+x) }^{ 3 } }$
+
+f'''(0) = 2
+
+$f''''(x) = -\frac { 6 }{ { (1+x) }^{ 4 } }$
+
+f''''(0) = -6
+
+$f'''''(x) = \frac { 24 }{ { (1+x) }^{ 5 } }$
+
+f'''''(0) = 24
+
+We can see that from the second derivative onward, we get n - 1 factorial with alternating signs starting with a negative sign.
+
+Plug the results into $\sum _{ n=0 }^{ \infty  }{ \frac { { f }^{ (n) }(0) }{ n! }  } { x }^{ n }$
+
+$\sum _{ n=0 }^{ \infty  }{ \frac { { f }^{ (n) }(0) }{ n! }  } { x }^{ n }$ =
+
+${ \frac { { f }^{ (0) }(0) }{ 0! }  } { x }^{ 0 }+{ \frac { { f }^{ (1) }(0) }{ 1! }  } { x }^{ 1 }+{ \frac { { f }^{ (2) }(0) }{ 2! }  } { x }^{ 2 }+{ \frac { { f }^{ (3) }(0) }{ 3! }  } { x }^{ 3 }+{ \frac { { f }^{ (4) }(0) }{ 4! }  } { x }^{ 4 }+{ \frac { { f }^{ (5) }(0) }{ 5! }  } { x }^{ 5 }+...$ =
+
+${ \frac { { 0 } }{ 0! }  } { x }^{ 0 }+{ \frac { { 1 } }{ 1! }  } { x }^{ 1 }-{ \frac { { 1 } }{ 2! }  } { x }^{ 2 }+{ \frac { { 2 } }{ 3! }  } { x }^{ 3 }-{ \frac { { 6 } }{ 4! }  } { x }^{ 4 }+{ \frac { { 24 } }{ 5! }  } { x }^{ 5 }+...$ =
+
+$x-{ \frac { { 1 } }{ 2! }  } { x }^{ 2 }+{ \frac { { 2 } }{ 3! }  } { x }^{ 3 }-{ \frac { { 6 } }{ 4! }  } { x }^{ 4 }+{ \frac { { 24 } }{ 5! }  } { x }^{ 5 }+...$ =
+
+$x-{ \frac { { 1 } }{ 2 }  } { x }^{ 2 }+{ \frac { { 2 } }{ 6 }  } { x }^{ 3 }-{ \frac { { 6 } }{ 24 }  } { x }^{ 4 }+{ \frac { { 24 } }{ 120 }  } { x }^{ 5 }+...$ = 
+
+$x-{ \frac { { 1 } }{ 2 }  } { x }^{ 2 }+{ \frac { { 1 } }{ 3 }  } { x }^{ 3 }-{ \frac { { 1 } }{ 4 }  } { x }^{ 4 }+{ \frac { { 1 } }{ 5 }  } { x }^{ 5 }+...$
+
+The Taylor Series expansion for $f\left( x \right)=ln(1+x)$ is $x-{ \frac { { 1 } }{ 2 }  } { x }^{ 2 }+{ \frac { { 1 } }{ 3 }  } { x }^{ 3 }-{ \frac { { 1 } }{ 4 }  } { x }^{ 4 }+{ \frac { { 1 } }{ 5 }  } { x }^{ 5 }+...$
+
+The formula for $f\left( x \right)=ln(1+x)$ is $\sum _{ n=1 }^{ \infty  }{ \frac { { (-1) }^{ n+1 } }{ n }  } { X }^{ n }$

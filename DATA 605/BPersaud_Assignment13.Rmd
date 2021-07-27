@@ -1,0 +1,198 @@
+---
+title: "Data 605 HW 13"
+author: "Bryan Persaud"
+date: "5/3/2020"
+output: html_document
+---
+
+# 1
+
+Use integration by substitution to solve the integral below.
+
+$\int { 4{ e }^{ -7x }dx }$
+
+Solution:
+
+Let u = -7x, then du = -7dx. In terms of dx, dx = $-\frac { 1 }{ 7 } du$
+
+Rewrite integral in terms of u.
+
+$\int { 4{ e }^{ u }(-\frac { 1 }{ 7 }) du }$ Take out constants.
+
+$-\frac { 4 }{ 7 }\int { { e }^{ u } du }$ Integrate.
+
+$-\frac { 4 }{ 7 }({ e }^{ u } + C)$ Substitute back in terms of x.
+
+$-\frac { 4 }{ 7 }({ e }^{ -7x } + C)$ For some constant C.
+
+# 2
+
+Biologists are treating a pond contaminated with bacteria. The level of contamination is changing at a rate of $\frac { dN }{ dt } =-\frac { 3150 }{ { t }^{ 4 } } -220$ bacteria per cubic centimeter per day, where t is the number of days since treatment began. Find a function N( t ) to estimate the level of contamination if the level after 1 day was 6530 bacteria per cubic centimeter.
+
+Solution:
+
+$\int { -\frac { 3150 }{ { t }^{ 4 } } -220 }dt$ Split integral.
+
+$\int { -\frac { 3150 }{ { t }^{ 4 } }dt -\int { 220 }dt  }$ Take out constants for both integrals
+
+$-3150\int { \frac { 1 }{ { t }^{ 4 }dt } -\int { 220 }dt  }$ Integrate.
+
+$-3150(-\frac { 1 }{ 3{ t }^{ 3 } } )-220t$ Simplify.
+
+$\frac { 1050 }{ { t }^{ 3 } } -220t$ Write as function N(t).
+
+$N(t)=\frac { 1050 }{ { t }^{ 3 } } -220t+C$ For some constant C.
+
+Solve for N(t) = 6530 where t = 1.
+
+$\frac { 1050 }{ { t }^{ 3 } } -220t+C=6530$
+
+$\frac { 1050 }{ { 1 }^{ 3 } } -220(1)+C=6530$
+
+$1050-220+C=6530$
+
+$830+C=6530$
+
+$C=5700$
+
+Function N(t)= $\frac { 1050 }{ { t }^{ 3 } } -220t+5700$
+
+# 3
+
+Find the total area of the red rectangles in the figure below, where the equation of the line is f ( x ) = 2x - 9.
+
+Solution:
+
+From looking at the graph, it looks like there are 4 red rectangles that start at 4.5 and end at 8.5.
+
+```{r}
+function_3 <- function(x)
+{
+  2 * x - 9
+}
+integrate(function_3, lower = 4.5, upper = 8.5)
+```
+
+The total area of the red rectangles is 16.
+
+# 4
+
+Find the area of the region bounded by the graphs of the given equations.
+
+$y={ x }^{ 2 }-2x-2,y=x+2$
+
+Enter your answer below.
+
+Solution:
+
+Find the intersection of the given equations
+
+${ x }^{ 2 }-2x-2=x+2$ Set equal to 0.
+
+${ x }^{ 2 }-3x-4=0$ Factor.
+
+$(x-4)(x+1)=0$ Solve for x.
+
+$x=4,x=-1$
+
+Subtract the two equations.
+
+$x+2-({ x }^{ 2 }-2x-2)$ Simplify.
+
+$x+2-{ x }^{ 2 }+2x+2$ Combine like terms.
+
+$-{ x }^{ 2 }+3x+4$
+
+Integrate this equation using intersection points as interval.
+
+```{r}
+function_4 <- function(x)
+{
+  -x ^ 2 + 3 * x + 4
+}
+integrate(function_4, lower = -1, upper = 4)
+```
+
+The area of the region bounded by the graphs of the given equations is 20.83333.
+
+# 5
+
+A beauty supply store expects to sell 110 flat irons during the next year. It costs $3.75 to store one flat iron for one year. There is a fixed cost of $8.25 for each order. Find the lot size and the number of orders per year that will minimize inventory costs.
+
+Solution:
+
+The lot size will be 110 / the number of orders per year. Let us have n = number of orders per year and lot size = l. Then l = 110 / n. Our cost function will look like $8.25n\quad +\quad 3.75(\frac { l }{ 2 } )$ This function simplified is
+
+$8.25n + 3.75(\frac { l }{ 2 } )$ Plug in l.
+
+$8.25n + 3.75(\frac { \frac { 110 }{ n }  }{ 2 } )$ Simplify fraction.
+
+$8.25n+(\frac { 110*3.75 }{ 2n } )$ Cost function is equal to.
+
+$8.25n-(\frac { 206.25 }{ n } )$
+
+Take the derivative of the cost function.
+
+$8.25n-(\frac { 206.25 }{ n } )$ derivative =
+
+$8.25-(\frac { 206.25 }{ { n }^{ 2 } } )$
+
+Solve for n by setting derivative of cost function equal to 0.
+
+$8.25-(\frac { 206.25 }{ { n }^{ 2 } } )=0$ Move 8.25 to other side.
+
+$-(\frac { 206.25 }{ { n }^{ 2 } } )=-8.25$ Cross multiply.
+
+$-8.25{ n }^{ 2 }=-206.25$ Divide -8.25.
+
+${ n }^{ 2 }=\frac { -206.25 }{ -8.25 }$ Simplify.
+
+${ n }^{ 2 }=25$ Solve for n.
+
+$n=5$
+
+Now that we know n we can solve for l.
+
+$l=\frac { 110 }{ n }$ Plug in 5 for n.
+
+$l=\frac { 110 }{ 5 }$ Simplify.
+
+$l=22$
+
+The lot size and the number of orders per year that will minimize inventory costs are a lot size of 22 and the number of orders per year equal to 5. 
+
+# 6
+
+Use integration by parts to solve the integral below.
+
+$\int { ln(9x)·{ x }^{ 6 }dx }$
+
+Solution:
+
+Let u = ln(9x), then du = $\frac { 1 }{ x } dx$. Let v = $\frac { 1 }{ 7 } { x }^{ 7 }$, then dv = ${ x }^{ 6 }$.
+
+Using integration by parts, we get u * v - the integral of v * du.
+
+$\ln { (9x)(\frac { 1 }{ 7 } { x }^{ 7 })-\int { \frac { 1 }{ 7 } { x }^{ 7 }(\frac { 1 }{ x } dx) }  }$ Simplify.
+
+$\frac { { x }^{ 7 }ln(9x) }{ 7 } - \int { \frac { { x }^{ 6 } }{ 7 } dx }$ Integrate.
+
+$\frac { { x }^{ 7 }ln(9x) }{ 7 } - (\frac { { x }^{ 7 } }{ 49 } +C)$ For some constant C.
+
+# 7
+
+Determine whether f ( x ) is a probability density function on the interval [1, e ^ 6] . If not, determine the value of the definite integral.
+
+$f\left( x \right) =\frac { 1 }{ 6x } $
+
+Solution:
+
+```{r}
+function_7 <- function(x)
+{
+  1 / (6 * x)
+}
+integrate(function_7, lower = 1, upper = exp(6))
+```
+
+f(x) is a probability density function on the interval [1, e ^ 6] since the integral of f(x) on  the interval is equal to 1.

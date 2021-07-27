@@ -1,0 +1,46 @@
+---
+title: "Discussion 4"
+author: "Bryan Persaud"
+date: "2/18/2020"
+output: html_document
+---
+
+# Chapter Representations Section MR Exercise C21
+
+Find a matrix representation of the linear transformation T relative to the bases B and C.
+
+$T:P_{ 2 }\rightarrow C^{ 2 },T(p\left( x \right) )=\begin{bmatrix} p(1)  \\  p(3)  \end{bmatrix}$
+
+$B = \left\{ 2 - 5x + x^ 2, 1 + x - x^ 2, x^ 2 \right\}$
+
+$C = \left\{  \begin{bmatrix} 3 \\ 4   \end{bmatrix}, \begin{bmatrix} 2 \\ 3 \end{bmatrix}\right\}$
+
+Solution:
+
+By applying definiton MR located on page 528 the matrix representation is the mxn matrix ${ M }^{ T }_{ B,C } = pc(T(2 - 5x + x^2))|pc(T(1 + x - x^2))|pc(T(x^2))$
+
+$pc(T(2 - 5x + x^2))$ 
+
+= $pc(\begin{bmatrix} -2 \\ -4 \end{bmatrix})$ 
+
+= $pc(2 \begin{bmatrix} 3 \\ 4 \end{bmatrix} - 4 \begin{bmatrix} 2 \\ 3 \end{bmatrix})$
+
+= $\begin{bmatrix} 2 \\ -4 \end{bmatrix}$
+
+$pc(T(1 + x - x^2))$ 
+
+= $pc(\begin{bmatrix} 1 \\ -5 \end{bmatrix})$
+
+= $pc(13 \begin{bmatrix} 3 \\ 4 \end{bmatrix} - 19 \begin{bmatrix} 2 \\ 3 \end{bmatrix})$
+
+= $\begin{bmatrix} 13 \\ -19 \end{bmatrix}$
+
+$pc(T(x^2))$ 
+
+= $pc(\begin{bmatrix} 1 \\ 9 \end{bmatrix})$
+
+= $pc(-15 \begin{bmatrix} 3 \\ 4 \end{bmatrix} + 23 \begin{bmatrix} 2 \\ 3 \end{bmatrix})$
+
+= $\begin{bmatrix} -15 \\ 23 \end{bmatrix}$
+
+The matrix representation is ${ M }^{ T }_{ B,C } = \begin{bmatrix} 2 & 13 & -15 \\ -4 & -19 & 23 \end{bmatrix}$

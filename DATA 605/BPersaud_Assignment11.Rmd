@@ -1,0 +1,48 @@
+---
+title: "Data 605 HW 11"
+author: "Bryan Persaud"
+date: "4/19/2020"
+output: html_document
+---
+
+Using the “cars” dataset in R, build a linear model for stopping distance as a function of speed and replicate the analysis of your textbook chapter 3 (visualization, quality evaluation of the model, and residual analysis.)
+
+Solution:
+
+# Linear Model
+
+```{r}
+linear_model <- lm(dist ~ speed, data = cars)
+linear_model
+```
+
+This is the linear model for stopping distance as a function of speed. The output shows the coefficient values.
+
+# Visualization
+
+```{r}
+plot(cars$dist, cars$speed)
+```
+
+The plot shows the relationship between stopping distance and speed. Based on the graph, the higher the speed, the longer the stopping distance.
+
+# Quality Evaluation of the Model
+
+```{r}
+summary(linear_model)
+```
+
+Here we can see the residuals of the linear model created. We can also see the Residual standard error and the Multiple and Adjusted r-squared. Based on the Multiple R-squared and the Adjusted R-squared, the linear model is appropriate because they have high values, 0.6511 for the Multiple R-squared and 0.6438 for the Adjusted R-squared.
+
+# Residual Analysis
+
+```{r}
+plot(fitted(linear_model), resid(linear_model))
+```
+
+```{r}
+qqnorm(resid(linear_model))
+qqline(resid(linear_model))
+```
+
+Based on the residual analysis, we further see that the linear model is appropriate. This is because most of the points fall on the straight line. This means that the residuals almost follow a normally distribution.

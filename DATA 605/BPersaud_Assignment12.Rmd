@@ -1,0 +1,131 @@
+---
+title: "Data 605 HW 12"
+author: "Bryan Persaud"
+date: "4/26/2020"
+output: html_document
+---
+
+```{r}
+who <- read.csv("https://raw.githubusercontent.com/bpersaud104/Data605/master/who.csv")
+head(who)
+```
+
+# 1
+
+Provide a scatterplot of LifeExp~TotExp, and run simple linear regression. Do not transform the variables. Provide and interpret the F statistics, R^2, standard error,and p-values only. Discuss whether the assumptions of simple linear regression met.
+
+Solution:
+
+```{r}
+plot(LifeExp ~ TotExp, data = who)
+```
+
+```{r}
+model1 <- lm(LifeExp ~ TotExp, data = who)
+summary(model1)
+```
+
+The F statistics is 65.26 on 1 and 188 DF. Multiple R^2 is 0.2577 and Adjusted R^2 is 0.2537. The standard error is 9.371 on 188 degrees of freedom. The p-values are 7.714e-14.
+
+```{r}
+plot(fitted(model1), resid(model1))
+```
+
+```{r}
+qqnorm(resid(model1))
+qqline(resid(model1))
+```
+
+Based on the plots, assumptions of simple linear regression is not met since the plots show that the residuals are not normally distributed.
+
+# 2
+
+Raise life expectancy to the 4.6 power (i.e., LifeExp^4.6). Raise total expenditures to the 0.06 power (nearly a log transform, TotExp^.06). Plot LifeExp^4.6 as a function of TotExp^.06, and re-run the simple regression model using the transformed variables. Provide and interpret the F statistics, R^2, standard error, and p-values. Which model is "better?"
+
+Solution:
+
+```{r}
+plot((LifeExp ^ 4.6) ~ I(TotExp ^ 0.06), data = who)
+```
+
+
+```{r}
+model2 <- lm((LifeExp ^ 4.6) ~ I(TotExp ^ 0.06), data = who)
+summary(model2)
+```
+
+The F statistics is 507.7 on 1 and 188 DF. Multiple R^2 is 0.7298 and Adjusted R^2 is 0.7283. The standard error is 90490000 on 188 degrees of freedom. The p-values are < 2.2e-16.
+
+```{r}
+plot(fitted(model2), resid(model2))
+```
+
+```{r}
+qqnorm(resid(model2))
+qqline(resid(model2))
+```
+
+The model that is "better" would be the second model.
+
+# 3
+
+Using the results from 3, forecast life expectancy when TotExp^.06 =1.5. Then forecast life expectancy when TotExp^.06=2.5.
+
+Solution:
+
+Using the model we made in 2, we can use the coefficients to make the formula y = 620060216x - 736527910. Here we are looking at two values for x, 1.5 and 2.5. Then we raise y to (1 / 4.6) to get our forecast life expectancy. 
+
+```{r}
+y_1.5 <- (620060216 * 1.5) - 736527910
+life_expectancy_1.5 <- y_1.5 ^ (1 / 4.6)
+round(life_expectancy_1.5)
+```
+
+```{r}
+y_2.5 <- (620060216 * 2.5) - 736527910
+life_expectancy_2.5 <- y_2.5 ^ (1 / 4.6)
+round(life_expectancy_2.5)
+```
+
+The life expectancy when TotExp ^ .06 = 1.5 is 63 years. The life expectancy when TotExp ^ .06 = 2.5 is 87 years.
+
+# 4
+
+Build the following multiple regression model and interpret the F Statistics, R^2, standard error, and p-values. How good is the model?
+
+LifeExp = b0+b1 x PropMd + b2 x TotExp +b3 x PropMD x TotExp
+
+Solution:
+
+```{r}
+model3 <- lm(LifeExp ~ PropMD + TotExp + (PropMD * TotExp), data = who)
+summary(model3)
+```
+
+The F statistics is 34.49 on 3 and 186 DF. Multiple R^2 is 0.3574 and Adjusted R^2 is 0.3471. The standard error is 8.765 on 186 degrees of freedom. The p-values are < 2.2e-16.
+
+```{r}
+plot(fitted(model3), resid(model3))
+```
+
+```{r}
+qqnorm(resid(model3))
+qqline(resid(model3))
+```
+
+This model is good since the p-values are less than 0.05. However looking at the residual analysis we see that it is similar to the first model we made as the distribution does not look normal.
+
+# 5
+
+Forecast LifeExp when PropMD=.03 and TotExp = 14. Does this forecast seem realistic? Why or why not?
+
+```{r}
+life_expectancy_5 <- (6.277 * (10 ^ 1)) + (1.497 * (10 ^ 3) * 0.03) + (7.233 * (10 ^ (-5)) * 14) - (6.026 * (10 ^ (-3)) * 0.03 * 14)
+round(life_expectancy_5)
+```
+
+```{r}
+max(who$LifeExp)
+```
+
+LifeExp when PropMD = 0.03 and TotExp = 14 is 108. This forecast does not seem realistic because the max LifeExp in the dataset is 83.

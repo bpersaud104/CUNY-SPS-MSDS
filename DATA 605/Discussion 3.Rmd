@@ -1,0 +1,52 @@
+---
+title: "Discussion 3"
+author: "Bryan Persaud"
+date: "2/11/2020"
+output: html_document
+---
+
+# Chapter Eigenvalues Section EE Exercise C26
+
+For matrix A = $\begin{bmatrix} 2 & 1\quad 1 \\ 1 & 2\quad 1 \\ 1 & 1\quad 2 \end{bmatrix}$ the characteristic polynomial of A is $p_{ A }{ (X)\quad =\quad (4-x){ (1-x) }^{ 2 } }$. Find the eigenvalues and corresponding eigenspaces of A.
+
+Solution:
+
+Since we are given the characteristic polynomial of A we can find the eigenvalues of A to be $\lambda$ = 4 and $\lambda$ = 1. To find the corresponding eigenspaces of A we use the eigenvalues and row reduce the matrix A - $\lambda$$I_{ 3 }$, where I is the identity matrix. Then we express the eigenspace as the null space of A - $\lambda$$I_{ 3 }$,
+
+$E_{ A }(4)\quad$ = $A - 4I_{ 3 }$
+                  = $A - 4\begin{bmatrix} 1 & 0\quad 0 \\ 0 & 1\quad 0 \\ 0 & 0\quad 1 \end{bmatrix}$
+                  = $\begin{bmatrix} 2 & 1\quad 1 \\ 1 & 2\quad 1 \\ 1 & 1\quad 2 \end{bmatrix} - \begin{bmatrix} 4 & 0\quad 0 \\ 0 & 4\quad 0 \\ 0 & 0\quad 4 \end{bmatrix}$
+                  = $\begin{bmatrix} -2 & 1\quad 1 \\ 1 & -2\quad 1 \\ 1 & 1\quad -2 \end{bmatrix}\quad$
+
+Row reduction of $\begin{bmatrix} -2 & 1\quad 1 \\ 1 & -2\quad 1 \\ 1 & 1\quad -2 \end{bmatrix}\quad$ =
+
+-(1/2) * row 1 = $\begin{bmatrix} 1 & 1/2\quad 1/2 \\ 1 & -2\quad 1 \\ 1 & 1\quad -2 \end{bmatrix}\quad$
+
+-1 * row 1 + row 2 to row 2 = $\begin{bmatrix} 1 & -1/2 & -1/2 \\ 0 & -3/2 & 3/2 \\ 1 & 1 & -2 \end{bmatrix}$
+
+-1 * row 1 + row 3 to row 3 = $\begin{bmatrix} 1 & -1/2 & -1/2 \\ 0 & -3/2 & 3/2 \\ 1 & 3/2 & -3/2 \end{bmatrix}$
+
+-(2/3) * row 2 = $\begin{bmatrix} 1 & -1/2 & -1/2 \\ 0 & 1 & -1 \\ 1 & 3/2 & -3/2 \end{bmatrix}$
+
+-(3/2) * row 2 + row 3 to row 3 = $\begin{bmatrix} 1 & -1/2 & -1/2 \\ 0 & 1 & -1 \\ 0 & 0 & 0 \end{bmatrix}$
+
+(1/2) * row 2 + row 1 to row 1 = $\begin{bmatrix} 1 & 0 & -1 \\ 0 & 1 & -1 \\ 0 & 0 & 0 \end{bmatrix}$
+
+$E_{ A }(4)\quad$ = N($A - 4I_{ 3 }$) = $<\begin{bmatrix} 1 \\ 1 \\ 1 \end{bmatrix}>$
+
+$E_{ A }(1)\quad$ = $A - 1I_{ 3 }$ 
+                  = $A - 1\begin{bmatrix} 1 & 0\quad 0 \\ 0 & 1\quad 0 \\ 0 & 0\quad 1 \end{bmatrix}$
+                  = $\begin{bmatrix} 2 & 1\quad 1 \\ 1 & 2\quad 1 \\ 1 & 1\quad 2 \end{bmatrix} - \begin{bmatrix} 1 & 0\quad 0 \\ 0 & 1\quad 0 \\ 0 & 0\quad 1 \end{bmatrix}$
+                  = $\begin{bmatrix} 1 & 1 & 1 \\ 1 & 1 & 1 \\ 1 & 1 & 1 \end{bmatrix}$
+
+Row reduction of $\begin{bmatrix} 1 & 1 & 1 \\ 1 & 1 & 1 \\ 1 & 1 & 1 \end{bmatrix}$ = 
+
+-1 * row 1 + row 2 to row 2 = $\begin{bmatrix} 1 & 1 & 1 \\ 0 & 0 & 0 \\ 1 & 1 & 1 \end{bmatrix}$
+
+-1 * row 1 + row 3 to row 3 = $\begin{bmatrix} 1 & 1 & 1 \\ 0 & 0 & 0 \\ 0 & 0 & 0 \end{bmatrix}$
+
+$E_{ A }(1)\quad$ = N($A - 1I_{ 3 }$) = $<\begin{bmatrix} 1 \\ -1 \\ 0 \end{bmatrix},\begin{bmatrix} 1 \\ 0 \\ -1 \end{bmatrix}>$
+
+Eigenvalues = $\lambda$ = 4 and $\lambda$ = 1
+
+Eigenspaces = $E_{ A }(4)\quad$ = $<\begin{bmatrix} 1 \\ 1 \\ 1 \end{bmatrix}>$ and $E_{ A }(1)\quad$ =  $<\begin{bmatrix} 1 \\ -1 \\ 0 \end{bmatrix},\begin{bmatrix} 1 \\ 0 \\ -1 \end{bmatrix}>$

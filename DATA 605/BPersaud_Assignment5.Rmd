@@ -1,0 +1,111 @@
+---
+title: "Data 605 HW 5"
+author: "Bryan Persaud"
+date: "2/28/2020"
+output: html_document
+---
+
+Choose independently two numbers B and C at random from the interval [0, 1] with
+uniform density. Prove that B and C are proper probability distributions.
+Note that the point (B,C) is then chosen at random in the unit square.
+Find the probability that
+
+# (a) B + C < 1/2.
+
+Solution:
+
+To solve this problem, we need to set B and C as a function f(B,C) and integrate the function. Let B = x and C = y. Then f(B,C) = f(x,y). We are told B and C are two numbers chosen at random from the interval [0, 1] and B + C < 1/2, so the probability of this is equal to P(B + C < 1/2) = P(x + y < 1/2). Let's solve this in terms of y, y < 1/2 - x. Now we integrate the function, in this case we do a double integral where the inner integral relates to y and the outer integral relates to x.
+
+$\int_{ 0 }^{ 1/2 }\int _{ 0 }^{ (1/2) - x }{ f(x,y)dxdy }$ =
+
+$\int_{ 0 }^{ 1/2 }\int _{ 0 }^{ (1/2) - x }{ 1dxdy }$ =
+
+$\int _{ 0 }^{ 1/2 }{ ((\frac { 1 }{ 2 } - x) - 0)dx }$ = 
+
+$\int _{ 0 }^{ 1/2 }{ (\frac { 1 }{ 2 } - x)dx }$ =
+
+$((\frac { 1 }{ 2 } )(\frac { 1 }{ 2 } ) - \frac {(\frac { 1 }{ 2 } )^ 2 }{ 2 }) - (0 - 0)$ =
+
+$\frac { 1 }{ 4 } - \frac { 1 }{ 8 }$ =
+
+$\frac { 1 }{ 8 }$
+
+The probability that $B + C < \frac { 1 }{ 2 } = \frac { 1 }{ 8 } \quad or \quad 12.5 \quad percent.$
+
+# (b) BC < 1/2.
+
+Solution:
+
+To solve this problem we could integrate again where B = 1 and C = 1/2. Let B = x and C = y. Then P(BC < 1/2) = P(xy < 1/2). In terms of y, y < 1/2x. Then we do another double integral.
+
+$\frac { 1 }{ 2 } + \int_{ 1/2 }^{ 1 }\int _{ 0 }^{ 1/2x }{ f(x,y)dxdy }$ =
+
+$\frac { 1 }{ 2 } + \int_{ 1/2 }^{ 1 }\int _{ 0 }^{ 1/2x }{ 1dxdy }$ =
+
+$\frac { 1 }{ 2 } + \int_{ 1/2 }^{ 1 }{ ((\frac { 1 }{ 2x } - 0)dx }$ =
+
+$\frac { 1 }{ 2 } + \int_{ 1/2 }^{ 1 }{ (\frac { 1 }{ 2x })dx }$ =
+
+$\frac { 1 }{ 2 } + \frac { 1 }{ 2 }|\ln { (1) - \ln { (\frac { 1 }{ 2 } } } )|$ =
+
+$\frac { 1 }{ 2 } + \frac { 1 }{ 2 }|0 - \ln { (\frac { 1 }{ 2 }) } |$ =
+
+$\frac { 1 }{ 2 } + \frac { 1 }{ 2 }|\ln { (\frac { 1 }{ 2 }) }|$
+
+The probability that $BC < \frac { 1 }{ 2 } = \frac { 1 }{ 2 } + \frac { 1 }{ 2 }|\ln { (\frac { 1 }{ 2 }) }| and \quad \quad if \quad you \quad calculate \quad this \quad using \quad a \quad calculator \quad it \cong  0.8466 \quad or \quad 85.7 \quad percent.$
+
+# (c) |B − C| < 1/2.
+
+Solution:
+
+To solve this problem we set B = x and C = y. Then P(|B − C| < 1/2) = P(|x − y| < 1/2). There will be two values since we are taking the absolute value and let us consider these two values as lines on a graph, y = x + 1/2 and y = x - 1/2. The two lines form two right triangles that intersect at points (0, 1/2), (1/2, 0), and (1, 1/2). To find the probability you subtract 1 from the area of right triangle * 2 since there are two right triangles. The area of a right triangle is bh / 2 where b and h are base and height and both equal to 1/2.
+
+$1 - (\frac { bh }{ 2 }) * 2$ =
+
+$1 - \frac { 1 }{2 * 2 * 2} * 2$ =
+
+$1 - \frac { 2 }{ 8 }$ =
+
+$1 - \frac { 1 }{ 4 }$ =
+
+$\frac { 3 }{ 4 }$
+
+The probability that $|B − C| < 1/2 = \frac { 3 }{ 4 } \quad or \quad 75 \quad percent.$
+
+# (d) max{B,C} < 1/2.
+
+Solution:
+
+To solve this problem we can set P(max{B,C} < 1/2) = P(B <= 1/2, C <= 1/2) since we are looking for the max value to be less than 1/2, B and C must also be less than or equal to 1/2. To find the probability you take the product of P(B <= 1/2, C <= 1/2). 
+
+$P(B <= 1/2, C <= 1/2)$ =
+
+$P(B <= 1/2) * P(C <= 1/2)$ =
+
+$\frac { 1 }{ 2 } * \frac { 1 }{ 2 }$ =
+
+$\frac { 1 }{ 4 }$
+
+The probability that $P(max{B,C} < 1/2) = \frac { 1 }{ 4 } \quad or \quad 25 \quad percent.$
+
+# (e) min{B,C} < 1/2.
+
+Solution:
+
+To solve this problem we can set P(min{B,C} < 1/2) = P(B >= 1/2, C >= 1/2) since we are looking for the min value to be less than 1/2, B and C must be greater than or equal to 1/2. To find the probability you subtract 1 from P(B >= 1/2, C >= 1/2).
+
+$P(B >= 1/2, C >= 1/2)$ =
+
+$1 - |P(B >= 1/2)| * |P(C >= 1/2)|$ =
+
+$1 - |1 - \frac { 1 }{ 2 }| * |1 - \frac { 1 }{ 2 }|$ =
+
+$1 - |\frac { 1 }{ 2 }| * |\frac { 1 }{ 2 }|$ = 
+
+$1 - \frac { 1 }{ 2 } * \frac { 1 }{ 2 }$ =
+
+$1 - \frac { 1 }{ 4 }$ =
+
+$\frac { 3 }{ 4 }$
+
+The probability that $P(min{B,C} < 1/2) = \frac { 3 }{ 4 } \quad or \quad 75 \quad percent.$ (Note how the answer we got for exercise (e) is the complement of the answer we got for exercise (d))

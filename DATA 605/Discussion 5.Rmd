@@ -1,0 +1,26 @@
+---
+title: "Discussion 5"
+author: "Bryan Persaud"
+date: "2/25/2020"
+output: html_document
+---
+
+# Chapter 1 Section 1.2 Exercise 8 
+
+A student must choose one of the subjects, art, geology, or psychology, as an elective. She is equally likely to choose art or psychology and twice as likely to choose geology. What are the respective probabilities that she chooses art, geology, and psychology?
+
+Solution:
+
+The probabilities of art, geology, and psychology must be equal to 1. Let P(art) be the probability of choosing art, P(geology) be the probability of choosing geology, and P(psychology) be the probability of choosing psychology. We are told that the student is equally likely to choose art or psychology, so P(Art) = P(Psychology). Let's have this probability be equal to x. We are also told that the student is twice as likely to choose geology, so  let P(geology) be equal to 2x.
+
+To find the respective probabilities that the student chooses art, geology, and psychology we must solve the equation:
+
+$1 = x + x + 2x$ ->
+
+$1 = 4x$ ->
+
+$\frac { 1 }{ 4 } = x$
+
+So, P(art) = x = 1/4, P(psychology) = x = 1/4, and P(geology) = 2 * x = 2 * (1/4) = 1/2
+
+$P(Art) = \frac { 1 }{ 4 }, P(Psychology) = \frac { 1 }{ 4 }, and\quad P(Geology) = \frac { 1 }{ 2 }$

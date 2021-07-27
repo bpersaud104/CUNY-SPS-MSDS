@@ -1,0 +1,226 @@
+---
+title: "Data 605 HW 15"
+author: "Bryan Persaud"
+date: "5/16/2020"
+output: html_document
+---
+
+# 1
+
+Find the equation of the regression line for the given points. Round any final values to the nearest hundredth, if necessary.
+
+( 5.6, 8.8 ), ( 6.3, 12.4 ), ( 7, 14.8 ), ( 7.7, 18.2 ), ( 8.4, 20.8 )
+
+Solution:
+
+```{r}
+dataframe1 <- data.frame(X = c(5.6, 6.3, 7, 7.7, 8.4), Y = c(8.8, 12.4, 14.8, 18.2, 20.8))
+model1 <- lm(Y ~ X, data = dataframe1)
+summary(model1)
+```
+
+The equation of the regression line for the given points is y = 4.26x - 14.8.
+
+# 2
+
+Find all local maxima, local minima, and saddle points for the function given below. Write your answer(s) in the form ( x, y, z ). Separate multiple points with a comma.
+
+$f\left( x,y \right) =24x-6x{ y }^{ 2 }-8{ y }^{ 3 }$
+
+Solution:
+
+Find fx and fy
+
+$fx(x, y)=24-6{ y }^{ 2 }$
+
+$fy(x, y)=-12x{ y }-24{ y }^{ 2 }$
+
+Set fx(x, y) = 0 to find value of y.
+
+$24-6{ y }^{ 2 }=0$ Subtract 24.
+
+$-6{ y }^{ 2 }=-24$ Divide by - 6.
+
+${ y }^{ 2 }=4$ Take square root.
+
+y = 2 or y = - 2.
+ 
+Set fy(x, y) = 0 and use the value of y found to find x.
+
+$-12x{ y }-24{ y }^{ 2 }=0$ Add 24 y ^ 2.
+
+$-12x{ y }=24{ y }^{ 2 }$ Divide by - 12y.
+
+$x=-2y$ Plug in y = 2 and y = - 2.
+
+$x=-2(2)$
+
+$x=-2(-2)$
+
+x = -4 or x = 4.
+ 
+For x = - 4, y = 2 and for x = 4, y = -2.
+
+Plug (- 4,2) and (4,- 2) into f(x, y)
+
+$f(-4,2) = 24(-4)-6(-4)({ 2 }^{ 2 })-8({ 2 }^{ 3 })$ Expand.
+
+$-96-(-96)-64$ Add - 96 and 96.
+
+$f(-4,2) = -64$
+
+$f(4,-2) = 24(4)-6(4)({ -2 }^{ 2 })-8({ -2 }^{ 3 })$ Expand.
+
+$96-96-(-64)$ Subtract 96 and 96.
+
+$f(4,-2) = 64$
+
+(x, y, z) = (- 4, 2, - 64) and (x, y, z) = (4, - 2, 64).
+
+To see if our two points (- 4, 2) and (4, - 2) are saddle points we find fxx, fyy, and fxy. Then we plug in our points into the equation fxx * fyy - f ^ 2 xy  and if we get a negative number the points are a saddle points.
+
+$fxx(x, y) = 0$
+
+$fyy(x, y) = -12x-48y$
+
+$fxy(x, y) = -12y$
+
+$fxx\left( -4,2 \right) *fyy\left( -4,2 \right) -f^{ 2 }xy\left( -4,2 \right)$ Expand.
+
+$0 *(-12(-4)-48(2))-{ (-24) }^{ 2 }$ Simplify.
+
+$-576$
+
+$fxx\left( 4,-2 \right) *fyy\left( 4,-2 \right) -f^{ 2 }xy\left( 4,-2 \right)$ Expand.
+
+$0 *(-12(4)-48(-2))-{ (24) }^{ 2 }$ Simplify.
+
+$-576$
+
+For both of our points, we get a negative number. So both (- 4, 2) and (4, 2) are saddle points.
+
+# 3
+
+A grocery store sells two brands of a product, the "house" brand and a "name" brand. The manager estimates that if she sells the "house" brand for x dollars and the "name" brand for y dollars, she will be able to sell 81 - 21x + 17y units of the "house" brand and 40 + 11x - 23y units of the "name" brand.
+
+Step 1. Find the revenue function R ( x, y ).
+
+Step 2. What is the revenue if she sells the "house" brand for $2.30 and the "name" brand for $4.10?
+
+Step 1 Solution:
+
+R(x, y) = revenue of "house" brand + revenue of "name" brand and revenue of the "house" brand is x * (81 - 21x + 17y) and revenue of the "name" brand is y * (40 + 11x + 23y).
+
+$R(x,y)=x(81-21x+17y)+y(40+11x-23y)$ Distribute x and y respectively.
+
+$81x-21{ x }^{ 2 }+17xy+40y+11xy-23{ y }^{ 2 }$ Rearrange based on power of variable.
+
+$R(x,y)=-21{ x }^{ 2 }-23{ y }^{ 2 }+28xy+81x+40y$
+
+The revenue function R(x, y) = $21{ x }^{ 2 }-23{ y }^{ 2 }+28xy+81x+40y$
+
+Step 2 Solution:
+
+Use the revenue function found where x = 2.30 and y = 4.10.
+
+```{r}
+revenue_function <- function(x, y)
+{
+  - 21 * (x ^ 2) - 23 * (y ^ 2) + (28 * x * y) + (81 * x) + (40 * y)
+}
+revenue_function(2.30, 4.10)
+```
+
+The revenue if she sells the "house" brand for $2.30 and the "name" brand for $4.10 is $116.62.
+
+# 4
+
+A company has a plant in Los Angeles and a plant in Denver. The firm is committed to produce a total of 96 units of a product each week. The total weekly cost is given by C(x, y) = 1/6 x^2 + 16 y ^ 2 + 7x + 25y + 700, where x is the number of units produced in Los Angeles and y is the number of units produced in Denver. How many units should be produced in each plant to minimize the total weekly cost?
+
+Solution:
+
+Since they are committed to produce a total of 96 units, the number of units produced in Los Angeles, x, and the number of units produced in Denver, y, must be equal to 96.
+
+x + y = 96 and we can rewrite this in terms of x, x = 96 - y. We can then plug this into the weekly cost function X(x, y)
+
+$C(x,y)=\frac { 1 }{ 6 } { x }^{ 2 }+\frac { 1 }{ 6 } { y }^{ 2 }+7x+25y+700$ Plug in x = 96 - y.
+
+$\frac { 1 }{ 6 } { (96-y) }^{ 2 }+\frac { 1 }{ 6 } { y }^{ 2 }+7(96-y)+25y+700$ Expand.
+
+$\frac { 1 }{ 6 } { ({ y }^{ 2 }-192y+9216) }+\frac { 1 }{ 6 } { y }^{ 2 }+672-7y+25y+700$ Simplify.
+
+${ { \frac { 1 }{ 6 } y }^{ 2 }-32y+1536 }+\frac { 1 }{ 6 } { y }^{ 2 }+18y+1372$ Combine like terms.
+
+${ { \frac { 1 }{ 3 } y }^{ 2 }-14y+2908 }$
+
+To find the number of units that should be produced for x and y we take the derivative of the newly formed function and set it equal to 0.
+
+$C((96-y),y)={ { \frac { 1 }{ 3 } y }^{ 2 }-14y+2908 }$ Take derivative.
+
+$C'((96-y),y)={ { \frac { 2 }{ 3 } y }-14 }$ Set equal to 0.
+
+$C'((96-y),y)={ { \frac { 2 }{ 3 } y }-14 }=0$ Solve for y.
+
+$C'((96-y),y)={ { \frac { 2 }{ 3 } y } }=14$
+
+y = 21
+
+Now that we know y, we can plug in y = 21 into x + y = 96.
+
+$x + y = 96$ Plug in y = 21.
+
+$x + 21 = 96$ Solve for x.
+
+x = 75
+
+The number of units that should be produced in each plant to minimize the total weekly cost are 75 units for the plant in Los Angeles and 21 units for the plant in Denver.
+
+# 5
+
+Evaluate the double integral on the given region.
+
+$\iint _{ R }{ ({ e }^{ 8x+3y })dA;R:2\le x\le 4and2\le y\le 4 }$
+
+Write your answer in exact form without decimals.
+
+Solution:
+
+Rewrite the double integral with x and y values instead of R. Then find integral of the inside part in terms of y and then after that find the integral in terms of x.
+
+$\int _{ 2 }^{ 4 } \int _{ 2 }^{ 4 }{ { e }^{ 8x+3y }dxdy }$ Take inside part
+
+$\int _{ 2 }^{ 4 }{ { e }^{ 8x+3y }dx }$ Integrate using u-substitution. u = 8x+3y, du = 8dx in terms of dx, dx = 1 / 8 du.
+
+$\int _{ 2 }^{ 4 }{ { e }^{ u }\frac { 1 }{ 8 } du }$ Take out constant.
+
+$\frac { 1 }{ 8 }\int _{ 2 }^{ 4 }{ { e }^{ u } du }$ Integrate.
+
+$\frac { 1 }{ 8 }{ e }^{ u }$ Plug in u = 8x + 3y.
+
+$\frac { 1 }{ 8 }{ e }^{ 8x+3y }$ Solve by plugging in x = 4 as the upper bound and x = 2 as the lower bound.
+
+$\frac { 1 }{ 8 }({ e }^{ 8(4)+3y }-{ e }^{ 8(2)+3y })$ Simplify.
+
+$\frac { 1 }{ 8 }({ e }^{ 32+3y }-{ e }^{ 16+3y })$
+
+Now we integrate in terms of y.
+
+$\int _{ 2 }^{ 4 }{ \frac { 1 }{ 8 } ({ e }^{ 32+3y }-{ e }^{ 16+3y }) }dy$ Distribute 1 / 8 and split integral.
+
+$\int _{ 2 }^{ 4 }{ \frac { 1 }{ 8 } ({ e }^{ 32+3y }) } dy-\int _{ 2 }^{ 4 }{ \frac { 1 }{ 8 } ({ e }^{ 16+3y }) }dy$ Take out constants.
+
+$\frac { 1 }{ 8 } \int _{ 2 }^{ 4 }{ ({ e }^{ 32+3y }) } dy-\frac { 1 }{ 8 } \int _{ 2 }^{ 4 }{ ({ e }^{ 16+3y }) }dy$ Integrate using u-substitution. To avoid repetition, I'm going to skip the steps.
+
+$\frac { 1 }{ 8 } (\frac { 1 }{ 3 } )({ e }^{ 32+3y })-\frac { 1 }{ 8 } (\frac { 1 }{ 3 } )({ e }^{ 16+3y })$ Solve by plugging in y = 4 as the upper bound and y = 2 as the lower bound.
+
+$\frac { 1 }{ 8 } (\frac { 1 }{ 3 } )({ e }^{ 32+3(4) }-{ e }^{ 32+3(2) })-\frac { 1 }{ 8 } (\frac { 1 }{ 3 } )({ e }^{ 16+3(4) }-{ e }^{ 16+3(2) })$ Multiply fractions and terms in exponents.
+
+$\frac { 1 }{ 24 } ({ e }^{ 32+12 }-{ e }^{ 32+6 })-\frac { 1 }{ 24 } ({ e }^{ 16+12 }-{ e }^{ 16+6 })$ Simplify.
+
+$\frac { 1 }{ 24 } ({ e }^{ 44 }-{ e }^{ 38 })-\frac { 1 }{ 24 } ({ e }^{ 28 }-{ e }^{ 22 })$ Factor 1 / 24.
+
+$\frac { 1 }{ 24 } ({ e }^{ 44 }-{ e }^{ 38 }-({ e }^{ 28 }-{ e }^{ 22 }))$ Distribute negative sign.
+
+$\frac { 1 }{ 24 } ({ e }^{ 44 }-{ e }^{ 38 }-{ e }^{ 28 }+{ e }^{ 22 })$
+
+The double integral on the given region $\iint _{ R }{ ({ e }^{ 8x+3y })dA;R:2\le x\le 4and2\le y\le 4 }$ is $\frac { 1 }{ 24 } ({ e }^{ 44 }-{ e }^{ 38 }-{ e }^{ 28 }+{ e }^{ 22 })$.

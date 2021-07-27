@@ -1,0 +1,133 @@
+---
+title: "Data 605 HW 7"
+author: "Bryan Persaud"
+date: "3/15/2020"
+output: html_document
+---
+
+# 1
+
+Let X1, X2, . . . , Xn be n mutually independent random variables, each of which is uniformly distributed on the integers from 1 to k. Let Y denote the minimum of the Xi’s. Find the distribution of Y .
+
+Solution:
+
+Let ${ k }^{ n }$ equal to the number of values we can have in ${ X }_{ i }$. Then ${ (k-1) }^{ n }$ is equal to all of the values not equal to `. ${ (k-2) }^{ n }$ is equal to all of the values not equal to 2. Since we are looking at the minimum of the ${ X }_{ i }$'s, we can subtract ${ k }^{ n }$ from ${ (k-2) }^{ n }$ and ${ k }^{ n }$ from ${ (k-1) }^{ n }$  and subtract the two values found to generalize the minimum values. 
+
+$({ k }^{ n }-{ (k-2) }^{ n })-({ k }^{ n }-{ (k-1) }^{ n })$ = 
+
+${(k-1) }^{ n }-{ (k-2) }^{ n }$
+
+Then we can assign a value i such that ${(k-i) }^{ n }-{ (k-i+1) }^{ n }$ is equal to the number of values greater than or equal to i. Then the distribution of Y is
+
+$\frac {{(k-i) }^{ n }-{ (k-i+1) }^{ n } }{ { k }^{ n }}$ 
+
+# 2
+
+Your organization owns a copier (future lawyers, etc.) or MRI (future doctors). This machine has a manufacturer’s expected lifetime of 10 years. This means that we expect one failure every ten years. (Include the probability statements and R Code for each part.).
+
+a. 
+
+What is the probability that the machine will fail after 8 years?. Provide also the expected value and standard deviation. Model as a geometric. (Hint: the probability is equivalent to not failing during the first 8 years..)
+
+Solution:
+
+Geometric = ${ (1-p) }^{ k-1 }p$
+
+```{r}
+p <- 1 / 10
+geometric_prob <- ((1 - p)^ (8 - 1) * p)
+round(geometric_prob, 4)
+```
+
+```{r}
+expected_value <- 1 / p
+expected_value
+```
+
+```{r}
+standard_deviation <- sqrt((1 - p) / (p ^ 2))
+round(standard_deviation, 4)
+```
+
+The probability that the machine will fail after 8 years is 0.0478 or 4.78%. The expected value is 10 and the standard deviation is 9.4868.
+
+b. 
+
+What is the probability that the machine will fail after 8 years?. Provide also the expected value and standard deviation. Model as an exponential. 
+
+Solution:
+
+Exponential = ${ e }^{ -\lambda n }$
+
+```{r}
+lambda <- 1 / 10
+e <- exp(1)
+exponential_prob <- e ^ (- lambda * 8)
+round(exponential_prob, 4)
+```
+
+```{r}
+expected_value_exponential <- 1 / lambda
+expected_value_exponential
+```
+
+```{r}
+standard_deviation_exponential <- 1 / (lambda ^ 2)
+standard_deviation_exponential
+```
+
+The probability that the machine will fail after 8 years is 0.4493 or 44.93%. The expected value is 10 and the standard deviation is 100.
+
+c.
+
+What is the probability that the machine will fail after 8 years?. Provide also the expected value and standard deviation. Model as a binomial. (Hint: 0 success in 8 years)
+
+Solution:
+
+binomial = ${ _{ n }{ C }_{ k }{ P }^{ k }{ (1-p) }^{ n-k } }$
+
+```{r}
+p <- 1 / 10
+binomial_prob <- choose(8, 0) * (p ^ 0) * ((1 - p) ^ (8))
+round(binomial_prob, 4)
+```
+
+```{r}
+expected_value_binomial <- p * 8
+expected_value_binomial
+```
+
+```{r}
+standard_deviation_binomial <- sqrt((p * 8) * (1 - p))
+round(standard_deviation_binomial, 4)
+```
+
+The probability that the machine will fail after 8 years is 0.4305 or 43.05%. The expected value is 0.8 and the standard deviation is 0.8485.
+
+d.
+
+What is the probability that the machine will fail after 8 years?. Provide also the expected value and standard deviation. Model as a Poisson.
+
+Solution:
+
+Poisson = $\frac { { e }^{ -\lambda  }{ \lambda  }^{ n } }{ n! }$ 
+
+```{r}
+lambda_poisson = 8 * (1 / 10)
+e <- exp(1)
+poisson_prob <-(e ^ (- lambda_poisson) * lambda_poisson ^ 0) / factorial(0)
+round(poisson_prob, 4)
+```
+
+```{r}
+expected_value_poisson <- lambda_poisson
+expected_value_poisson
+```
+
+```{r}
+standard_deviation_poisson <- sqrt(lambda_poisson)
+round(standard_deviation_poisson, 4)
+
+```
+
+The probability that the machine will fail after 8 years is 0.4493 or 44.93%. The expected value is 0.8 and the standard deviation is 0.8944.

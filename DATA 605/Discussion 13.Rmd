@@ -1,0 +1,47 @@
+---
+title: "Discussion 13"
+author: "Bryan Persaud"
+date: "4/27/2020"
+output: html_document
+---
+
+# Chapter 7 Section 7.1 Exercise 13
+
+In Exercises 13 – 20, find the total area enclosed by the functions f and g.
+
+13. $f(x) = 2x^2 + 5x − 3, g(x) = x^2 + 4x − 1$
+
+Solution:
+
+Let's use R to create two function, f(x) and g(x).
+
+```{r}
+function_f <- function(x)
+{
+  2 * (x ^ 2) + 5 * x - 3
+}
+function_g <- function(x)
+{
+  (x ^ 2) + 4 * x - 1
+}
+```
+
+We need to find the intersection of the two functions. To do this we set f(x) = g(x).
+
+$2x^2 + 5x - 3 = x^2 + 4x - 1$ = Subtract to set equal to 0.
+
+$x^2 + x - 2 = 0$ Solve using the quadratic formula where a = 1, b = 1, and c = -2
+
+I'll skip over the steps for the quadratic formula, but we end up with x = -2 and x = 1. So we have two intersection points, -2 and 1.
+
+Now that we know the intersection points, we integrate f(x) - g(x), where our interval is made up of the two intersection points we found. We know that f(x) - g(x) is $x^2 + x - 2$.
+
+```{r}
+function_fg <- function(x)
+{
+  (x ^ 2) + x - 2
+}
+integrate(function_fg, lower = -2, upper = 1)
+```
+
+The total area enclosed by the functions f and g is -4.5. We can't have a negative area, so we take the absolute value of the total area. So we get 4.5 as the total area enclosed by the functions f and g.

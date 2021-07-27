@@ -1,0 +1,37 @@
+---
+title: "Discussion 12"
+author: "Bryan Persaud"
+date: "4/21/2020"
+output: html_document
+---
+
+Using R, build a multiple regression model for data that interests you.  Include in this model at least one quadratic term, one dichotomous term, and one dichotomous vs. quantitative interaction term.  Interpret all coefficients. Conduct residual analysis.  Was the linear model appropriate? Why or why not?
+
+I chose to again use the candy dataset from fivethiryeight. https://github.com/fivethirtyeight/data/tree/master/candy-power-ranking
+
+```{r}
+candy <- read.csv("https://raw.githubusercontent.com/fivethirtyeight/data/master/candy-power-ranking/candy-data.csv")
+head(candy)
+```
+
+Let's build a multiple regression model to show the price of a candy based on if it is a candybar.
+
+```{r}
+multi_model <- lm(pricepercent ~ bar + bar * sugarpercent + chocolate + fruity + caramel + peanutyalmondy + nougat + crispedricewafer, data = candy)
+summary(multi_model)
+```
+
+There are nine coefficients, pricepercent, sugarpercent, chocolate, fruity, caramel, peanutyalmondy, nougat, crispedricewafer, and also the term bar * sugarpercent. Looking at the coefficients, we see that crispedricewafer and fruity have the highest p-values among all coefficients. Sugarpercent has the lowest p-value. 
+
+Residual Analysis
+
+```{r}
+plot(fitted(multi_model), resid(multi_model))
+```
+
+```{r}
+qqnorm(resid(multi_model))
+qqline(resid(multi_model))
+```
+
+Based on the residual analysis, I would say that the linear model is appropriate. This is because from the plots you can see that most of the points follow the straight line. This tells us that the residuals almost follow a normal distribution.
