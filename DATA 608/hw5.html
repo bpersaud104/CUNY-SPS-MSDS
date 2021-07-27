@@ -1,0 +1,67 @@
+<html>
+<head><title> Data 608 HW 5 </title></head>
+<body>
+
+<h1> Part 1: Beginner Questions </h1>
+<h2> Question 1 </h2>
+
+<script type="text/javascript">
+
+// Reverse a String
+
+document.write("Enter a String to Reverse It")
+function reverse(string) {
+    var string_split = string.split("");
+    var string_reverse = string_split.reverse();
+    var string_join = string_reverse.join("");
+    return string_join
+}
+
+function display() {
+    var t = document.getElementById('target');
+    t.innerHTML = reverse(document.getElementById('string_join').value);
+}
+</script>
+<p>
+<form>
+    <input id="string_join" type="text">
+    <input type="button" value="Reverse string" onclick="display();">
+</form>
+</p>
+<div id="target"></div>
+
+<h2> Question 2 </h2> 
+
+<script type="text/javascript">
+
+// Table of multiples
+
+document.write("Input a Number")
+function multiple(num) {
+    var counter;
+    var table_multiples;
+    for(counter = 1; counter < 21; counter++) {
+        if((counter - 1)%4 == 0) {
+            table_multiples += "<tr><td>" + num * counter + "</td>"
+        }
+        else if(counter%4 == 0) {
+            table_multiples += "<td>" + num * counter + "</td></tr>"
+        }
+        else(table_multiples += "<td>" + num * counter + "</td>");
+    }
+    table_multiples = "<table>" + table_multiples + "</table>"
+    return table_multiples
+}
+
+function calc() {
+    var t2 = document.getElementById("target2");
+    t2.innerHTML = multiple(document.getElementById('num').value);
+}
+</script>
+<p>
+<form>
+    <input id="num" type="number">
+    <input type="button" value="Generate table" onclick="calc();">
+</form>
+</p>
+<div id="target2"></div>

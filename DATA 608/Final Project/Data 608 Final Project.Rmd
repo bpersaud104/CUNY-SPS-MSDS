@@ -1,0 +1,98 @@
+---
+title: "Data 608 Final Project"
+author: "Bryan Persaud"
+date: "12/13/2020"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r}
+library(tidyverse)
+```
+
+# Introduction
+
+For my final project I will be using data on college majors. The data is taken from FiveThirtyEight and can be found on their Github page: https://github.com/fivethirtyeight/data/tree/master/college-majors The data is split into different .csv files. The one I will be working with is the all-ages.csv dataset. 
+
+What I want to show is the different majors by their categories and the median salary made and/or to show employment vs unemployment by major. I feel this data is important because it helps students decide on what major to pick and to see trends on what majors will get them a job. The data is a little old and it can be used to compare to recent data to see trends in how the job market has changed over the years.
+
+# Data Analysis
+
+```{r}
+data <- read.csv("https://raw.githubusercontent.com/bpersaud104/Data608/master/all-ages.csv")
+head(data, 50)
+summary(data)
+```
+
+The data consists of 11 different variables with 173 observations. Each observation is a different major, so the data shown consists of 173 different majors. The total number of students in each major can be seen as well as information on employment and the median salary made. 
+
+```{r}
+sapply(data, function(x)
+  sum(is.na(x)))
+```
+Here we see that there is no missing data in the dataset.
+
+```{r}
+unique(data$Major_category)
+```
+There are 16 different categories that the majors are split into. This is useful to help distinguish a major based on the subject it falls under.
+
+```{r}
+data %>%
+  select(Major, Total) %>%
+  arrange(desc(Total)) %>%
+  group_by(Major)
+```
+
+The top 5 majors with the most students are Business Management and Administration, General Business, Accounting, Nursing, and Psychology.
+
+```{r}
+data %>%
+  select(Major, Employed) %>%
+  arrange(desc(Employed)) %>%
+  group_by(Major)
+
+data %>%
+  select(Major, Unemployed) %>%
+  arrange(desc(Unemployed)) %>%
+  group_by(Major)
+```
+
+The top 5 majors with the most employment are Business Management and Administration, General Business, Accounting, Nursing, and Psychology. However the top 5 majors with the most unemployment are Business Management and Administration, General Business, Psychology, Accounting, and Communications. Both are slightly different but are close to the top majors with the most students.
+
+```{r}
+data %>%
+  select(Major, Median) %>%
+  arrange(desc(Median)) %>%
+  group_by(Major)
+```
+
+The top 5 majors with the most median salary are Petroleum Engineering, Pharmacy Pharmaceutical Sciences and Administration, Naval Architecture and Marine Engineering, Metallurgical Engineering, and Nuclear Engineering. 
+
+```{r}
+data %>%
+  select(Major, Employed, Unemployed, Median) %>%
+  arrange(desc(Employed)) %>%
+  group_by(Major)
+
+data %>%
+  select(Major, Employed, Unemployed, Median) %>%
+  arrange(desc(Median)) %>%
+  group_by(Major)
+```
+Here we compare the employment of a major to the median salary. Above we saw that the majors with the most employment were different from the majors with the most median salary. This tells us that there is no relationship between employment and median salary of a major.
+
+# Shiny App
+
+A shiny app was created to visualize the dataset. The shiny app can be found here: https://bpersaud104.shinyapps.io/Data608FinalProject/
+
+The visualization was made while taking into consideration the dataset. The dataset was taken from FiveThirtyEight and the data is from the American Community Survey 2010-2012 Public Use Microdata Series. The data consists of 173 different majors split into 16 different categories.There are also other information such as the total students in the major, the employment by major, and the median salary.
+
+The shiny app consists of three different graphs, one graph to show the total students in a major, one graph to show the median salary of a major, and one graph to show employment vs unemployment of a major. The first two graphs were designed in a way where you select from the different major categories to help narrow down the different majors by the subject of the major. The third graph you select from a list of all the majors to see the employment vs unemployment. I think this is important because the shiny app was made in a way where a student can explore the data to see important information on the different majors. Whether the student knows what major they want to pursue or is undecided, this can help the student in picking a major that will help them to get a job.
+
+# References
+
+https://github.com/fivethirtyeight/data/tree/master/college-majors
+
+https://bpersaud104.shinyapps.io/Data608FinalProject/
