@@ -1,0 +1,51 @@
+---
+title: "Data 609 Module 7 HW"
+author: "Bryan Persaud"
+date: "5/16/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+# Ex.1
+
+Use the svm() algorithm of the e1071 package to carry out the support vector machine for the PlantGrowth data set. Then, discuss the number of support vectors/samples. [Install the e1071 package in R if needed.]
+
+Solution:
+
+```{r}
+library(e1071)
+plant_svm <- svm(group ~ ., data = PlantGrowth)
+summary(plant_svm)
+```
+
+When using the svm() algorithm on the PlantGrowth data set it shows that there are 29 support vectors.
+
+# Ex.2
+
+Do a similar SVM analysis as that in the previous question using the iris data set. Discuss the number of support vectors/samples.
+
+Solution:
+
+```{r}
+iris_svm <- svm(Species ~ ., data = iris)
+summary(iris_svm)
+```
+
+When using the svm() algorithm on the iris data set it shows that there are 51 support vectors.
+
+# Ex.3
+
+Use the iris data set (or any other data set) to select 80% of the samples for the training svm(), then use the rest 20% for validation. Discuss your results.
+
+Solution:
+
+```{r}
+library(caret)
+train <- createDataPartition(iris$Species, p = 0.80, list = FALSE)
+validation <- iris[-train]
+iris_dataset <- data.frame(iris[train])
+svm(train ~ ., data = iris_dataset)
+```
+
+Selecting 80% of the samples to train svm() gives us 120 support vectors.

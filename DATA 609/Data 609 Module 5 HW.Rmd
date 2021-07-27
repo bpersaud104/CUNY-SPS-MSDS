@@ -1,0 +1,75 @@
+---
+title: "Data 609 Module 5 HW"
+author: "Bryan Persaud"
+date: "4/18/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+# Ex.1
+
+Carry out the logistic regression (Example 22 on Page 94) in R using the data
+
+x 0.1 0.5 1.0 1.5 2.0 2.5
+
+y 0 0 1 1 1 0 
+
+The formula is $y(x) =  \frac{1}{1 + exp[-(a + bx)]}$
+
+Solution:
+
+```{r}
+x <- c(0.1, 0.5, 1.0, 1.5, 2.0, 2.5)
+y <- c(0, 0, 1, 1, 1, 0)
+glm(y ~ x, family = "binomial")
+```
+
+The logistic regression for the x and y data is seen above.
+
+# Ex.2
+
+Using the motor car database (mtcars) of the built-in data sets in R to carry out the basic principal component analysis and explain your results
+
+Solution:
+
+```{r}
+mtcars_pca <- prcomp(mtcars, scale = TRUE)
+summary(mtcars_pca)
+str(mtcars_pca)
+```
+
+Using R we can see the principal component analysis above. There are 11 different objects shown, one for each column in the mtcars dataset. 
+
+# Ex.3
+
+Generate a random 4 X 5 matrix, and find its singular value decomposition using R.
+
+Solution:
+
+```{r}
+M <- matrix(rnorm(20), nrow = 4)
+svd(M)
+```
+
+The single value decomposition can be seen above.
+
+# Ex.4
+
+First try to simulate 100 data points for y using $y = 5 x_{1} + 2 x_{2} + 2 x_{3} +  x_{4}.$ where $x, x_{2}$ are uniformly distributed in [1,2], while $x_{3} , x_{4}$ are normally distributed with zero mean and unit variance. Then, use the principal component analysis (PCA) to analyze the data to find its principal components. Are the results expected from the formula?
+
+Solution:
+
+```{r}
+x1 <- runif(100, min = 1, max = 2)
+x2 <- runif(100, min = 1, max = 2)
+x3 <- rnorm(100, mean = 0, sd = 1)
+x4 <- rnorm(100, mean = 0, sd = 1)
+y <- 5 * x1 + 2 * x2 + 2 * x3 + x4
+data_frame <- as.data.frame(cbind(y, x1, x2, x3, x4))
+data_pca <- prcomp(data_frame, scale = TRUE)
+summary(data_pca)
+str(data_pca)
+```
+
+The PCA for the data can be seen above. We see that the results are what you would expect from the formula.

@@ -1,0 +1,146 @@
+---
+title: "Data 609 Module 6 HW"
+author: "Bryan Persaud"
+date: "5/2/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+# Ex.1
+
+Use a data set such as the PlantGrowth in R to calculate three different distance metrics and discuss the results.
+
+Solution:
+
+```{r}
+plants_euclidean <- dist(PlantGrowth, method = "euclidean")
+as.matrix(plants_euclidean)
+```
+
+```{r}
+plants_manhattan <- dist(PlantGrowth, method = "manhattan")
+as.matrix(plants_manhattan)
+```
+
+```{r}
+plants_minkowski <- dist(PlantGrowth, method = "minkowski")
+as.matrix(plants_minkowski)
+```
+
+Three distance metrics were used, Euclidean, Manhattan, and Minkowski. The results can be seen above in the form of a matrix. Euclidean and Minkowski have similar results, while Manhattan gives different results than the other two.
+
+# Ex.2
+
+Now use a higher-dimension data set mtcars, try the same three distance metrics in the previous question and discuss the results.
+
+Solution:
+
+```{r}
+cars_euclidean <- dist(mtcars, method = "euclidean")
+as.matrix(cars_euclidean)
+```
+
+```{r}
+cars_manhattan <- dist(mtcars, method = "manhattan")
+as.matrix(cars_manhattan)
+```
+
+```{r}
+cars_minkowski <- dist(mtcars, method = "minkowski")
+as.matrix(cars_minkowski)
+```
+
+The same three distance metrics, Euclidean, Manhattan, and Minkowski from the previous question were used. The results were the same as Euclidean and Minkowski gave similar results and the results from Manhattan differed.
+
+# Ex.3
+
+Use the built-in data set mtcars to carry out hierarchy clustering using two different distance metrics and compare if they get the same results. Discuss the results.
+
+Solution:
+
+```{r}
+clusters <- hclust(dist(mtcars, method = "euclidean"))
+summary(clusters)
+plot(clusters)
+clusters2 <- hclust(dist(mtcars, method = "manhattan"))
+summary(clusters2)
+plot(clusters2)
+```
+
+Euclidean and Manhattan were both used to do hierarchy clustering. Above you can see the results look to be the same, but both have different plots.
+
+# Ex.4
+
+Load the well-known Fisher's iris flower data set that consists of 150 samples for three 3 species (50 samples each species). The four measures or features are the lengths and widths of sepal and petals. Use the kNN clustering to analyze this iris data set by selecting 120 samples for training and 30 samples for testing.
+
+Solution:
+
+```{r}
+library(class)
+set.seed(123)
+iris_split <- sort(sample(nrow(iris), nrow(iris) * 0.8))
+train <- iris[iris_split, -5]
+test <- iris[-iris_split, -5]
+train_category <- iris[iris_split, 5]
+test_category <- iris[-iris_split, 5]
+iris_knn <- knn(train, test, cl = train_category, k = 5)
+knn_table <- table(iris_knn, test_category)
+knn_accuracy <- sum(diag(knn_table)) / sum(knn_table)
+knn_accuracy
+```
+
+The accuracy for knn clustering can be seen above.
+
+# Ex.5
+
+Use the iris data set to carry out k-means clustering. Compare the results to the actual classes and estimate the clustering accuracy.
+
+Solution:
+
+```{r}
+set.seed(123)
+iris_kmeans <- kmeans(iris[, -5], centers = 3)
+iris_kmeans
+iris_clusters <- iris_kmeans$cluster
+table(iris_clusters)
+```
+
+```{r}
+library(cluster)
+clusplot(iris[, -5], iris_clusters)
+```
+
+```{r}
+iris$cluster.kmeans <- iris_clusters
+cluster_table <- table(iris$Species, iris$cluster.kmeans)
+cluster_table
+kmeans_accuracy <- sum(diag(cluster_table)) / sum(cluster_table)
+kmeans_accuracy
+```
+
+The accuracy for kmeans clustering can be seen above.
+
+# Ex.6
+
+Please set up Python environment on your computer (recommended installation would be ANACONDA), then go through the following codes: https://github.com/ageron/handson-ml2/blob/master/09_unsupervised_learning.ipynb
+
+Provide a summary on what you have learned and give several screenshots to show that you have gone through the code.
+
+Solution:
+
+The codes helped me to learn how to do k-means using sklearn. Sklearn has different functions to use for k-means, such as kmeans() and it can also be used to show k-means algorithms. There is also functions to show mini-batch k-means. There was also some interesting code on clustering where you can find the optimal number of clusters or use clustering to do image segmentation or preprocessing. Also code on clustering algorithms.
+
+Screenshots can be found here: https://github.com/bpersaud104/Data609/blob/main/Module%206%20Screenshots.docx
+
+# Ex.7
+
+Go through the following codes: https://github.com/ageron/handson-ml2/blob/master/07_ensemble_learning_and_random_forests.ipynb
+
+Provide a summary on what you have learned and give several screenshots to show that you have gone through the code.
+
+Solution:
+
+The codes helped me to learn about voting classifiers and random forests by coding using sklearn. The functions baggingclassifiers() and randomforestclassifiers() from sklearn wee helpful and the codes helped to show how to use them. The code on gradient boosting was also good and it was nice to see how to code it.
+
+Screenshots can be found here: https://github.com/bpersaud104/Data609/blob/main/Module%206%20Screenshots.docx

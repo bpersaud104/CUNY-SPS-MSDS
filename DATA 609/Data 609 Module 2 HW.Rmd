@@ -1,0 +1,94 @@
+---
+title: "Data 609 Module 2 HW"
+author: "Bryan Persaud"
+date: "2/28/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+# Ex.1 
+
+Show $x^{2} + exp(x) + 2 x^{4} + 1$ is convex.
+
+Solution:
+
+$f( \alpha x +  \beta y)  \leq   \alpha f(x) +  \beta f(y)$
+
+$(\alpha x +  \beta y)^{2} + exp(\alpha x +  \beta y) + 2 (\alpha x +  \beta y)^{4} + 1  \leq   \alpha (x^{2} + exp(x) + 2 x^{4} + 1) +  \beta (y^{2} + exp(y) + 2 y^{4} + 1)$
+
+Using $\alpha + \beta = 1$ we can simplify the inequality and rewrite it as 
+
+$2 \alpha  x^{4} +  \alpha  x^{2} +  \alpha exp(x) + 2 \beta  y^{4} +  \beta  y^{2} +  \beta exp(y) + 1 - ((\alpha x +  \beta y)^{2} + exp(\alpha x +  \beta y) + 2 (\alpha x +  \beta y)^{4} + 1) \geq 0$
+
+$2 \alpha  x^{4} +  \alpha  x^{2} +  \alpha exp(x) + 2 \beta  y^{4} +  \beta  y^{2} +  \beta exp(y) - (\alpha x +  \beta y)^{2} - exp(\alpha x -  \beta y) - 2 (\alpha x +  \beta y)^{4} \geq 0$
+
+The inequality is always true which shows that $x^{2} + exp(x) + 2 x^{4} + 1$ is convex.
+
+# Ex.2
+
+Show that the mean of the exponential distribution $p(x) = \begin{cases} \lambda  e^{- \lambda x}  & x  \geq  0 ( \lambda  > 0)\\0 & x  <  0\end{cases}$ is $\mu = \frac{1}{ \lambda }$ and its variance is $\sigma ^{2} =  \frac{1}{  \lambda ^{2} }$
+
+Solution:
+
+To find the mean of the exponential distribution solve $\mu = E[X] = \int_0^ \infty  x \lambda  e^{- \lambda x}$
+
+Solve using integration by parts $\int u v dx = u  \int v dx -  \int  u' (\int v dx) dx$
+
+$[-x e^{- \lambda x}]_0^ \infty + \int_0^ \infty e^{- \lambda x} dx$ = 
+
+$[-x e^{- \lambda x}]_0^ \infty + [ -\frac{1}{ \lambda } e^{- \lambda x}]_0^ \infty$ =
+
+$(0 - 0) + (0 + \frac{1}{ \lambda })$ = $\frac{1}{ \lambda }$
+
+To find the variance of the exponential distribution solve $\sigma ^{2} = Var[X] = E[ X^{2}] - E[X] ^{2}$
+
+$E[ X^{2}] = \int_0^ \infty   x^{2} \lambda  e^{- \lambda x}$ which can be solved by again using integration by parts
+
+$[-x^{2} e^{- \lambda x}]_0^ \infty + \int_0^ \infty 2xe^{- \lambda x} dx$ = 
+
+$[-x^{2} e^{- \lambda x}]_0^ \infty +[- \frac{2}{ \lambda } x e^{- \lambda x} dx]_0^ \infty +   \frac{2}{ \lambda } \int_0^ \infty e^{- \lambda x} dx$ Again use integration by parts =
+
+$[-x^{2} e^{- \lambda x}]_0^ \infty +[- \frac{2}{ \lambda } x e^{- \lambda x} dx]_0^ \infty +  \frac{2}{ \lambda } [- \frac{1}{ \lambda } x e^{- \lambda x} dx]_0^ \infty$ = 
+
+$(\frac{2}{ \lambda })( \frac{1}{ \lambda })$ = $\frac{2}{  \lambda ^{2}}$
+
+$E[ X^{2}] - E[X] ^{2} = \frac{2}{\lambda ^{2}} - (\frac{1}{ \lambda }) ^{2} = \frac{2}{\lambda ^{2}} - \frac{1}{\lambda ^{2}} = \frac{1}{  \lambda ^{2}}$
+
+# Ex.3
+
+It is estimated that there is a typo in every 250 data entries in a database, assuming the number of typos can obey the Poisson distribution. For a given 1000 data entries, what is the probability of exactly 4 typos? What is the probability of no typo at all? Use R to draw 1000 samples with $\lambda = 4$ and show their histogram.
+
+Solution:
+
+```{r}
+lambda <- 4
+x1 <- 4
+four_typos <- (lambda ^ x1 * exp(-lambda)) / factorial(x1)
+four_typos
+```
+
+The probability of exactly 4 typos is 19.54%.
+
+```{r}
+lambda <- 4
+x2 <- 0
+zero_typos <- (lambda ^ x2 * exp(-lambda)) / factorial(x2)
+zero_typos
+```
+
+The probability of no typos at all is 1.83%.
+
+```{r}
+# Built in r function to check answers
+q1 <- dpois(4, lambda = 4)
+q1
+q2 <- dpois(0, lambda = 4)
+q2
+```
+
+```{r}
+samples <- 1:1000
+values <- rpois(1000, lambda = 4)
+hist(values)
+```

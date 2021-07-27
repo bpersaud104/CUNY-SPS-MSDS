@@ -1,0 +1,115 @@
+---
+title: "Data 609 Module 4 HW"
+author: "Bryan Persaud"
+date: "3/28/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+# Ex.1
+
+For Example 19 on Page 79 in the book, carry out the regression using R.
+
+x -0.98 1.00 2.02 3.03 4.00
+
+y 2.44 -1.51 -0.47 2.54 7.52
+
+Solution:
+
+```{r}
+x <- c(-0.98, 1.00, 2.02, 3.03, 4.00)
+y <- c(2.44, -1.51, -0.47, 2.54, 7.52)
+```
+
+```{r}
+model1 <- lm(y~x)
+model1
+```
+
+We would get the equation y = 0.9373x + 0.4038.
+
+```{r}
+summary(model1)
+```
+
+# Ex.2
+
+Implement the non-linear curve-fitting of Example 20 on Page 83 for the following data:
+
+x 0.10 0.50 1.00 1.50 2.00 2.50
+
+y 0.10 0.28 0.40 0.40 0.37 0.32
+
+Solution:
+
+```{r}
+x <- c(0.10, 0.50, 1.00, 1.50, 2.00, 2.50)
+y <- c(0.10, 0.28, 0.40, 0.40, 0.37, 0.32)
+df1 <- data.frame(x, y)
+eq1 <- function(x, a, b){
+  x / (a + b * x^2)
+}
+model2 <- nls(y ~ eq1(x, a, b), data = df1, start = list(a = 1, b = 1))
+model2
+s <- seq(from = 0, to = 1, length = 50)
+plot(x, y)
+lines(s, predict(model2, list(x = s)))
+```
+
+# Ex.3
+
+For the data with binary y values, try to fit the following data
+
+x 0.1 0.5 1.0 1.5 2.0 2.5
+
+y 0   0   1   1   1   0 
+
+to the nonlinear function $y =  \frac{1}{1+ e^{-(a+bx)}},$ starting with a = 1 and b = 1.
+
+Solution:
+
+```{r}
+x <- c(0.1, 0.50, 1.0, 1.5, 2.0, 2.5)
+y <- c(0, 1, 0, 1, 0, 1)
+df2 <- data.frame(x, y)
+eq2 <- function(x, a, b){
+  1 / (1 + exp(-(a + b * x)))
+}
+model3 <- nls(y ~ eq2(x, a, b), data = df2, start = list(a = 1, b = 1))
+model3
+s <- seq(from = 0, to = 1, length = 50)
+plot(x, y)
+lines(s, predict(model3, list(x = s)))
+```
+
+# Ex.4
+
+please set up Python environment on your computer （recommended installation would be ANACONDA), then go through the following codes https://github.com/ageron/handson-ml2/blob/master/04_training_linear_models.ipynb
+Provide a summary on what you have learned and give several screenshots to show that you have gone through this code.
+
+Solution:
+
+The codes go through different regression models and how to use them using Python and sklearn. The code go through linear regression using the normal equation and using batch gradient descent, stochastic gradient descent, mini-batch gradient descent, polynomial regression, and logistic regression. Sklearn has a function LinearRegression where you fit in the X and y values and can then predict using this function. I learned about using Python to do a stochastic gradient descent. I also learned about the SGDRegressor function from sklearn. The code helps to show how to do each regression and also how sklearn has built-in functions that can simplify coding the regression.
+
+Screenshots can be found here: https://github.com/bpersaud104/Data609/blob/main/Module%204%20Screenshots.docx
+
+# Ex.5
+
+Suppose you use Batch Gradient Descent and you plot the validation error at every epoch. If you notice that the validation error consistently goes up, what is likely going on? How can you fix this?
+
+Solution:
+
+If you use Batch Gradient Descent and notice that the validation error consistently go up when you plot at every epoch then this could show that there is a high training rate in the model. This could lead the model to diverge. You can fix this by redoing the training with a lower rate. If the error is still not going up then you would have to use a different model as the current model is overfitting. 
+
+# Ex.6
+
+Why would you want to use: a. Ridge Regression instead of plain Linear Regression (i.e., without any regularization)? b. Lasso instead of Ridge Regression? c. Elastic Net instead of Lasso?
+
+Solution:
+
+a. You would want to use Ridge Regression instead of plain Linear Regression when you are dealing with a large amount of data that can cause overfitting. Ridge Regression helps deal with overfitting by adding a constraint to the model(s) that have large parameters. 
+
+b. You would want to use Lasso instead of Ridge Regression when you have a few parameters that are significant to the model and others that are close to zero. Lasso Regression adds a constraint to the model(s) that have these parameters that are close to zero.
+
+c. You would want to use Elastic Net instead of Lasso when too many parameters are being eliminated through Lasso Regression. Elastic Net combines both Ridge and Lasso Regression and help when you don't know if you want to use Ridge or Lasso or if you don't know what you might need to keep or remove.

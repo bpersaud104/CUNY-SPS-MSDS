@@ -1,0 +1,94 @@
+---
+title: "Data 609 Module 1 HW"
+author: "Bryan Persaud"
+date: "2/14/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+# Ex.1 
+
+Find the minimum of $f(x,y) =  x^{2} + xy +  y^{2} in (x,y) \in R^{2}$
+
+Solution:
+
+The stationary conditions are $\frac{\partial f}{\partial x} =2x + y=0$ and $\frac{\partial f}{\partial y} =x + 2y=0$
+
+From the second condition we get either x = -2y or y = $\frac{-x}{2}$
+
+Substituting x = -2y into the first condition gives us 
+
+2(-2y) + y = 0
+
+-4y + y = 0
+
+-3y = 0
+
+y = 0
+
+Substituting y = $\frac{-x}{2}$ into the first condition gives us
+
+2x + $\frac{-x}{2}$ = 0
+
+$\frac{3x}{2}$ = 0
+
+x = 0
+
+So x = 0 and y = 0. These also hold true for the second condition. 
+
+Hessian Matrix $H = \begin{pmatrix} f_{xx}  & f_{xy} \\f_{yx} & f_{yy} \end{pmatrix}$ = $\begin{pmatrix} 2  & 1 \\1& 2 \end{pmatrix}$
+
+fxx = 2x + y = 2
+
+fxy = 2x + y = 1
+
+fyx = x + 2y = 1
+
+fyy = x + 2y = 2
+
+H is positive definite which means that the point (0,0) is a minimum.
+
+# Ex.2 
+
+For $f(x)= x^{4}inR,$ it has a global minimum at x = 0. Find its new minimum if a constraint $x^{2}  \geq 1$ is added.
+
+Solution:
+
+$f(x)= x^{4}$ and $g(x)= x^{2}$
+
+$\amalg = f(x) +  \mu [g(x)]^2$ = $x^{4} + \mu [x^{2}]^2$ = $x^{4} + \mu [x^{4}]$
+
+$\amalg'(x) = 4 x^{3} + 4 \mu  x^{3} = 0$ = $\amalg'(x) = 4 x^{3} (1 + \mu) = 0$ 
+
+X can be either 1 or -1. The new minimum is x = 1. 
+
+# Ex.3
+
+Use a Lagrange multiplier to solve the optimization problem $min f(x,y) =  x^{2} + 2xy +  y^{2}$, subject to $y = x^{2} - 2$
+
+Solution:
+
+$L = f(x, y) +  \lambda h(x,y)$ $h(x, y) = x^{2} - 2 - y$
+
+$L = x^{2} + 2xy +  y^{2} +  \lambda (x^{2} - 2 - y)$
+
+$\frac{\partial L}{\partial x} = 2x + 2y +  2\lambda x = 0$, $\frac{\partial L}{\partial y} = 2x + 2y - \lambda = 0$, $\frac{\partial L}{\partial  \lambda } =  x^{2} - 2 - y = 0$
+
+For the second condition, $2x + 2y - \lambda = 0$ gives us $\lambda = 2(x + y)$
+
+Plugging $\lambda = 2(x + y)$ into the first condition gives us
+
+$2x + 2y +  2(2(x + y)) x = 0$
+
+$2x + 2y +  4x^2 + 4xy = 0$
+
+$2(x + y + 2x^2 + 2xy) = 0$ which gives us $y = \frac{-2x^2 - x}{2x + 1}$
+
+Substitute $y = \frac{-2x^2 - x}{2x + 1}$ into the third condition gives us
+
+$x^{2} - 2 - \frac{-2x^2 - x}{2x + 1}  = 0$ when simplified gives x = 1 or x = - 2.
+
+Plugging x = 1 into the third condition gives us y = -1 and plugging in x = -2 gives us y = 2. We get two points (1, -1) and (-2, 2).
+
+The optimality for $min f(x,y) =  x^{2} + 2xy +  y^{2}$ is (1, -1) with $f_{min} = 0$ and (-2, 2) with $f_{min} = 0$
